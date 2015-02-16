@@ -107,7 +107,7 @@ public class InvoiceDetailsCalculator {
 	 * @param tax the tax percentage [0-100]
 	 */
 	public void setTax(double tax) {
-		if(tax > 0.0 && tax<=100) {
+		if(tax >= 0.0) {
 			this.tax = tax;		
 		}
 	}
