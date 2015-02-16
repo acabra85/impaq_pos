@@ -1,0 +1,17 @@
+#PROD_ID,PROD_NAME,PROD_PRICE,PROD_BARCODE
+01,Milk Bottle 1lt,2.50,00001
+02,Sliced Bread 500gr,3.30,00002
+03,Chocolate Bar 100gr,2.50,00003
+04,Potato Chips 45gr,0.50,00004
+05,Candy Bars 20gr,3.15,00005
+06,Cleaning Pads 25pack,12.30,00006
+07,Energy Drink 330ml,5.50,00007
+08,Chocolate Cookies 300gr,3.50,00008
+09,Bar Soap 300gr,1.50,00009
+10,Tyskie Beer 500ml,4.00,00010
+11,Wyborowa Wodka 750ml,24.30,00011
+12,Bubble Gum 10mg,0.20,00012
+13,Woda Gazowana 500ml,1.50,00013
+14,Gazeta Wyborcza 1szt,1.50,00014
+15,Tooth Paste 200ml,12.30,00015
+16,Medicine Ibuprom 200mg,5.80,00016
