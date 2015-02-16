@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 import pl.com.impaq.main.controller.managers.ProductsManager;
+import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
-import pl.com.impaq.main.model.enums.MessagesEnum;
 import pl.com.impaq.main.model.util.PropertyReader;
 
 /**

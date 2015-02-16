@@ -1,6 +1,6 @@
 package pl.com.impaq.main.view.devices;
 
-import pl.com.impaq.main.model.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceType;
 
 public abstract class Device {
 	protected String name;

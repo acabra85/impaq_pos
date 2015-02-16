@@ -8,9 +8,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 import pl.com.impaq.main.controller.managers.DeviceManager;
-import pl.com.impaq.main.model.enums.DeviceCategory;
-import pl.com.impaq.main.model.enums.DeviceType;
-import pl.com.impaq.main.model.enums.MessagesEnum;
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.util.PropertyReader;
 
 /**

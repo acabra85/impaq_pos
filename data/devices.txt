@@ -2,4 +2,3 @@
 001,LCD Display,Display lcd screen,DISPLAY,OUTPUT
 002,Printer,Receipt printer,PRINTER,OUTPUT
 003,my scanner,bar code laser scanner,SCANNER,INPUT
-003,customer Display,front display customer,DISPLAY,OUTPUT

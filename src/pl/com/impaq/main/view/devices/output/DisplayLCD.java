@@ -3,7 +3,7 @@
  */
 package pl.com.impaq.main.view.devices.output;
 
-import pl.com.impaq.main.model.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceType;
 import pl.com.impaq.main.view.devices.Device;
 
 /**

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
 
-import pl.com.impaq.main.model.enums.MessagesEnum;
+import pl.com.impaq.main.enums.MessagesEnum;
 
 public class PropertyReader {
 

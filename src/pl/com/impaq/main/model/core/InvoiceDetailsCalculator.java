@@ -2,7 +2,7 @@ package pl.com.impaq.main.model.core;
 
 import java.util.ArrayList;
 
-import pl.com.impaq.main.model.enums.MessagesEnum;
+import pl.com.impaq.main.enums.MessagesEnum;
 
 /**
  * @author Agustin Cabra

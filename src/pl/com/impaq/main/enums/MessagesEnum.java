@@ -1,4 +1,4 @@
-package pl.com.impaq.main.model.enums;
+package pl.com.impaq.main.enums;
 
 /**
  * @author Agustin

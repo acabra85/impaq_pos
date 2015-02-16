@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.com.impaq.main.model.enums;
+package pl.com.impaq.main.enums;
 
 /**
  * Enums declaring the device kinds input or output

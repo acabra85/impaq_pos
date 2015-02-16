@@ -1,16 +1,16 @@
 package pl.com.impaq.main.controller;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import pl.com.impaq.main.controller.managers.DeviceManager;
 import pl.com.impaq.main.controller.managers.ProductsManager;
+import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
 import pl.com.impaq.main.model.core.Product;
-import pl.com.impaq.main.model.enums.DeviceType;
-import pl.com.impaq.main.model.enums.MessagesEnum;
 import pl.com.impaq.main.model.stubs.DevicesStub;
 import pl.com.impaq.main.model.stubs.ProductStub;
+import pl.com.impaq.main.view.devices.View;
 import pl.com.impaq.main.view.devices.input.BarCodeScanner;
 import pl.com.impaq.main.view.devices.output.DisplayLCD;
 import pl.com.impaq.main.view.devices.output.Printer;
@@ -25,6 +25,7 @@ public class PointOfSale {
 	private DeviceManager myDeviceManager;
 	InvoiceDetailsCalculator calculator;
 	private ArrayList<Product> listProducts;
+	private View myView;
 	
 	/**
 	 * 
@@ -36,11 +37,16 @@ public class PointOfSale {
 		listProducts = new ArrayList<Product>();
 		calculator = new InvoiceDetailsCalculator();
 		myProductManager = new ProductsManager(); 
+		myView = View.getInstance(this);
 		myDeviceManager = new DeviceManager(this);
 		new DevicesStub(myDeviceManager, CONFIG_FILE_NAME); 
 		new ProductStub(myProductManager, CONFIG_FILE_NAME, calculator);
 	}
-	
+
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		PointOfSale myPOS = new PointOfSale();
 		myPOS.start();
@@ -50,41 +56,7 @@ public class PointOfSale {
 	 * Starts the POS, checking the basic output and input devices are available if so, starts the capture input loop.
 	 */
 	public void start() {
-		System.out.println(MessagesEnum.PRINTING_LCD + ""); //update user on printing output device
-		if(isDeviceUnplugged(DeviceType.DISPLAY)) {
-			System.out.println(MessagesEnum.NO_DISPLAY_FOUND.toString());
-		} else {
-			display.print(MessagesEnum.WAITING_MESSAGE + "" + MessagesEnum.WAIT_BARCODE_INPUT);
-			if(isDeviceUnplugged(DeviceType.SCANNER)) {
-				System.out.println(MessagesEnum.NO_SCANNER_FOUND.toString());
-			} else {
-				captureBarcodeLoop(System.in);
-			}
-		}
-	}
-
-	/** Waits for the user to scans product bar-codes through the scanner,
-	 * when receives the input 'exit', the POS will send the order list to print the results 
-	 * the LCD Screen
-	 * @param in type of input to capture information
-	 */
-	private void captureBarcodeLoop(InputStream in) {
-		String barCode = scanner.capture(in);
-		while(!barCode.equals(MessagesEnum.PRINT_RECEIPT+"")) {
-			if(barCode.trim().length() == 0) {
-				display.print(MessagesEnum.BARCODE_EMPTY + "" + MessagesEnum.WAIT_BARCODE_INPUT);
-			} else {
-				if(myProductManager.isBarCodeValid(barCode)){
-					listProducts.add(myProductManager.getProduct(barCode));
-					display.print(MessagesEnum.DISTANCE_INVOICE_INFO + "" +
-							listProducts.get(listProducts.size()-1 ) + MessagesEnum.WAIT_BARCODE_INPUT + "");
-				} else {
-					display.print(MessagesEnum.BARCODE_NOT_FOUND + "" + MessagesEnum.WAIT_BARCODE_INPUT );
-				}
-			}
-			barCode = scanner.capture(in);
-		}
-		printResults(listProducts);
+		myView.start();
 	}
 
 	/**
@@ -93,20 +65,30 @@ public class PointOfSale {
 	 * 
 	 * @param listProducts list of products of the order
 	 */
-	private void printResults(ArrayList<Product> listProducts) {
+	public String getResults() {
+		StringBuffer result = new StringBuffer(); 
 		if(calculator.getTax() > 0.0) {
-			display.print("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Tax %:\t" + calculator.getTax());
+			result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Tax %:\t" + calculator.getTax());
 			double subtotal = calculator.calculateOrderSubTotal(listProducts);
-			display.print("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Subtotal:\t" + subtotal);
-			display.println("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Tax Collected:\t" + calculator.calculateTaxCollected(subtotal));
+			result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Subtotal:\t" + subtotal);
+			result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + 
+					"Tax Collected:\t" + calculator.calculateTaxCollected(subtotal) + "\n");
 		}
-		display.println(MessagesEnum.DISTANCE_INVOICE_INFO + "Total: \t"  + calculator.calculateOrderTotal(listProducts));
+		result.append(MessagesEnum.DISTANCE_INVOICE_INFO + "Total: \t"  + calculator.calculateOrderTotal(listProducts)+ "\n");
 		if(isDeviceUnplugged(DeviceType.PRINTER)) {
 			System.out.println(MessagesEnum.NO_PRINTER_FOUND.toString());
 		} else {
-			display.println(MessagesEnum.PRINTING_PRINTER + "");//update user on printing output device
-			printer.print(calculator.getInvoiceDetails(listProducts));
+			result.append(MessagesEnum.PRINTING_PRINTER + "\n");//update user on printing output device
 		}
+		return result.toString();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getInvoiceResults() {		
+		return calculator.getInvoiceDetails(listProducts);
 	}
 
 	/**
@@ -156,16 +138,143 @@ public class PointOfSale {
 		return unplugged;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getPrintInvoiceCode() {
 		return MessagesEnum.PRINT_RECEIPT + "";
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public BarCodeScanner getInputDevice() {
 		return scanner;
 	}
 
-	public String receiveBarcodeScanned(String barCode) {
-		
-		return "";
+	/**
+	 * 
+	 * @param barCode
+	 * @return
+	 */
+	public boolean isPrintingInvoice(String barCode) {		
+		return (MessagesEnum.PRINT_RECEIPT+"").equals(barCode);
+	}
+
+	/**
+	 * 
+	 * @param barCode
+	 * @return
+	 */
+	public String receiveBarcode(String barCode) {
+		if(barCode.trim().length() == 0) {
+			return MessagesEnum.BARCODE_EMPTY + "" + MessagesEnum.WAIT_BARCODE_INPUT;
+		} else {
+			if(myProductManager.isBarCodeValid(barCode)){
+				listProducts.add(myProductManager.getProduct(barCode));
+				return MessagesEnum.DISTANCE_INVOICE_INFO + "" +
+						listProducts.get(listProducts.size()-1 ) + "" + MessagesEnum.WAIT_BARCODE_INPUT;
+			} else {
+				return MessagesEnum.BARCODE_NOT_FOUND + "" + MessagesEnum.WAIT_BARCODE_INPUT;
+			}
+		}		
+	}
+
+	/**
+	 * Returns the message to display in case of missing printer
+	 * @return message to display
+	 */
+	public String getErrorNoPrinter() {
+		return MessagesEnum.NO_PRINTER_FOUND + "";
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getErrorNoDisplay() {
+		return MessagesEnum.NO_DISPLAY_FOUND + "";
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getWaitingInputMessage() {
+		return MessagesEnum.WAITING_MESSAGE + "" + MessagesEnum.WAIT_BARCODE_INPUT;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isPrinterUnplugged() {		
+		return isDeviceUnplugged(DeviceType.PRINTER);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isDisplayUnplugged() {		
+		return isDeviceUnplugged(DeviceType.DISPLAY);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isScannerUnplugged() {		
+		return isDeviceUnplugged(DeviceType.SCANNER);
+	}
+
+	/**
+	 * 
+	 * @param device
+	 */
+	public void addPrinterToView(Printer device) {
+		myView.addPrinter(device);
+	}
+
+	/**
+	 * 
+	 * @param device
+	 */
+	public void addScannerToView(BarCodeScanner device) {
+		myView.addScanner(device);
+	}
+
+	/**
+	 * 
+	 * @param device
+	 */
+	public void addDisplayToView(DisplayLCD device) {
+		myView.addDisplay(device);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getErrorNoScanner() {
+		return MessagesEnum.NO_SCANNER_FOUND + "";
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getMessagePrintingOnDisplay() {
+		return MessagesEnum.PRINTING_LCD + "";
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getMessagePrintingOnPrinter() {		
+		return MessagesEnum.PRINTING_PRINTER+"";
 	}
 }

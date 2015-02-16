@@ -3,8 +3,8 @@ package pl.com.impaq.main.controller.managers;
 import java.util.HashMap;
 
 import pl.com.impaq.main.controller.PointOfSale;
-import pl.com.impaq.main.model.enums.DeviceCategory;
-import pl.com.impaq.main.model.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.DeviceType;
 import pl.com.impaq.main.view.devices.Device;
 import pl.com.impaq.main.view.devices.input.BarCodeScanner;
 import pl.com.impaq.main.view.devices.output.DisplayLCD;
@@ -109,8 +109,10 @@ public class DeviceManager {
 	public void addInputDevice(Device device) {
 		switch (device.getType()) {
 			case SCANNER:
-				if (thePOS.isDeviceUnplugged(DeviceType.SCANNER)) 
+				if (thePOS.isDeviceUnplugged(DeviceType.SCANNER)) {
 					thePOS.plugBarcodeScanner((BarCodeScanner) device);
+					thePOS.addScannerToView(scanner);
+				}
 				break;
 			default:
 				break;
@@ -127,11 +129,13 @@ public class DeviceManager {
 			case PRINTER:
 				if(thePOS.isDeviceUnplugged(DeviceType.PRINTER)) {
 					thePOS.plugPrinter((Printer) device);
+					thePOS.addPrinterToView(printer);
 				}
 				break;
 			case DISPLAY:
 				if(thePOS.isDeviceUnplugged(DeviceType.DISPLAY))  {
 					thePOS.plugDisplayLCD((DisplayLCD) device);
+					thePOS.addDisplayToView(display);
 				}
 				break;
 			default:
