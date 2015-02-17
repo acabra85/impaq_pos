@@ -47,4 +47,8 @@ public enum DeviceType {
 			return UNKNOWN_DEVICE_TYPE;
 		}
 	}
+	
+	private DeviceType(){
+		
+	}
 }

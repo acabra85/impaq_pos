@@ -73,11 +73,6 @@ public class PointOfSaleTest {
 	}
 
 	@Test
-	public void testGetInvoiceResults() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testPlugPrinter() {
 		pos = PointOfSale.getInstance();
 		Printer printer = new Printer("0001", "printer", "desc", DeviceType.getType("PRINTER"));
@@ -218,6 +213,11 @@ public class PointOfSaleTest {
 
 	@Test
 	public void testAddDisplayToView() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetInvoiceResults() {
 		fail("Not yet implemented");
 	}
 
