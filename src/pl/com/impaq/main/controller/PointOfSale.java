@@ -36,8 +36,8 @@ public class PointOfSale {
 		scanner = null;
 		display = null;
 		listProducts = new ArrayList<Product>();
-		calculator = InvoiceDetailsCalculator.getInstance();
-		myProductManager = ProductsManager.getInstance(); 
+		calculator = new InvoiceDetailsCalculator();
+		myProductManager = new ProductsManager(); 
 	}
 
 	/**
@@ -46,8 +46,30 @@ public class PointOfSale {
 	private void setUp() {
 		myView = View.getInstance(this);
 		myDeviceManager = DeviceManager.getInstance(this);
-		new DevicesStub(myDeviceManager, CONFIG_FILE_NAME); 
+		setUpDevicesStub();
+		setUpProductsStub();
+	}
+	
+	/**
+	 * load devices onto the manager reading from a stub text file
+	 */
+	private void setUpDevicesStub() {
+		new DevicesStub(myDeviceManager, CONFIG_FILE_NAME); 		
+	}
+	
+	/**
+	 * load products to the product manager from a stub text file
+	 */
+	private void setUpProductsStub() {
 		new ProductStub(myProductManager, CONFIG_FILE_NAME, calculator);
+	}
+	
+	/**
+	 * 
+	 * @return return the calculator
+	 */
+	public InvoiceDetailsCalculator getInvoiceDetailsCalculator() {
+		return calculator;
 	}
 
 	/**
@@ -142,6 +164,7 @@ public class PointOfSale {
 				unplugged = (display == null);
 				break;
 			default:
+				unplugged = true;
 				break;
 		}
 		return unplugged;
@@ -250,8 +273,24 @@ public class PointOfSale {
 		return instance;
 	}
 
+	/**
+	 * Erase the instance, clearing all the objects referencing the current POS instance
+	 */
 	public static void dispose() {
 		View.dispose();	
+		DeviceManager.dispose();
 		instance = null;
+	}
+
+	/**
+	 * Add a list of products to the system manager
+	 * @param listP
+	 * @return the size of successful inserted products from the list
+	 */
+	public int addProductsList(ArrayList<Product> listProducts) {
+		if(listProducts.size()>0) {
+			return myProductManager.addProducts(listProducts);
+		}
+		return 0;
 	}
 }

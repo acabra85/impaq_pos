@@ -1,18 +1,18 @@
 package pl.com.impaq.main.controller.managers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import pl.com.impaq.main.model.core.Product;
 
 public class ProductsManager {
-
-	private static ProductsManager instance;
+	
 	private HashMap<String, Product> products = new HashMap<String, Product>();
 	
 	/**
 	 * Creator is private in order to control the singleton pattern
 	 */
-	private ProductsManager() {		
+	public ProductsManager() {		
 	}
 	
 	/**
@@ -48,35 +48,45 @@ public class ProductsManager {
 	}
 
 	/**
-	 * Creates a new product and stores it
+	 * Creates a new product and attempts stores it
 	 * 
 	 * @param cod the code of the product
 	 * @param name the name of the product
 	 * @param price the price of the product
-	 * @param barCode the barcode of the product
+	 * @param barCode the bar-code of the product
+	 * @return boolean true if the product described by parameters was added or false otherwise
 	 */
-	public void addProduct(String cod, String name, double price, String barCode) {
+	public boolean addProduct(String cod, String name, double price, String barCode) {
 		Product product = new Product(cod, name, price, barCode);
-		products.put(product.getBarCode(), product);		
+		return addProduct(product);
+	}
+	
+	/**
+	 * 
+	 * @param product
+	 * @return
+	 */
+	public boolean addProduct(Product product) {
+		if(products.containsKey(product.getBarCode())){
+			return false;	
+		} else {
+			products.put(product.getBarCode(), product);
+			return true;
+		}
 	}
 
 	/**
-	 * Singleton pattern to obtain the instance
-	 * @return
+	 * Attempts to add the products on the listProduct to the system
+	 * @param listProducts the products to be added
+	 * @return the
 	 */
-	public static ProductsManager getInstance() {
-		if(instance == null) {
-			instance = new ProductsManager();
+	public int addProducts(ArrayList<Product> listProducts) {
+		int cantAddedProducts = 0;
+		for(Product product: listProducts){
+			if(addProduct(product))
+				cantAddedProducts++;
 		}
-		return instance;
-	}
-	
-	
-	/**
-	 * Dispose the current instance
-	 */
-	public static void disposeInstance(){
-		instance = null;
+		return cantAddedProducts;
 	}
 
 }

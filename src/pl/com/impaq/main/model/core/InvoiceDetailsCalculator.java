@@ -10,14 +10,13 @@ import pl.com.impaq.main.enums.MessagesEnum;
  */
 public class InvoiceDetailsCalculator {
 	
-	private static InvoiceDetailsCalculator instance;
 	private double tax;
 
 
 	/**
 	 * 
 	 */
-	private InvoiceDetailsCalculator() {
+	public InvoiceDetailsCalculator() {
 		this.tax =0.0;
 	}
 
@@ -112,13 +111,5 @@ public class InvoiceDetailsCalculator {
 	 */
 	public double getTax() {
 		return tax;
-	}
-
-
-	public static InvoiceDetailsCalculator getInstance() {
-		if(instance == null) {
-			instance = new InvoiceDetailsCalculator();
-		}
-		return instance;
 	}
 }

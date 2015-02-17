@@ -30,8 +30,8 @@ public class InvoiceDetailsCalculatorTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		//ByteArrayInputStream in = new ByteArrayInputStream("00001".getBytes());
-		calculator = InvoiceDetailsCalculator.getInstance();
-		ProductsManager pm = ProductsManager.getInstance();
+		calculator = new InvoiceDetailsCalculator();
+		ProductsManager pm = new ProductsManager();
 		new ProductStub(pm, CONFIG_FILE, calculator);
 		PropertyReader pr = PropertyReader.getInstance();
 		listProducts = new ArrayList<Product>();

@@ -211,11 +211,20 @@ public class DeviceManager {
 		return outputDevices.size();
 	}
 
+	/**
+	 * Singleton access method
+	 * @param pointOfSale
+	 * @return
+	 */
 	public static DeviceManager getInstance(PointOfSale pointOfSale) {
 		if(instance == null){
 			instance = new DeviceManager(pointOfSale);
 		}
 		return instance;
+	}
+	
+	public static void dispose(){
+		instance = null;
 	}
 
 }

@@ -27,15 +27,24 @@ public enum DeviceType {
 			return "DISPLAY";
 		}
 		
+	},
+	UNKNOWN_DEVICE_TYPE {
+		@Override
+		public String toString() {
+			return "UNKNOWN_DEVICE_TYPE";
+		}
+		
 	};
 	
 	public static DeviceType getType(String type) {		
-		if(type.equals(PRINTER.toString())) {
+		if(type.equals(PRINTER +"")) {
 			return PRINTER;
-		} else if(type.equals(SCANNER.toString())) {
+		} else if(type.equals(SCANNER+ "")) {
 			return SCANNER;
-		} else {
+		} else  if(type.equals(DISPLAY+ "")) {
 			return DISPLAY;
+		} else {
+			return UNKNOWN_DEVICE_TYPE;
 		}
 	}
 }
