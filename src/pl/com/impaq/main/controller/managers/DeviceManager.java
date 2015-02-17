@@ -24,13 +24,14 @@ public class DeviceManager {
 	private Printer printer;
 	private BarCodeScanner scanner;
 	private DisplayLCD display;
+	public static DeviceManager instance;
 	
 	
 	/**
 	 * 
 	 * @param pos
 	 */
-	public DeviceManager(PointOfSale pos) {
+	private DeviceManager(PointOfSale pos) {
 		this.thePOS = pos;
 	}
 	
@@ -208,6 +209,13 @@ public class DeviceManager {
 	 */
 	public int getSizeOutputDevices() {		
 		return outputDevices.size();
+	}
+
+	public static DeviceManager getInstance(PointOfSale pointOfSale) {
+		if(instance == null){
+			instance = new DeviceManager(pointOfSale);
+		}
+		return instance;
 	}
 
 }

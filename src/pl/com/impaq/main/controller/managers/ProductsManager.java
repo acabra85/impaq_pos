@@ -6,7 +6,14 @@ import pl.com.impaq.main.model.core.Product;
 
 public class ProductsManager {
 
+	private static ProductsManager instance;
 	private HashMap<String, Product> products = new HashMap<String, Product>();
+	
+	/**
+	 * Creator is private in order to control the singleton pattern
+	 */
+	private ProductsManager() {		
+	}
 	
 	/**
 	 * Returns the number of items loaded in the system
@@ -53,19 +60,23 @@ public class ProductsManager {
 		products.put(product.getBarCode(), product);		
 	}
 
+	/**
+	 * Singleton pattern to obtain the instance
+	 * @return
+	 */
+	public static ProductsManager getInstance() {
+		if(instance == null) {
+			instance = new ProductsManager();
+		}
+		return instance;
+	}
+	
+	
+	/**
+	 * Dispose the current instance
+	 */
+	public static void disposeInstance(){
+		instance = null;
+	}
+
 }
-
-//total = (Math.round(total * 100.0) / 100.0);		
-//if(tax != 0.0) {
-	//displayLCD.print("\n\t Tax: \t\t\t" + tax  + "%");
-	//displayLCD.print("\n\t SubTotal: \t\t\t" + total);
-//}
-//String totalStr = "Total : \t\t\t" + total + "\n";
-//displayLCD.print(totalStr);
-//printInvoiceInPrinter(sb, total, printer);
-
-
-//tmpProduct = myProductManager.getProduct(barCode);
-//total += tmpProduct.getPrice();
-//item = tmpProduct.toString();
-//sb.append(item + "\n");

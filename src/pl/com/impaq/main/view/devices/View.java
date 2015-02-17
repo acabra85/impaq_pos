@@ -3,6 +3,7 @@ package pl.com.impaq.main.view.devices;
 import java.io.InputStream;
 
 import pl.com.impaq.main.controller.PointOfSale;
+import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.view.devices.input.BarCodeScanner;
 import pl.com.impaq.main.view.devices.output.DisplayLCD;
 import pl.com.impaq.main.view.devices.output.Printer;
@@ -45,14 +46,23 @@ public class View {
 		return instance;
 	}
 	
+	/**
+	 * Singleton pattern to dispose the instance
+	 * 
+	 * @return the instance of the View
+	 */
+	public static void dispose(){
+		instance = null;
+	}
+	
 	public void start(){
-		System.out.println(myPOS.getMessagePrintingOnDisplay()); //update user on printing output device
+		System.out.println(MessagesEnum.PRINTING_LCD+""); //update user on printing output device
 		if(myPOS.isDisplayUnplugged()) {
-			System.out.println(myPOS.getErrorNoDisplay());
+			System.out.println(MessagesEnum.NO_DISPLAY_FOUND + "");
 		} else {
 			display.print(myPOS.getWaitingInputMessage());
 			if(myPOS.isScannerUnplugged()) {
-				System.out.println(myPOS.getErrorNoScanner());
+				System.out.println(MessagesEnum.NO_SCANNER_FOUND + "");
 			} else {
 				captureBarcodeLoop(System.in);
 			}
@@ -74,7 +84,7 @@ public class View {
 		}
 		display.print(myPOS.getResults());
 		if(myPOS.isPrinterUnplugged()) {
-			display.println(myPOS.getErrorNoPrinter());
+			display.println(MessagesEnum.NO_PRINTER_FOUND+"");
 		} else {
 			printer.print(myPOS.getInvoiceResults());			
 		}

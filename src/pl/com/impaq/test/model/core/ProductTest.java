@@ -25,8 +25,8 @@ public class ProductTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 
-		ProductsManager pm = new ProductsManager();
-		InvoiceDetailsCalculator calculator = new InvoiceDetailsCalculator();
+		ProductsManager pm = ProductsManager.getInstance();
+		InvoiceDetailsCalculator calculator = InvoiceDetailsCalculator.getInstance();
 		new ProductStub(pm, CONFIG_FILE, calculator);
 		PropertyReader pr = PropertyReader.getInstance();
 		listProducts = new ArrayList<Product>();

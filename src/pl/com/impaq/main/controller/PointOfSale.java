@@ -25,20 +25,27 @@ public class PointOfSale {
 	private DeviceManager myDeviceManager;
 	InvoiceDetailsCalculator calculator;
 	private ArrayList<Product> listProducts;
-	private View myView;
+	private static View myView;
+	private static PointOfSale instance;
 	
 	/**
 	 * 
 	 */
-	public PointOfSale() {
+	private PointOfSale() {
 		printer = null;
 		scanner = null;
 		display = null;
 		listProducts = new ArrayList<Product>();
-		calculator = new InvoiceDetailsCalculator();
-		myProductManager = new ProductsManager(); 
+		calculator = InvoiceDetailsCalculator.getInstance();
+		myProductManager = ProductsManager.getInstance(); 
+	}
+
+	/**
+	 * Creates the view and the devices manager
+	 */
+	private void setUp() {
 		myView = View.getInstance(this);
-		myDeviceManager = new DeviceManager(this);
+		myDeviceManager = DeviceManager.getInstance(this);
 		new DevicesStub(myDeviceManager, CONFIG_FILE_NAME); 
 		new ProductStub(myProductManager, CONFIG_FILE_NAME, calculator);
 	}
@@ -48,14 +55,16 @@ public class PointOfSale {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PointOfSale myPOS = new PointOfSale();
-		myPOS.start();
+		PointOfSale myPOS = PointOfSale.getInstance();
+		myPOS.setUp();
+		myPOS.startView();
 	}
 
 	/**
-	 * Starts the POS, checking the basic output and input devices are available if so, starts the capture input loop.
+	 * Starts the View of POS, checking the basic output and input devices are available if so, 
+	 * starts the capture input loop.
 	 */
-	public void start() {
+	public void startView() {
 		myView.start();
 	}
 
@@ -142,14 +151,6 @@ public class PointOfSale {
 	 * 
 	 * @return
 	 */
-	public String getPrintInvoiceCode() {
-		return MessagesEnum.PRINT_RECEIPT + "";
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
 	public BarCodeScanner getInputDevice() {
 		return scanner;
 	}
@@ -180,22 +181,6 @@ public class PointOfSale {
 				return MessagesEnum.BARCODE_NOT_FOUND + "" + MessagesEnum.WAIT_BARCODE_INPUT;
 			}
 		}		
-	}
-
-	/**
-	 * Returns the message to display in case of missing printer
-	 * @return message to display
-	 */
-	public String getErrorNoPrinter() {
-		return MessagesEnum.NO_PRINTER_FOUND + "";
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getErrorNoDisplay() {
-		return MessagesEnum.NO_DISPLAY_FOUND + "";
 	}
 
 	/**
@@ -253,28 +238,20 @@ public class PointOfSale {
 	public void addDisplayToView(DisplayLCD device) {
 		myView.addDisplay(device);
 	}
-
+	
 	/**
-	 * 
-	 * @return
+	 * Singleton implementation for PointOfSale class
+	 * @return instance the instance of the POS in the system
 	 */
-	public String getErrorNoScanner() {
-		return MessagesEnum.NO_SCANNER_FOUND + "";
+	public static PointOfSale getInstance(){
+		if(instance == null){
+			instance = new PointOfSale();
+		}
+		return instance;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getMessagePrintingOnDisplay() {
-		return MessagesEnum.PRINTING_LCD + "";
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getMessagePrintingOnPrinter() {		
-		return MessagesEnum.PRINTING_PRINTER+"";
+	public static void dispose() {
+		View.dispose();	
+		instance = null;
 	}
 }

@@ -145,5 +145,18 @@ public enum MessagesEnum {
     	@Override public String toString() {
     		return "             ";
     	}
+    }, TAX{
+    	@Override public String toString() {
+    		return "Tax %:";
+    	}
+    }, TAX_COLLECTED {
+    	@Override public String toString() {
+    		return "Tax Collected:";
+    	}    	
+    }, SUBTOTAL{
+    	@Override public String toString() {
+    		return "Subtotal:";
+    	}    	
     };
+    
 }
