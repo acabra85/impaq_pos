@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import pl.com.impaq.main.view.devices.View;
+import pl.com.impaq.main.view.View;
 
 /**
  * @author Agustin

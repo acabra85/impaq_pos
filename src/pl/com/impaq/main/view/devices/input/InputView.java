@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.enums.MessagesEnum;
-import pl.com.impaq.main.view.devices.View;
+import pl.com.impaq.main.view.View;
 
 /**
  * @author Agustin Cabra

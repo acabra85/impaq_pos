@@ -14,7 +14,7 @@ import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
 import pl.com.impaq.main.model.core.Product;
 import pl.com.impaq.main.model.stubs.DevicesStub;
 import pl.com.impaq.main.model.stubs.ProductStub;
-import pl.com.impaq.main.view.devices.View;
+import pl.com.impaq.main.view.View;
 
 public class PointOfSale {
 	

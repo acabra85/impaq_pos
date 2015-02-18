@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import pl.com.impaq.main.controller.PointOfSale;
 import pl.com.impaq.main.model.core.Product;
-import pl.com.impaq.main.view.devices.View;
+import pl.com.impaq.main.view.View;
 import pl.com.impaq.main.view.devices.util.ViewInformationConstants;
 
 /**
@@ -31,7 +31,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#start()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#start()}.
 	 */
 	@Test
 	public void testStart() {
@@ -42,7 +42,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#addDevice(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}.
+	 * Test method for {@link pl.com.impaq.main.view.View#addDevice(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testAddDevice() {
@@ -63,7 +63,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#sendBarCode()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#sendBarCode()}.
 	 */
 	@Test
 	public void testSendBarCode() {
@@ -85,7 +85,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#sendBarCode()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#sendBarCode()}.
 	 */
 	@Test
 	public void testSendBarCodeNoPrinter() {
@@ -107,7 +107,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#sendBarCode()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#sendBarCode()}.
 	 */
 	@Test
 	public void testSendBarCodeNoScanner() {
@@ -128,7 +128,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#sendBarCode()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#sendBarCode()}.
 	 */
 	@Test
 	public void testSendBarCodeNoDisplay() {
@@ -150,7 +150,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#start()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#start()}.
 	 */
 	@Test
 	public void testStartAllDevices() {
@@ -165,7 +165,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#start()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#start()}.
 	 */
 	@Test
 	public void testStartNoDisplay() {
@@ -179,7 +179,7 @@ public class ViewTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.view.devices.View#start()}.
+	 * Test method for {@link pl.com.impaq.main.view.View#start()}.
 	 */
 	@Test
 	public void testStartNoScanner() {

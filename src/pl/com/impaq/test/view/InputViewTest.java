@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import pl.com.impaq.main.controller.PointOfSale;
 import pl.com.impaq.main.enums.DeviceCategory;
-import pl.com.impaq.main.view.devices.View;
+import pl.com.impaq.main.view.View;
 import pl.com.impaq.main.view.devices.input.InputView;
 
 /**
