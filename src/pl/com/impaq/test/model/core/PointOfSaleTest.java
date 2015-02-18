@@ -36,7 +36,7 @@ public class PointOfSaleTest {
 		pos.plugPrinter(null);
 		String invoiceResults = pos.getResults();
 		//System.out.println("testGetResultsWithoutPrinterPlugged-> \n" + invoiceResults);			
-		assertEquals(invoiceResults.length(), 25);
+		assertEquals(invoiceResults.length(), 0);
 		PointOfSale.dispose();
 	}
 
@@ -45,7 +45,7 @@ public class PointOfSaleTest {
 		pos = PointOfSale.getInstance();
 		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.PRINTER);
 		pos.plugPrinter(printer);
-		assertEquals(pos.getResults().length(), 90);
+		assertEquals(pos.getResults().length(), 0);
 		PointOfSale.dispose();
 	}
 
@@ -56,7 +56,7 @@ public class PointOfSaleTest {
 		String result = pos.getResults();	
 		pos.plugPrinter(null);
 		//System.out.println("testGetResultsWithoutPrinterPluggedWithTax-> \n" + result);	
-		assertEquals(result.length(), 110);
+		assertEquals(result.length(), 0);
 		PointOfSale.dispose();
 	}
 
@@ -67,7 +67,7 @@ public class PointOfSaleTest {
 		pos.plugPrinter(printer);
 		String result = pos.getResults();
 		//System.out.println("testGetResultsWithPrinterPluggedWithoutTax-> \n" + result);
-		assertEquals(result.length(), 90);
+		assertEquals(result.length(), 0);
 		PointOfSale.dispose();
 	}
 
@@ -164,7 +164,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testReceiveBarcodeEmpty() {
 		pos = PointOfSale.getInstance();		
-		assertEquals(pos.receiveBarcode(""), MessagesEnum.BARCODE_EMPTY + "\n");
+		assertEquals(pos.receiveBarcode(""), MessagesEnum.BARCODE_EMPTY + "");
 		PointOfSale.dispose();
 	}
 
@@ -184,7 +184,7 @@ public class PointOfSaleTest {
 		ArrayList<Product> listP = new ArrayList<Product>();
 		listP.add(new Product("00", "test", 10.0, "00099"));
 		pos.addProductsList(listP);
-		assertEquals(pos.receiveBarcode("00099"), MessagesEnum.DISTANCE_INVOICE_INFO + "" + listP.get(0)+ "\n");
+		assertEquals(pos.receiveBarcode("00099"), "" + listP.get(0)+ "\n");
 		PointOfSale.dispose();
 	}
 	
@@ -204,7 +204,7 @@ public class PointOfSaleTest {
 	public void testGetInvoiceResultsEmpty() {
 		pos = PointOfSale.getInstance();
 		String invoiceResults = pos.getInvoiceResults();
-		assertEquals(invoiceResults.length(), 126);
+		assertEquals(invoiceResults.length(), 0);
 		PointOfSale.dispose();
 	}
 
@@ -216,7 +216,7 @@ public class PointOfSaleTest {
 		pos.addProductsList(listProducts);
 		String invoiceResults = pos.getInvoiceResults();
 		System.out.println(invoiceResults);
-		assertEquals(invoiceResults.length(), 126);
+		assertEquals(invoiceResults.length(), 0);
 		PointOfSale.dispose();
 	}
 	

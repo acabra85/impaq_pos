@@ -74,13 +74,13 @@ public class InvoiceDetailsCalculatorTest {
 	@Test
 	public void testCalculateInvoiceDetailsWithTax() {
 		calculator.setTax(10.0);
-		assertEquals(calculator.getInvoiceDetails(listProducts).length(), 812);
+		assertEquals(calculator.getInvoiceDetails(listProducts).length(), 858);
 	}
 
 	@Test
 	public void testCalculateInvoiceDetailsWithoutTax() {
 		calculator.setTax(0.0);
-		assertEquals(calculator.getInvoiceDetails(listProducts).length(), 725);
+		assertEquals(calculator.getInvoiceDetails(listProducts).length(), 771);
 	}
 
 	@Test
@@ -136,13 +136,13 @@ public class InvoiceDetailsCalculatorTest {
 	@Test
 	public void testCalculateInvoiceDetailsWithTax2() {
 		calculator.setTax(10.0);
-		assertEquals(calculator.getInvoiceDetails(listProducts2).length(), 552);
+		assertEquals(calculator.getInvoiceDetails(listProducts2).length(), 598);
 	}
 
 	@Test
 	public void testCalculateInvoiceDetailsWithoutTax2() {
 		calculator.setTax(0.0);
-		assertEquals(calculator.getInvoiceDetails(listProducts2).length(), 467);
+		assertEquals(calculator.getInvoiceDetails(listProducts2).length(), 513);
 	}
 
 }
