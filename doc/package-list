@@ -1,0 +1,17 @@
+pl.com.impaq.main.controller
+pl.com.impaq.main.controller.devices
+pl.com.impaq.main.controller.devices.input
+pl.com.impaq.main.controller.devices.output
+pl.com.impaq.main.controller.managers
+pl.com.impaq.main.enums
+pl.com.impaq.main.model.core
+pl.com.impaq.main.model.stubs
+pl.com.impaq.main.model.util
+pl.com.impaq.main.view
+pl.com.impaq.main.view.devices.input
+pl.com.impaq.main.view.devices.output
+pl.com.impaq.main.view.devices.util
+pl.com.impaq.test
+pl.com.impaq.test.controller
+pl.com.impaq.test.model
+pl.com.impaq.test.view

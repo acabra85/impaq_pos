@@ -55,8 +55,8 @@ public class PointOfSale {
 	 * Creates the view and the devices manager
 	 */
 	private void setUp() {
-		myView = View.getInstance(this);
-		myDeviceManager = new DeviceManager(this);
+		setView(View.getInstance(this));
+		setDeviceManager(new DeviceManager(this));
 		setUpDevicesStub();
 		setUpProductsStub();
 	}
@@ -95,7 +95,9 @@ public class PointOfSale {
 	private void mapDevicesToView() {
 		if(myDeviceManager.getSizeOutputDevices()>0){
 			if(!isDisplayUnplugged())
-				myView.addDevice(display.getCode(), display.getName(), 
+				myView.addDevice(
+						display.getCode(), 
+						display.getName(), 
 						display.getCategory()+"",DeviceType.OUTPUT+"");	
 			if(!isPrinterUnplugged()){
 				myView.addDevice(printer.getCode(), printer.getName(), 
@@ -114,8 +116,6 @@ public class PointOfSale {
 	/**
 	 * Based on a list of products, prints out on the display the total of the order 
 	 * and on the printer the invoice
-	 * 
-	 * @param listProducts list of products of the order
 	 */
 	public String getResults() {
 		if(listProducts.size()>0) {
@@ -125,7 +125,7 @@ public class PointOfSale {
 				double subtotal = calculator.calculateOrderSubTotal(listProducts);
 				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Subtotal:\t" + subtotal);
 				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + 
-						"Tax Collected:\t" + calculator.calculateTaxCollected(subtotal) + "\n");
+						MessagesEnum.TAX_COLLECTED + "\t" + calculator.calculateTaxCollected(subtotal) + "\n");
 			}
 			double orderTotal = calculator.calculateOrderTotal(listProducts);
 			result.append(MessagesEnum.DISTANCE_INVOICE_INFO + "Total: \t"  + Math.round(orderTotal*100.0)/100.0+ "\n");
@@ -291,10 +291,15 @@ public class PointOfSale {
 	/**
 	 * 
 	 */
-	public void finishCurrentOrder() {
+	public boolean finishCurrentOrder() {
 		if(listProducts.size() > 0) {
 			storeOrder(listProducts);
+			System.out.println(MessagesEnum.STARTING_NEW_ORDER+"");
 			listProducts = new ArrayList<Product>();
+			return true;
+		} else {
+			System.out.println(MessagesEnum.ORDER_LIST_EMPTY+"");
+			return false;
 		}
 	}
 
@@ -307,5 +312,21 @@ public class PointOfSale {
 		if(listProducts2.size()>0) {
 			System.out.println("Storing in database the order");
 		}
+	}
+	
+	/**
+	 * Sets the device manager for the POS
+	 * @param deviceManager the device manager to be stablished
+	 */
+	public void setDeviceManager(DeviceManager deviceManager) {
+		myDeviceManager = deviceManager;
+	}
+
+	/**
+	 * 
+	 * @param view
+	 */
+	public void setView(View view) {
+		PointOfSale.myView = view;
 	}
 }

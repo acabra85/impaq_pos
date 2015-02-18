@@ -7,12 +7,13 @@ import pl.com.impaq.main.model.core.Product;
 
 public class ProductsManager {
 	
-	private HashMap<String, Product> products = new HashMap<String, Product>();
+	private HashMap<String, Product> products;
 	
 	/**
 	 * Creator is private in order to control the singleton pattern
 	 */
-	public ProductsManager() {		
+	public ProductsManager() {	
+		products = new HashMap<String, Product>();
 	}
 	
 	/**

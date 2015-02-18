@@ -4,11 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import pl.com.impaq.test.controller.PointOfSaleTest;
 import pl.com.impaq.test.model.DeviceCategoryTest;
 import pl.com.impaq.test.model.DeviceManagerTest;
 import pl.com.impaq.test.model.DevicesStubTest;
 import pl.com.impaq.test.model.InvoiceDetailsCalculatorTest;
-import pl.com.impaq.test.model.PointOfSaleTest;
 import pl.com.impaq.test.model.ProductStubTest;
 import pl.com.impaq.test.model.ProductTest;
 import pl.com.impaq.test.model.ProductsManagerTest;
