@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.com.impaq.main.view.devices.input;
+package pl.com.impaq.main.controller.devices.input;
 
 import java.io.InputStream;
 

@@ -1,4 +1,4 @@
-package pl.com.impaq.main.view.devices.output;
+package pl.com.impaq.main.controller.devices.output;
 
 /**
  * @author Agustin Cabra

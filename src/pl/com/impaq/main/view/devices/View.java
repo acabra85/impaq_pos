@@ -1,12 +1,14 @@
 package pl.com.impaq.main.view.devices;
 
-import java.io.InputStream;
+import java.util.HashMap;
 
 import pl.com.impaq.main.controller.PointOfSale;
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.DeviceType;
 import pl.com.impaq.main.enums.MessagesEnum;
-import pl.com.impaq.main.view.devices.input.BarCodeScanner;
-import pl.com.impaq.main.view.devices.output.DisplayLCD;
-import pl.com.impaq.main.view.devices.output.Printer;
+import pl.com.impaq.main.view.devices.input.InputView;
+import pl.com.impaq.main.view.devices.output.OutputView;
+import pl.com.impaq.main.view.devices.util.ViewMapper;
 
 /**
  * 
@@ -19,18 +21,18 @@ public class View {
 	 * The instance of only this class
 	 */
 	public static View instance;
-	
-	private BarCodeScanner scanner;
-	private Printer printer;
-	private DisplayLCD display;
 	private PointOfSale myPOS;
+	private HashMap<String, OutputView> myOutputComponents;
+
+	private HashMap<String, InputView> myInputComponents; 
 	
 	/**
 	 * The constructor will be private so the creation of this class is
 	 * restricted only through the getInstance method
 	 */
 	private View() {
-		
+		myInputComponents = new HashMap<String, InputView>();
+		myOutputComponents = new HashMap<String, OutputView>();
 	}
 	
 	/**
@@ -57,18 +59,38 @@ public class View {
 	
 	public void start(){
 		System.out.println(MessagesEnum.PRINTING_LCD+""); //update user on printing output device
-		if(myPOS.isDisplayUnplugged()) {
+		String keyDisplay = isDisplayUnplugged();
+		if(keyDisplay.length() == 0) {
 			System.out.println(MessagesEnum.NO_DISPLAY_FOUND + "");
 		} else {
-			display.print(myPOS.getWaitingInputMessage());
-			if(myPOS.isScannerUnplugged()) {
+			String keyInput = isScannerUnplugged();
+			if(keyInput.length() == 0) {
 				System.out.println(MessagesEnum.NO_SCANNER_FOUND + "");
-			} else {
-				captureBarcodeLoop(System.in);
 			}
 		}
 	}
 	
+
+
+	private String isScannerUnplugged() {
+		for (String key : myInputComponents.keySet()) {
+			if(myInputComponents.get(key).getCategory().equals(DeviceCategory.SCANNER)){				
+				return key;
+			}
+		}
+		return "";
+	}
+
+	private String isDisplayUnplugged() {
+		for (String key : myOutputComponents.keySet()) {
+			System.out.println(""+myOutputComponents.get(key).getCategory());
+			if((myOutputComponents.get(key).getCategory()).equals(DeviceCategory.DISPLAY)){	
+				System.out.println(key);
+				return key;
+			}
+		}
+		return "";
+	}
 
 
 	/** Waits for the user to scans product bar-codes through the scanner,
@@ -76,41 +98,77 @@ public class View {
 	 * the LCD Screen
 	 * @param in type of input to capture information
 	 */
-	private void captureBarcodeLoop(InputStream in) {
-		String barCode = scanner.capture(in);
-		while(!myPOS.isPrintingInvoice(barCode)) {
-			display.print(myPOS.receiveBarcode(barCode));
-			barCode = scanner.capture(in);
+	public void addDevice(String code, String name, String category, String type) {
+		switch(DeviceType.getType(type)){
+			case INPUT:
+				if(!myInputComponents.containsKey(code))
+					myInputComponents.put(code, ViewMapper.toInputView(code, name, category, this));
+				break;
+			case OUTPUT:
+				if(!myOutputComponents.containsKey(code))
+					myOutputComponents.put(code, ViewMapper.toOutputView(code, name, category));
+				break;
+			default:
+				break;
+		}		
+	}
+
+	/**
+	 * 
+	 */
+	public void sendBarCode() {
+		String keyScanner = isScannerUnplugged();
+		if(keyScanner.length() == 0){
+			return;
 		}
-		display.print(myPOS.getResults());
-		if(myPOS.isPrinterUnplugged()) {
-			display.println(MessagesEnum.NO_PRINTER_FOUND+"");
+		String barCode = myInputComponents.get(keyScanner).getTextInputField();
+		String keyDisplay = "";
+		if(!myPOS.isPrintingInvoice(barCode)){
+			myPOS.receiveBarcode(barCode);
+			keyDisplay = isDisplayUnplugged();
+			if(keyDisplay.length() == 0) {
+				
+			}
+			myOutputComponents.get(keyDisplay).appendInformation(myPOS.receiveBarcode(barCode));
 		} else {
-			printer.print(myPOS.getInvoiceResults());			
+
+			keyDisplay = isDisplayUnplugged();
+			if(keyDisplay.length() == 0) {
+				System.out.println(MessagesEnum.NO_PRINTER_FOUND+"");
+			} else {
+				myOutputComponents.get(keyDisplay).appendInformation(myPOS.getResults());
+				String keyPrinter = isPrinterUnplugged();
+				if(keyPrinter.length() == 0) {
+					System.out.println(MessagesEnum.NO_PRINTER_FOUND+"");
+				} else {
+					myOutputComponents.get(keyPrinter).appendInformation(myPOS.getInvoiceResults());			
+				}
+			}
 		}
 	}
-	
+
 	/**
 	 * 
-	 * @param printer
+	 * @return
 	 */
-	public void addPrinter(Printer printer){
-		this.printer = printer;
+	private String isPrinterUnplugged() {
+		for (String key : myOutputComponents.keySet()) {
+			System.out.println(""+myOutputComponents.get(key).getCategory());
+			if((myOutputComponents.get(key).getCategory()).equals(DeviceCategory.PRINTER)){	
+				System.out.println(key);
+				return key;
+			}
+		}
+		return "";
 	}
-	
+
 	/**
-	 * 
-	 * @param scanner
+	 * Clears the input captured
 	 */
-	public void addScanner(BarCodeScanner scanner){
-		this.scanner = scanner;
-	}
-	
-	/**
-	 * 
-	 * @param display
-	 */
-	public void addDisplay(DisplayLCD display){
-		this.display = display;
+	public void clearCommandSent() {
+		String key  = isScannerUnplugged();
+		if(key.length() > 0) {
+			myInputComponents.get(key).clearTextInputField();
+		}
 	}
 }

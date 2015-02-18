@@ -1,11 +1,11 @@
-package pl.com.impaq.main.view.devices.input;
+package pl.com.impaq.main.controller.devices.input;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import pl.com.impaq.main.controller.devices.Device;
 import pl.com.impaq.main.enums.DeviceCategory;
-import pl.com.impaq.main.view.devices.Device;
 
 public class BarCodeScanner extends Device implements InputDevice {
 

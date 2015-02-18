@@ -1,4 +1,4 @@
-package pl.com.impaq.main.view.devices;
+package pl.com.impaq.main.controller.devices;
 
 import pl.com.impaq.main.enums.DeviceCategory;
 

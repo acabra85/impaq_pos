@@ -11,12 +11,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pl.com.impaq.main.controller.PointOfSale;
+import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
+import pl.com.impaq.main.controller.devices.output.DisplayLCD;
+import pl.com.impaq.main.controller.devices.output.Printer;
 import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.core.Product;
-import pl.com.impaq.main.view.devices.input.BarCodeScanner;
-import pl.com.impaq.main.view.devices.output.DisplayLCD;
-import pl.com.impaq.main.view.devices.output.Printer;
 
 public class PointOfSaleTest {
 

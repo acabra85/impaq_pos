@@ -1,10 +1,10 @@
 /**
  * 
  */
-package pl.com.impaq.main.view.devices.output;
+package pl.com.impaq.main.controller.devices.output;
 
+import pl.com.impaq.main.controller.devices.Device;
 import pl.com.impaq.main.enums.DeviceCategory;
-import pl.com.impaq.main.view.devices.Device;
 
 /**
  * @author Agustin

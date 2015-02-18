@@ -2,18 +2,19 @@ package pl.com.impaq.main.controller;
 
 import java.util.ArrayList;
 
+import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
+import pl.com.impaq.main.controller.devices.output.DisplayLCD;
+import pl.com.impaq.main.controller.devices.output.Printer;
 import pl.com.impaq.main.controller.managers.DeviceManager;
 import pl.com.impaq.main.controller.managers.ProductsManager;
 import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.DeviceType;
 import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
 import pl.com.impaq.main.model.core.Product;
 import pl.com.impaq.main.model.stubs.DevicesStub;
 import pl.com.impaq.main.model.stubs.ProductStub;
 import pl.com.impaq.main.view.devices.View;
-import pl.com.impaq.main.view.devices.input.BarCodeScanner;
-import pl.com.impaq.main.view.devices.output.DisplayLCD;
-import pl.com.impaq.main.view.devices.output.Printer;
 
 public class PointOfSale {
 	
@@ -38,6 +39,16 @@ public class PointOfSale {
 		listProducts = new ArrayList<Product>();
 		calculator = new InvoiceDetailsCalculator();
 		myProductManager = new ProductsManager(); 
+	}
+
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		PointOfSale myPOS = PointOfSale.getInstance();
+		myPOS.setUp();
+		myPOS.startView();
 	}
 
 	/**
@@ -73,21 +84,31 @@ public class PointOfSale {
 	}
 
 	/**
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		PointOfSale myPOS = PointOfSale.getInstance();
-		myPOS.setUp();
-		myPOS.startView();
-	}
-
-	/**
 	 * Starts the View of POS, checking the basic output and input devices are available if so, 
 	 * starts the capture input loop.
 	 */
 	public void startView() {
+		mapDevicesToView();
 		myView.start();
+	}
+
+	private void mapDevicesToView() {
+		if(myDeviceManager.getSizeOutputDevices()>0){
+			if(!isDisplayUnplugged())
+				myView.addDevice(display.getCode(), display.getName(), 
+						display.getCategory()+"",DeviceType.OUTPUT+"");	
+			if(!isPrinterUnplugged()){
+				myView.addDevice(printer.getCode(), printer.getName(), 
+						printer.getCategory()+"",DeviceType.OUTPUT+"");
+				
+			}
+		}
+		if(myDeviceManager.getSizeInputDevices()>0){
+			if(!isScannerUnplugged()){
+				myView.addDevice(scanner.getCode(), scanner.getName(), 
+						scanner.getCategory()+"", DeviceType.INPUT+"");
+			}
+		}
 	}
 
 	/**

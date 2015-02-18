@@ -3,12 +3,12 @@ package pl.com.impaq.main.controller.managers;
 import java.util.HashMap;
 
 import pl.com.impaq.main.controller.PointOfSale;
+import pl.com.impaq.main.controller.devices.Device;
+import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
+import pl.com.impaq.main.controller.devices.output.DisplayLCD;
+import pl.com.impaq.main.controller.devices.output.Printer;
 import pl.com.impaq.main.enums.DeviceType;
 import pl.com.impaq.main.enums.DeviceCategory;
-import pl.com.impaq.main.view.devices.Device;
-import pl.com.impaq.main.view.devices.input.BarCodeScanner;
-import pl.com.impaq.main.view.devices.output.DisplayLCD;
-import pl.com.impaq.main.view.devices.output.Printer;
 
 /**
  * 

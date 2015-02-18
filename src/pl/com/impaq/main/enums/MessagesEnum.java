@@ -157,6 +157,10 @@ public enum MessagesEnum {
     	@Override public String toString() {
     		return "Subtotal:";
     	}    	
+    }, SEND_INPUT {
+    	@Override public String toString() {
+    		return "<--- SEND";
+    	}
     };
     
 }
