@@ -46,12 +46,4 @@ public class PropertyReaderTest {
 		
 	}
 
-	/**
-	 * Test method for {@link pl.com.impaq.main.model.util.PropertyReader#getInstance()}.
-	 */
-	@Test
-	public void testGetInstance() {
-		fail("Not yet implemented");
-	}
-
 }

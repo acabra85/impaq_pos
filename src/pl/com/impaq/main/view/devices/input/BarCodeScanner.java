@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.view.devices.Device;
 
 public class BarCodeScanner extends Device implements InputDevice {
@@ -26,12 +26,12 @@ public class BarCodeScanner extends Device implements InputDevice {
 	 * @param name
 	 * @param description
 	 */
-	public BarCodeScanner(String code, String name, String description, DeviceType type) {
+	public BarCodeScanner(String code, String name, String description, DeviceCategory type) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.code = code;
-		this.type = type;
+		this.category = type;
 		
 	}
 

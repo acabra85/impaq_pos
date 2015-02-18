@@ -1,38 +1,50 @@
-/**
- * 
- */
 package pl.com.impaq.main.enums;
 
 /**
- * Enums declaring the device kinds input or output
+ * Enums declaring the device types printer, scanner, display ... etc
  * 
  * @author Agustin Cabra
  * @version 1.0
+ *
  */
 public enum DeviceCategory {
-	
-	INPUT {
-		@Override public String toString() {
-			return "INPUT"; 
-		}		
-	}, OUTPUT {
-		@Override public String toString() {
-			return "OUTPUT"; 
+	PRINTER {
+		@Override
+		public String toString() {
+			return "PRINTER";
 		}
-	}, UNDEFINED {
-		@Override public String toString() {
-			return "UNDEFINED"; 
+	},
+	SCANNER {
+		@Override
+		public String toString() {
+			return "SCANNER";
 		}
+		
+	},
+	DISPLAY {
+		@Override
+		public String toString() {
+			return "DISPLAY";
+		}
+		
+	},
+	UNKNOWN_DEVICE_TYPE {
+		@Override
+		public String toString() {
+			return "UNKNOWN_DEVICE_TYPE";
+		}
+		
 	};
-
 	
-	public static DeviceCategory getKind(String kind) {
-		if(kind.equals(INPUT.toString())) {
-			return INPUT;
-		} else if(kind.equals(OUTPUT.toString())) {
-			return OUTPUT;
+	public static DeviceCategory getCategory(String type) {		
+		if(type.equals(PRINTER +"")) {
+			return PRINTER;
+		} else if(type.equals(SCANNER+ "")) {
+			return SCANNER;
+		} else  if(type.equals(DISPLAY+ "")) {
+			return DISPLAY;
 		} else {
-			return UNDEFINED;
+			return UNKNOWN_DEVICE_TYPE;
 		}
 	}
 }

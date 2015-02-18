@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import pl.com.impaq.main.controller.managers.DeviceManager;
 import pl.com.impaq.main.controller.managers.ProductsManager;
-import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
 import pl.com.impaq.main.model.core.Product;
@@ -22,7 +22,7 @@ public class PointOfSale {
 	private BarCodeScanner scanner;
 	private DisplayLCD display;
 	private ProductsManager myProductManager;
-	private DeviceManager myDeviceManager;
+	private static DeviceManager myDeviceManager;
 	InvoiceDetailsCalculator calculator;
 	private ArrayList<Product> listProducts;
 	private static View myView;
@@ -45,7 +45,7 @@ public class PointOfSale {
 	 */
 	private void setUp() {
 		myView = View.getInstance(this);
-		myDeviceManager = DeviceManager.getInstance(this);
+		myDeviceManager = new DeviceManager(this);
 		setUpDevicesStub();
 		setUpProductsStub();
 	}
@@ -106,7 +106,7 @@ public class PointOfSale {
 					"Tax Collected:\t" + calculator.calculateTaxCollected(subtotal) + "\n");
 		}
 		result.append(MessagesEnum.DISTANCE_INVOICE_INFO + "Total: \t"  + calculator.calculateOrderTotal(listProducts)+ "\n");
-		if(isDeviceUnplugged(DeviceType.PRINTER)) {
+		if(isDeviceUnplugged(DeviceCategory.PRINTER)) {
 			System.out.println(MessagesEnum.NO_PRINTER_FOUND.toString());
 		} else {
 			result.append(MessagesEnum.PRINTING_PRINTER + "\n");//update user on printing output device
@@ -151,7 +151,7 @@ public class PointOfSale {
 	 * @param type the type of the device to check
 	 * @return boolean indicating whether or not the device is plugged
 	 */
-	public boolean isDeviceUnplugged(DeviceType type) {
+	public boolean isDeviceUnplugged(DeviceCategory type) {
 		boolean unplugged = true;
 		switch (type) {
 			case SCANNER:
@@ -219,7 +219,7 @@ public class PointOfSale {
 	 * @return
 	 */
 	public boolean isPrinterUnplugged() {		
-		return isDeviceUnplugged(DeviceType.PRINTER);
+		return isDeviceUnplugged(DeviceCategory.PRINTER);
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class PointOfSale {
 	 * @return
 	 */
 	public boolean isDisplayUnplugged() {		
-		return isDeviceUnplugged(DeviceType.DISPLAY);
+		return isDeviceUnplugged(DeviceCategory.DISPLAY);
 	}
 
 	/**
@@ -235,31 +235,7 @@ public class PointOfSale {
 	 * @return
 	 */
 	public boolean isScannerUnplugged() {		
-		return isDeviceUnplugged(DeviceType.SCANNER);
-	}
-
-	/**
-	 * 
-	 * @param device
-	 */
-	public void addPrinterToView(Printer device) {
-		myView.addPrinter(device);
-	}
-
-	/**
-	 * 
-	 * @param device
-	 */
-	public void addScannerToView(BarCodeScanner device) {
-		myView.addScanner(device);
-	}
-
-	/**
-	 * 
-	 * @param device
-	 */
-	public void addDisplayToView(DisplayLCD device) {
-		myView.addDisplay(device);
+		return isDeviceUnplugged(DeviceCategory.SCANNER);
 	}
 	
 	/**
@@ -278,7 +254,7 @@ public class PointOfSale {
 	 */
 	public static void dispose() {
 		View.dispose();	
-		DeviceManager.dispose();
+		myDeviceManager = null;
 		instance = null;
 	}
 

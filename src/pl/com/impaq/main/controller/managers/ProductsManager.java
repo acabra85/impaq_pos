@@ -56,9 +56,12 @@ public class ProductsManager {
 	 * @param barCode the bar-code of the product
 	 * @return boolean true if the product described by parameters was added or false otherwise
 	 */
-	public boolean addProduct(String cod, String name, double price, String barCode) {
-		Product product = new Product(cod, name, price, barCode);
-		return addProduct(product);
+	public boolean createProduct(String cod, String name, double price, String barCode) {
+		if(cod.length() > 0 && name.length() > 0 && price > 0.0 && barCode.length() > 0 ){
+			Product product = new Product(cod, name, price, barCode);
+			return addProduct(product);
+		}
+		return false;
 	}
 	
 	/**

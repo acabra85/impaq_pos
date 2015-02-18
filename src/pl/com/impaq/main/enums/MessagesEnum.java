@@ -63,7 +63,7 @@ public enum MessagesEnum {
     NO_INPUT_DEVICES_LOADED {
         @Override
         public String toString() {
-            return "No Input Devices were found";
+            return "No Input Devices loaded";
         }
     }, 
     INPUT_DEVICES_FILE_NOT_FOUND {

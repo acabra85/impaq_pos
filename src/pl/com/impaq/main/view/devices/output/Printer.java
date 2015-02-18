@@ -1,6 +1,6 @@
 package pl.com.impaq.main.view.devices.output;
 
-import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.view.devices.Device;
 
 /**
@@ -31,12 +31,12 @@ public class Printer extends Device implements OutputDevice {
 	 * @param name
 	 * @param description
 	 */
-	public Printer(String code, String name, String description, DeviceType type) {
+	public Printer(String code, String name, String description, DeviceCategory category) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.code = code;
-		this.type = type;
+		this.category = category;
 	}
 
 }

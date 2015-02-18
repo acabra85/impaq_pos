@@ -3,8 +3,8 @@ package pl.com.impaq.main.controller.managers;
 import java.util.HashMap;
 
 import pl.com.impaq.main.controller.PointOfSale;
-import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.view.devices.Device;
 import pl.com.impaq.main.view.devices.input.BarCodeScanner;
 import pl.com.impaq.main.view.devices.output.DisplayLCD;
@@ -24,14 +24,13 @@ public class DeviceManager {
 	private Printer printer;
 	private BarCodeScanner scanner;
 	private DisplayLCD display;
-	public static DeviceManager instance;
 	
 	
 	/**
 	 * 
 	 * @param pos
 	 */
-	private DeviceManager(PointOfSale pos) {
+	public DeviceManager(PointOfSale pos) {
 		this.thePOS = pos;
 	}
 	
@@ -40,20 +39,25 @@ public class DeviceManager {
 	 * @param code
 	 * @param name
 	 * @param description
+	 * @param category
 	 * @param type
-	 * @param kind
+	 * @return 
 	 */
-	public void createDevice(String code, String name, String description,
-			DeviceType type, DeviceCategory kind) {
-		switch (kind) {
+	public boolean createDevice(String code, String name, String description,
+			DeviceCategory category, DeviceType type) {
+		switch (type) {
 			case INPUT:
-				createInputDevice(code, name, description, type);
-				break;
+				if(code.length() == 0){
+					return false;
+				}
+				return createInputDevice(code, name, description, category);
 			case OUTPUT:
-				createOutputDevice(code, name, description, type);
-				break;
+				if(code.length() == 0){
+					return false;
+				}
+				return createOutputDevice(code, name, description, category);
 			default:
-				break;
+				return false;
 		}
 	}
 
@@ -62,24 +66,30 @@ public class DeviceManager {
 	 * @param code
 	 * @param name
 	 * @param description
-	 * @param type
+	 * @param category
+	 * @return 
 	 */
-	private void createOutputDevice(String code, String name,
-			String description, DeviceType type) {
+	public boolean createOutputDevice(String code, String name,
+			String description, DeviceCategory category) {
+		if(code.length() == 0){
+			return false;
+		}
 		Device device = null;
-		switch (type) {
+		switch (category) {
 			case PRINTER:
-				device = new Printer(code, name, description, type);
+				device = new Printer(code, name, description, category);
 				if(printer==null) printer = (Printer)device;
 				break;
 			case DISPLAY:
-				device = new DisplayLCD(code, name, description, type);
+				device = new DisplayLCD(code, name, description, category);
 				if(display==null) display = (DisplayLCD)device;
 				break;
 			default:
 				break;
 		}
-		if(device != null) addOutputDevices(device);
+		if (device != null) 
+			return addOutputDevice(device);
+		return false;
 	}
 
 	/**
@@ -87,62 +97,78 @@ public class DeviceManager {
 	 * @param code
 	 * @param name
 	 * @param description
-	 * @param type
+	 * @param category
+	 * @return boolean false if it the device was not successfully created true otherwise
 	 */
-	private void createInputDevice(String code, String name,
-			String description, DeviceType type) {
+	public boolean createInputDevice(String code, String name,
+			String description, DeviceCategory category) {
+		if(code.length() == 0){
+			return false;
+		}
 		Device device = null;
-		switch (type) {
+		switch (category) {
 			case SCANNER:
-				device = new BarCodeScanner(code, name, description, type);
+				device = new BarCodeScanner(code, name, description, category);
 				if(scanner==null) scanner = (BarCodeScanner)device;
 				break;
 			default:
 				break;
 		}
-		if(device != null) addInputDevice(device);
+		if(device != null) { 
+			return addInputDevice(device);
+		} else {
+			return false;
+		}
 	}
 
 	/**
 	 * 
 	 * @param device
 	 */
-	public void addInputDevice(Device device) {
-		switch (device.getType()) {
+	public boolean addInputDevice(Device device) {
+		switch (device.getCategory()) {
 			case SCANNER:
-				if (thePOS.isDeviceUnplugged(DeviceType.SCANNER)) {
-					thePOS.plugBarcodeScanner((BarCodeScanner) device);
-					thePOS.addScannerToView(scanner);
+				if(!inputDevices.containsKey(device.getCode())) {
+					inputDevices.put(device.getCode(), device);
+					if (thePOS.isDeviceUnplugged(DeviceCategory.SCANNER)) {
+						thePOS.plugBarcodeScanner((BarCodeScanner) device);
+					}
+					return true;
 				}
-				break;
+				return false;
 			default:
-				break;
+				return false;
 		}
-		inputDevices.put(device.getCode(), device);		
 	}
 
 	/**
 	 * 
 	 * @param device
+	 * @return 
 	 */
-	public void addOutputDevices(Device device) {
-		switch (device.getType()) {
+	public boolean addOutputDevice(Device device) {
+		switch (device.getCategory()) {
 			case PRINTER:
-				if(thePOS.isDeviceUnplugged(DeviceType.PRINTER)) {
-					thePOS.plugPrinter((Printer) device);
-					thePOS.addPrinterToView(printer);
+				if(!outputDevices.containsKey(device.getCode())) {
+					outputDevices.put(device.getCode(), device);
+					if(thePOS.isDeviceUnplugged(DeviceCategory.PRINTER)) {
+						thePOS.plugPrinter((Printer) device);
+					}
+					return true;
 				}
-				break;
+				return false;
 			case DISPLAY:
-				if(thePOS.isDeviceUnplugged(DeviceType.DISPLAY))  {
-					thePOS.plugDisplayLCD((DisplayLCD) device);
-					thePOS.addDisplayToView(display);
+				if(!outputDevices.containsKey(device.getCode())) {
+					outputDevices.put(device.getCode(), device);	
+					if(thePOS.isDeviceUnplugged(DeviceCategory.DISPLAY))  {
+						thePOS.plugDisplayLCD((DisplayLCD) device);
+					}
+					return true;
 				}
-				break;
+				return false;
 			default:
-				break;
+				return false;
 		}
-		outputDevices.put(device.getCode(), device);
 		
 	}
 	
@@ -154,8 +180,9 @@ public class DeviceManager {
 		if(printer == null) {
 			for(String key: outputDevices.keySet()){
 				Device dev = outputDevices.get(key);
-				if(dev.getType().equals(DeviceType.PRINTER)){
+				if(dev.getCategory().equals(DeviceCategory.PRINTER)){
 					printer = (Printer) dev;
+					thePOS.plugPrinter(printer);
 				}
 			}
 		}
@@ -170,8 +197,9 @@ public class DeviceManager {
 		if(scanner == null) {
 			for(String key: inputDevices.keySet()){
 				Device dev = inputDevices.get(key);
-				if(dev.getType().equals(DeviceType.SCANNER)){
+				if(dev.getCategory().equals(DeviceCategory.SCANNER)){
 					scanner =  (BarCodeScanner) dev;
+					thePOS.plugBarcodeScanner(scanner);
 				}
 			}			
 		}
@@ -186,8 +214,9 @@ public class DeviceManager {
 		if(display == null) {
 			for(String key: outputDevices.keySet()){
 				Device dev = outputDevices.get(key);
-				if(dev.getType().equals(DeviceType.DISPLAY)){
+				if(dev.getCategory().equals(DeviceCategory.DISPLAY)){
 					display = (DisplayLCD) dev;
+					thePOS.plugDisplayLCD(display);
 				}
 			}
 		}
@@ -209,22 +238,6 @@ public class DeviceManager {
 	 */
 	public int getSizeOutputDevices() {		
 		return outputDevices.size();
-	}
-
-	/**
-	 * Singleton access method
-	 * @param pointOfSale
-	 * @return
-	 */
-	public static DeviceManager getInstance(PointOfSale pointOfSale) {
-		if(instance == null){
-			instance = new DeviceManager(pointOfSale);
-		}
-		return instance;
-	}
-	
-	public static void dispose(){
-		instance = null;
 	}
 
 }

@@ -3,7 +3,6 @@ package pl.com.impaq.test.model.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pl.com.impaq.main.controller.PointOfSale;
-import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.core.Product;
 import pl.com.impaq.main.view.devices.input.BarCodeScanner;
@@ -44,7 +43,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testGetResultsWithPrinterPlugged() {
 		pos = PointOfSale.getInstance();
-		Printer printer = new Printer("0001", "printer", "desc", DeviceType.PRINTER);
+		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.PRINTER);
 		pos.plugPrinter(printer);
 		assertEquals(pos.getResults().length(), 90);
 		PointOfSale.dispose();
@@ -64,7 +63,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testGetResultsWithPrinterPluggedWithoutTax() {
 		pos = PointOfSale.getInstance();
-		Printer printer = new Printer("0001", "printer", "desc", DeviceType.PRINTER);
+		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.PRINTER);
 		pos.plugPrinter(printer);
 		String result = pos.getResults();
 		//System.out.println("testGetResultsWithPrinterPluggedWithoutTax-> \n" + result);
@@ -75,7 +74,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugPrinter() {
 		pos = PointOfSale.getInstance();
-		Printer printer = new Printer("0001", "printer", "desc", DeviceType.getType("PRINTER"));
+		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.getCategory("PRINTER"));
 		pos.plugPrinter(printer);
 		assertFalse(pos.isPrinterUnplugged());
 		PointOfSale.dispose();
@@ -92,7 +91,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugBarcodeScanner() {
 		pos = PointOfSale.getInstance();
-		BarCodeScanner scanner = new BarCodeScanner("0002", "scanner", "desc", DeviceType.getType("SCANNER"));
+		BarCodeScanner scanner = new BarCodeScanner("0002", "scanner", "desc", DeviceCategory.getCategory("SCANNER"));
 		pos.plugBarcodeScanner(scanner);
 		assertFalse(pos.isScannerUnplugged());
 		PointOfSale.dispose();
@@ -109,7 +108,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugDisplayLCD() {
 		pos = PointOfSale.getInstance();
-		DisplayLCD scanner = new DisplayLCD("0003", "display", "desc", DeviceType.getType("DISPLAY"));
+		DisplayLCD scanner = new DisplayLCD("0003", "display", "desc", DeviceCategory.getCategory("DISPLAY"));
 		pos.plugDisplayLCD(scanner);
 		assertFalse(pos.isDisplayUnplugged());
 		PointOfSale.dispose();
@@ -126,7 +125,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugOtherDevice() {
 		pos = PointOfSale.getInstance();
-		DisplayLCD scanner = new DisplayLCD("0003", "display", "desc", DeviceType.getType("OTROS") );
+		DisplayLCD scanner = new DisplayLCD("0003", "display", "desc", DeviceCategory.getCategory("OTROS") );
 		pos.plugDisplayLCD(scanner);
 		assertFalse(pos.isDisplayUnplugged());
 		PointOfSale.dispose();
@@ -135,14 +134,14 @@ public class PointOfSaleTest {
 	@Test
 	public void testIsDeviceUnplugged() {
 		pos = PointOfSale.getInstance();
-		assertTrue(pos.isDeviceUnplugged(DeviceType.getType("OTROS")));
+		assertTrue(pos.isDeviceUnplugged(DeviceCategory.getCategory("OTROS")));
 		PointOfSale.dispose();
 	}
 
 	@Test
 	public void testGetInputDevice() {
 		pos = PointOfSale.getInstance();
-		BarCodeScanner scanner = new BarCodeScanner("0001", "scanner", "desc", DeviceType.getType("SCANNER"));
+		BarCodeScanner scanner = new BarCodeScanner("0001", "scanner", "desc", DeviceCategory.getCategory("SCANNER"));
 		pos.plugBarcodeScanner(scanner);
 		assertEquals(pos.getInputDevice(), scanner);
 		PointOfSale.dispose();
@@ -202,23 +201,32 @@ public class PointOfSaleTest {
 	}
 
 	@Test
-	public void testAddPrinterToView() {
-		fail("Not yet implemented");
+	public void testGetInvoiceResultsEmpty() {
+		pos = PointOfSale.getInstance();
+		String invoiceResults = pos.getInvoiceResults();
+		assertEquals(invoiceResults.length(), 126);
+		PointOfSale.dispose();
 	}
 
 	@Test
-	public void testAddScannerToView() {
-		fail("Not yet implemented");
+	public void testGetInvoiceResultsProducts() {
+		pos = PointOfSale.getInstance();
+		ArrayList<Product> listProducts = new ArrayList<Product>();
+		listProducts.add(new Product("0004444", "test product", 25.2, "00005"));
+		pos.addProductsList(listProducts);
+		String invoiceResults = pos.getInvoiceResults();
+		System.out.println(invoiceResults);
+		assertEquals(invoiceResults.length(), 126);
+		PointOfSale.dispose();
 	}
-
+	
 	@Test
-	public void testAddDisplayToView() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetInvoiceResults() {
-		fail("Not yet implemented");
+	public void testAddProductsListEmpty() {
+		pos = PointOfSale.getInstance();
+		ArrayList<Product> listProducts = new ArrayList<Product>();
+		assertEquals(pos.addProductsList(listProducts), 0);
+		PointOfSale.dispose();
+		
 	}
 
 }

@@ -4,11 +4,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import pl.com.impaq.main.controller.managers.ProductsManager;
-import pl.com.impaq.main.enums.DeviceType;
-
 @RunWith(Suite.class)
 @SuiteClasses({ InvoiceDetailsCalculatorTest.class, ProductTest.class, 
-	PointOfSaleTest.class, DeviceType.class, ProductsManager.class, PropertyReaderTest.class })
+	PointOfSaleTest.class, DeviceTypeTest.class, ProductsManagerTest.class, 
+	PropertyReaderTest.class, DevicesStubTest.class, ProductStubTest.class, DeviceManagerTest.class})
 public class AllTestsCore {
 }

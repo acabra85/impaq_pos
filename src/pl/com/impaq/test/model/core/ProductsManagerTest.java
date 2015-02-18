@@ -105,23 +105,23 @@ public class ProductsManagerTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#addProduct(java.lang.String, java.lang.String, double, java.lang.String)}.
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#createProduct(java.lang.String, java.lang.String, double, java.lang.String)}.
 	 */
 	@Test
 	public void testAddProductFromData() {
 		ProductsManager pm = new ProductsManager();
-		assertTrue(pm.addProduct("00", "test", 10.0, "00000"));
+		assertTrue(pm.createProduct("00", "test", 10.0, "00000"));
 		pm = null;
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#addProduct(java.lang.String, java.lang.String, double, java.lang.String)}.
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#createProduct(java.lang.String, java.lang.String, double, java.lang.String)}.
 	 */
 	@Test
 	public void testAddProductFromDataExistent() {
 		ProductsManager pm = new ProductsManager();
-		pm.addProduct("00", "test", 10.0, "00000");
-		assertFalse(pm.addProduct("00", "test", 10.0, "00000"));
+		pm.createProduct("00", "test", 10.0, "00000");
+		assertFalse(pm.createProduct("00", "test", 10.0, "00000"));
 		pm = null;
 	}
 
@@ -157,7 +157,18 @@ public class ProductsManagerTest {
 		listP.add(new Product("00", "test", 10.0, "00101"));
 		listP.add(new Product("00", "test", 10.0, "00102"));
 		listP.add(new Product("00", "test", 10.0, "00103"));
-		listP.add(new Product("00", "test", 10.0, "00104"));		;
+		listP.add(new Product("00", "test", 10.0, "00104"));
+		assertEquals(pm.addProducts(listP), listP.size());
+		pm = null;
+	}
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#addProducts(java.util.ArrayList)}.
+	 */
+	@Test
+	public void testDontAddProducts() {
+		ProductsManager pm = new ProductsManager();
+		ArrayList<Product> listP = new ArrayList<Product>();
 		assertEquals(pm.addProducts(listP), listP.size());
 		pm = null;
 	}

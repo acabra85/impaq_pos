@@ -1,0 +1,4 @@
+#PROD_ID,PROD_NAME,PROD_PRICE,PROD_BARCODE
+04,Potato Chips 45gr,0.50,
+04,Potato Chips 45gr,-0.50,
+04,Potato Chips 45gr,

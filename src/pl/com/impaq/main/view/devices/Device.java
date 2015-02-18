@@ -1,12 +1,12 @@
 package pl.com.impaq.main.view.devices;
 
-import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
 
 public abstract class Device {
 	protected String name;
 	protected String code;
 	protected String description;
-	protected DeviceType type;
+	protected DeviceCategory category;
 	/**
 	 * @return the name
 	 */
@@ -28,7 +28,7 @@ public abstract class Device {
 	/**
 	 * @return the type
 	 */
-	public DeviceType getType() {
-		return type;
+	public DeviceCategory getCategory() {
+		return category;
 	}	
 }

@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 import pl.com.impaq.main.controller.managers.DeviceManager;
-import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
 import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.model.util.PropertyReader;
 
@@ -41,7 +41,7 @@ public class DevicesStub {
 	 * @param posDeviceManager 
 	 * @param outputDeviceFileName
 	 */
-	private void loadDevices(String devicesFileName, DeviceManager posDeviceManager) {
+	public void loadDevices(String devicesFileName, DeviceManager posDeviceManager) {
 		BufferedReader bf = null;
 		FileInputStream fis = null;
 		standardOutput.println(MessagesEnum.SYSTEM_BOOT_INFO_START.toString());
@@ -53,7 +53,12 @@ public class DevicesStub {
 			while ( deviceString != null ) {
 				String [] arrayDeviceInfo = deviceString.split(",");
 				if(arrayDeviceInfo.length == 5) {
-					createDevice(arrayDeviceInfo, posDeviceManager);					
+					String devId = arrayDeviceInfo[0];
+					String devName = arrayDeviceInfo[1];
+					String devDesc = arrayDeviceInfo[2];
+					String devCategory = arrayDeviceInfo[3];
+					String devType = arrayDeviceInfo[4];					
+					createDevice(devId, devName, devDesc, devCategory, devType, posDeviceManager);					
 				} else {
 					standardOutput.println(MessagesEnum.ERROR_RETRIEVING_DEVICE.toString());
 				}
@@ -76,27 +81,30 @@ public class DevicesStub {
 			standardOutput.println(MessagesEnum.ERROR_RETRIEVING_DEVICE.toString());
 		} finally {
 			try {
-				if(bf!= null)
-					bf.close();
-				if(fis != null)
-					fis.close();
-			} catch (IOException e) {
+				if(bf!=null) bf.close();
+				if(fis!=null) fis.close();
+			} catch (Exception e) {
 				standardOutput.println(MessagesEnum.ERROR_CLOSING_SOURCE.toString());
 			}
 		}
 		
 	}
 
+
 	/**
 	 * 
-	 * @param arrayDeviceInfo
+	 * @param devId
+	 * @param devName
+	 * @param devDesc
+	 * @param devCategory
+	 * @param devType
+	 * @param posDeviceManager
 	 */
-	private void createDevice(String[] arrayDeviceInfo, DeviceManager posDeviceManager) {
-		String code = arrayDeviceInfo[0];
-		String name = arrayDeviceInfo[1];
-		String description = arrayDeviceInfo[2];
-		DeviceType type = DeviceType.getType(arrayDeviceInfo[3]);
-		DeviceCategory kind = DeviceCategory.getKind(arrayDeviceInfo[4]);
-		posDeviceManager.createDevice(code, name, description, type, kind);
+	private void createDevice(String devCode, String devName, String devDesc,
+		String devCategory, String devType, DeviceManager posDeviceManager) {
+		
+		DeviceCategory category = DeviceCategory.getCategory(devCategory);
+		DeviceType  type = DeviceType.getType(devType);
+		posDeviceManager.createDevice(devCode, devName, devDesc, category, type);
 	}
 }

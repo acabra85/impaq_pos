@@ -31,7 +31,19 @@ public class ProductStub {
 		standardOutput = System.out;
 		PropertyReader pr = PropertyReader.getInstance();
 		String prodsFileName = pr.retrievePropertyFromConfigFile(configFileName, "productsFileSource");
-		String taxString = PropertyReader.getInstance().retrievePropertyFromConfigFile(configFileName, "tax");
+		String taxString = getTaxString(configFileName);
+		setTaxForInvoiceCalculator(calculator, taxString);
+		if(prodsFileName.length()>0) {
+			loadProducts(prodsFileName, posProductManager);
+		}
+	}
+
+
+	/**
+	 * @param calculator
+	 * @param taxString
+	 */
+	public void setTaxForInvoiceCalculator(InvoiceDetailsCalculator calculator, String taxString) {
 		if(taxString.length()>0) {
 			try {
 				calculator.setTax(Double.parseDouble(taxString));
@@ -39,9 +51,15 @@ public class ProductStub {
 				standardOutput.println(MessagesEnum.TAX_CONFIG_FILE_INVALID.toString());
 			}
 		}
-		if(prodsFileName.length()>0) {
-			loadProducts(prodsFileName, posProductManager);
-		}
+	}
+
+
+	/**
+	 * @param configFileName
+	 * @return
+	 */
+	public String getTaxString(String configFileName) {
+		return PropertyReader.getInstance().retrievePropertyFromConfigFile(configFileName, "tax");
 	}
 
 
@@ -53,7 +71,7 @@ public class ProductStub {
 	 * @param posProductManager 
 	 * 
 	 */
-	private void loadProducts(String prodsFileName, ProductsManager posProductManager) {
+	public void loadProducts(String prodsFileName, ProductsManager posProductManager) {
 		BufferedReader bf = null;
 		FileInputStream fis = null;
 		try {
@@ -63,7 +81,9 @@ public class ProductStub {
 			String productString = bf.readLine();
 			while ( productString != null ) {
 				String [] arr = productString.split(",");
-				posProductManager.addProduct(arr[0], arr[1], Double.parseDouble(arr[2]), arr[3]);
+				if(arr.length == 4) {
+					posProductManager.createProduct(arr[0], arr[1], Double.parseDouble(arr[2]), arr[3]);
+				}
 				productString = bf.readLine();
 			}
 			if(posProductManager.getSizeProducts() > 0 ){
@@ -78,10 +98,8 @@ public class ProductStub {
 			standardOutput.println(MessagesEnum.ERROR_RETRIEVING_PRODUCT.toString());
 		} finally {
 			try {
-				if(bf!=null)
-					bf.close();
-				if(fis != null)
-					fis.close();
+				if(bf!=null) bf.close();
+				if(fis != null) fis.close();
 			} catch (IOException e) {
 				standardOutput.println(MessagesEnum.ERROR_CLOSING_SOURCE.toString());
 			}
