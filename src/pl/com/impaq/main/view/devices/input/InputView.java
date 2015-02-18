@@ -49,7 +49,7 @@ public class InputView extends JFrame implements InputCapable {
 		this.inputField.setFont(new Font("Verdana", Font.BOLD, 15));
 		this.send = new JButton(MessagesEnum.SEND_INPUT+"");
 		this.send.setActionCommand("InputButton");
-		handler = new InputHandler(view);
+		handler = new InputHandler(view, this);
 		send.addActionListener(handler);
 		inputField.setActionCommand("TextInput");
 		inputField.addKeyListener(handler);
@@ -82,31 +82,52 @@ public class InputView extends JFrame implements InputCapable {
 	 * @see pl.com.impaq.main.view.devices.input.InputCapable#capture()
 	 */
 	@Override
-	public String capture() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public String getTextInputField(){
+	public String capture(){
 		return inputField.getText();
 	}
 	
-	public void clearTextInputField(){
+	/**
+	 * 
+	 */
+	public void clearTextInputField() {
 		inputField.setText("");
 	}
+	
+	/**
+	 * 
+	 * @param text
+	 */
+	public void setTextInputField(String text) {
+		inputField.setText(text);
+	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private int closeWindow() {
 		return JFrame.EXIT_ON_CLOSE;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public DeviceCategory getCategory() {
 		return category;
 	}
 
+	/**
+	 * 
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getCode() {
 		return code;
 	}

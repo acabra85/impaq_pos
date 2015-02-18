@@ -17,6 +17,7 @@ import pl.com.impaq.main.view.devices.View;
 public class InputHandler implements ActionListener, KeyListener {
 
 	private View view;
+	private InputView inputView;
 
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -24,33 +25,34 @@ public class InputHandler implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("InputButton")){
-			view.sendBarCode();
-			view.clearCommandSent();
+			view.sendBarCode(inputView.capture());
+			inputView.clearTextInputField();
 		}
 	}
 	
-	public InputHandler(View view) {
+	/**
+	 * 
+	 * @param view
+	 * @param inputView
+	 */
+	public InputHandler(View view, InputView inputView) {
 		this.view = view;
+		this.inputView = inputView;
 	}
 
+	
 	@Override
 	public void keyPressed(KeyEvent paramKeyEvent) {
 		if(paramKeyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
-			view.sendBarCode();
-			view.clearCommandSent();
+			view.sendBarCode(inputView.capture());
+			inputView.clearTextInputField();
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent paramKeyEvent) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyReleased(KeyEvent paramKeyEvent) {}
 
 	@Override
-	public void keyTyped(KeyEvent paramKeyEvent) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent paramKeyEvent) {}
 
 }

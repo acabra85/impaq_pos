@@ -80,14 +80,10 @@ public class OutputView extends JFrame implements OutputCapable{
 
 	public String getCode() {
 		return code;
-	}
+	}	
 
 	@Override
-	public void print(String msg) {
-		deviceDisplay.append(msg);
-	}
-	
-	public void appendInformation(String msg){
+	public void print(String msg){
 		deviceDisplay.append(msg);
 	}
 }

@@ -22,6 +22,7 @@ public class ViewMapper {
 
 	public static InputView toInputView(String code, String name,
 			String category, View view) {
-		return new InputView (code, name, DeviceCategory.getCategory(category), view);
+		InputView inputView = new InputView (code, name, DeviceCategory.getCategory(category), view);
+		return inputView;
 	}
 }

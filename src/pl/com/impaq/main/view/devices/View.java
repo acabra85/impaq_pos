@@ -8,6 +8,7 @@ import pl.com.impaq.main.enums.DeviceType;
 import pl.com.impaq.main.enums.MessagesEnum;
 import pl.com.impaq.main.view.devices.input.InputView;
 import pl.com.impaq.main.view.devices.output.OutputView;
+import pl.com.impaq.main.view.devices.util.ViewInformationConstants;
 import pl.com.impaq.main.view.devices.util.ViewMapper;
 
 /**
@@ -56,43 +57,21 @@ public class View {
 		instance = null;
 	}
 	
-	public void start(){
+	public int start(){
 		System.out.println(MessagesEnum.PRINTING_LCD+""); //update user on printing output device
 		String keyDisplay = isDisplayUnplugged();
 		if(keyDisplay.length() == 0) {
 			System.out.println(MessagesEnum.NO_DISPLAY_FOUND + "");
+			return ViewInformationConstants.NO_DISPLAY_FOUND;
 		} else {
 			String keyInput = isScannerUnplugged();
 			if(keyInput.length() == 0) {
 				System.out.println(MessagesEnum.NO_SCANNER_FOUND + "");
+				return ViewInformationConstants.NO_SCANNER_FOUND;
+			} else {
+				return ViewInformationConstants.START;
 			}
 		}
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	private String isScannerUnplugged() {
-		for (String key : myInputComponents.keySet()) {
-			if(myInputComponents.get(key).getCategory().equals(DeviceCategory.SCANNER)){				
-				return key;
-			}
-		}
-		return "";
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	private String isDisplayUnplugged() {
-		for (String key : myOutputComponents.keySet()) {
-			if((myOutputComponents.get(key).getCategory()).equals(DeviceCategory.DISPLAY)){
-				return key;
-			}
-		}
-		return "";
 	}
 
 
@@ -100,59 +79,77 @@ public class View {
 	 * when receives the input 'exit', the POS will send the order list to print the results 
 	 * the LCD Screen
 	 * @param in type of input to capture information
+	 * @return 
 	 */
-	public void addDevice(String code, String name, String category, String type) {
+	public boolean addDevice(String code, String name, String category, String type) {
 		switch(DeviceType.getType(type)){
 			case INPUT:
-				if(!myInputComponents.containsKey(code))
+				if(!myInputComponents.containsKey(code)){
 					myInputComponents.put(code, ViewMapper.toInputView(code, name, category, this));
-				break;
+					return true;
+				}else {
+					return false;
+				}
 			case OUTPUT:
-				if(!myOutputComponents.containsKey(code))
+				if(!myOutputComponents.containsKey(code)) {
 					myOutputComponents.put(code, ViewMapper.toOutputView(code, name, category));
-				break;
+					return true;
+				}else {
+					return false;
+				}
 			default:
-				break;
+				System.out.println(MessagesEnum.NO_DEVICE_TYPE_FOUND+"");
+				return false;
 		}		
 	}
 
 	/**
+	 * @param barCode 
 	 * 
 	 */
-	public void sendBarCode() {
+	public int sendBarCode(String barCode) {
 		String keyScanner = isScannerUnplugged();
 		if(keyScanner.length() == 0){
-			return;
+			return ViewInformationConstants.NO_SCANNER_FOUND;
 		}
-		String barCode = myInputComponents.get(keyScanner).getTextInputField();
 		String keyDisplay = "";
 		if(!myPOS.isPrintingInvoice(barCode)){
 			keyDisplay = isDisplayUnplugged();
 			if(keyDisplay.length() == 0) {
-				System.out.println(MessagesEnum.NO_PRINTER_FOUND+"");				
+				System.out.println(MessagesEnum.NO_DISPLAY_FOUND+"");
+				return ViewInformationConstants.NO_DISPLAY_FOUND_SCANNING_PRODUCT;
 			} else{
-				myOutputComponents.get(keyDisplay).appendInformation(myPOS.receiveBarcode(barCode));
+				String receiveBarcode = myPOS.receiveBarcode(barCode);
+				myOutputComponents.get(keyDisplay).print(receiveBarcode);
+				return ViewInformationConstants.PRODUCT_INFO_DISPLAYED;
 			}
 		} else {
 			keyDisplay = isDisplayUnplugged();
 			if(keyDisplay.length() == 0) {
-				System.out.println(MessagesEnum.NO_PRINTER_FOUND+"");
+				System.out.println(MessagesEnum.NO_DISPLAY_FOUND+"");
+				return ViewInformationConstants.NO_DISPLAY_FOUND_PRINTING_RESULTS;
 			} else {
-				myOutputComponents.get(keyDisplay).appendInformation(myPOS.getResults());
+				String results = myPOS.getResults();
+				myOutputComponents.get(keyDisplay).print(results);
 				String keyPrinter = isPrinterUnplugged();
 				if(keyPrinter.length() == 0) {
 					System.out.println(MessagesEnum.NO_PRINTER_FOUND+"");
+					myPOS.finishCurrentOrder();
+					return ViewInformationConstants.NO_PRINTER_FOUND;
 				} else {
-					myOutputComponents.get(keyPrinter).appendInformation(myPOS.getInvoiceResults());			
+					String invoiceResults = myPOS.getInvoiceResults();
+					myOutputComponents.get(keyPrinter).print(invoiceResults);
+					myPOS.finishCurrentOrder();
+					return ViewInformationConstants.RESULTS_PRINTED;
 				}
-				myPOS.finishCurrentOrder();
 			}
 		}
 	}
 
+
 	/**
-	 * 
-	 * @return
+	 * if the device is plugged, returns the key on the map, otherwise returns empty string
+	 * @return key String representing the key
 	 */
 	private String isPrinterUnplugged() {
 		for (String key : myOutputComponents.keySet()) {
@@ -164,12 +161,28 @@ public class View {
 	}
 
 	/**
-	 * Clears the input captured
+	 * if the device is plugged, returns the key on the map, otherwise returns empty string
+	 * @return key String representing the key
 	 */
-	public void clearCommandSent() {
-		String key  = isScannerUnplugged();
-		if(key.length() > 0) {
-			myInputComponents.get(key).clearTextInputField();
+	private String isScannerUnplugged() {
+		for (String key : myInputComponents.keySet()) {
+			if(myInputComponents.get(key).getCategory().equals(DeviceCategory.SCANNER)){				
+				return key;
+			}
 		}
+		return "";
+	}
+
+	/**
+	 * if the device is plugged, returns the key on the map, otherwise returns empty string
+	 * @return key String representing the key
+	 */
+	private String isDisplayUnplugged() {
+		for (String key : myOutputComponents.keySet()) {
+			if((myOutputComponents.get(key).getCategory()).equals(DeviceCategory.DISPLAY)){
+				return key;
+			}
+		}
+		return "";
 	}
 }

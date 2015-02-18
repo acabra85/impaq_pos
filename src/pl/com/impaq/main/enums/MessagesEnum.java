@@ -157,6 +157,10 @@ public enum MessagesEnum {
     	@Override public String toString() {
     		return "<--- SEND";
     	}
+    }, NO_DEVICE_TYPE_FOUND {
+    	@Override public String toString() {
+    		return "No device type found";
+    	}
     };
     
 }
