@@ -9,6 +9,7 @@ import org.junit.Test;
 import pl.com.impaq.main.controller.managers.ProductsManager;
 import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
 import pl.com.impaq.main.model.stubs.ProductStub;
+import pl.com.impaq.main.model.util.PropertyReader;
 
 /**
  * @author Agustin
@@ -96,7 +97,7 @@ public class ProductStubTest {
 		ProductsManager posProductManager = new ProductsManager(); 
 		InvoiceDetailsCalculator calculator = new InvoiceDetailsCalculator();
 		ProductStub ps = new ProductStub(posProductManager, CONFIG_FILE+"dd", calculator);
-		assertEquals(ps.getTaxString(CONFIG_FILE), "");
+		assertEquals(ps.getTaxString(CONFIG_FILE), PropertyReader.getInstance().retrievePropertyFromConfigFile(CONFIG_FILE, "tax"));
 		ps = null;
 		posProductManager = null;
 		calculator = null;
