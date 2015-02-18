@@ -14,7 +14,7 @@ public enum MessagesEnum {
 	BARCODE_EMPTY {
         @Override
         public String toString() {
-            return "                                        Invalid bar-code";
+            return "                                        Invalid bar-code\n";
         }
     },    
     PRODUCTS_FILE_NOT_FOUND {
@@ -97,13 +97,9 @@ public enum MessagesEnum {
 	   	 public String toString() {
 	   		 return "                                        <--- Please scan product, or input 'exit'";
 	   	 }    	
-    }, INVOICE_HEADER {
-    	@Override public String toString() {
-    		return "\n******************** INVOICE ******************* \n";
-    	}
     }, INVOICE_FOOTER {
     	@Override public String toString() {
-    		return "\n********************** END ********************* \n";
+    		return "\n----------------------------------------------------------------------- \n";
     	}
     }, PRINTING_PRINTER {
     	@Override public String toString() {

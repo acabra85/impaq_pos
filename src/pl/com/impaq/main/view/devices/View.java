@@ -23,7 +23,6 @@ public class View {
 	public static View instance;
 	private PointOfSale myPOS;
 	private HashMap<String, OutputView> myOutputComponents;
-
 	private HashMap<String, InputView> myInputComponents; 
 	
 	/**
@@ -70,8 +69,10 @@ public class View {
 		}
 	}
 	
-
-
+	/**
+	 * 
+	 * @return
+	 */
 	private String isScannerUnplugged() {
 		for (String key : myInputComponents.keySet()) {
 			if(myInputComponents.get(key).getCategory().equals(DeviceCategory.SCANNER)){				
@@ -81,11 +82,13 @@ public class View {
 		return "";
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private String isDisplayUnplugged() {
 		for (String key : myOutputComponents.keySet()) {
-			System.out.println(""+myOutputComponents.get(key).getCategory());
-			if((myOutputComponents.get(key).getCategory()).equals(DeviceCategory.DISPLAY)){	
-				System.out.println(key);
+			if((myOutputComponents.get(key).getCategory()).equals(DeviceCategory.DISPLAY)){
 				return key;
 			}
 		}
@@ -124,14 +127,13 @@ public class View {
 		String barCode = myInputComponents.get(keyScanner).getTextInputField();
 		String keyDisplay = "";
 		if(!myPOS.isPrintingInvoice(barCode)){
-			myPOS.receiveBarcode(barCode);
 			keyDisplay = isDisplayUnplugged();
 			if(keyDisplay.length() == 0) {
-				
+				System.out.println(MessagesEnum.NO_PRINTER_FOUND+"");				
+			} else{
+				myOutputComponents.get(keyDisplay).appendInformation(myPOS.receiveBarcode(barCode));
 			}
-			myOutputComponents.get(keyDisplay).appendInformation(myPOS.receiveBarcode(barCode));
 		} else {
-
 			keyDisplay = isDisplayUnplugged();
 			if(keyDisplay.length() == 0) {
 				System.out.println(MessagesEnum.NO_PRINTER_FOUND+"");
@@ -143,6 +145,7 @@ public class View {
 				} else {
 					myOutputComponents.get(keyPrinter).appendInformation(myPOS.getInvoiceResults());			
 				}
+				myPOS.finishCurrentOrder();
 			}
 		}
 	}
@@ -153,9 +156,7 @@ public class View {
 	 */
 	private String isPrinterUnplugged() {
 		for (String key : myOutputComponents.keySet()) {
-			System.out.println(""+myOutputComponents.get(key).getCategory());
 			if((myOutputComponents.get(key).getCategory()).equals(DeviceCategory.PRINTER)){	
-				System.out.println(key);
 				return key;
 			}
 		}

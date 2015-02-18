@@ -1,6 +1,3 @@
-/**
- * 
- */
 package pl.com.impaq.main.enums;
 
 /**

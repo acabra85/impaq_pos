@@ -14,7 +14,7 @@ import pl.com.impaq.main.enums.DeviceCategory;
  * @author acs
  *
  */
-public class DeviceTypeTest {
+public class DeviceCategoryTest {
 
 	/**
 	 * @throws java.lang.Exception

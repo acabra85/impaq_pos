@@ -29,30 +29,34 @@ public class InvoiceDetailsCalculator {
 	 * @return invoiceDetail string containing the invoice to be printed
 	 */
 	public String getInvoiceDetails(ArrayList<Product> listProducts) {
-		double totalLastInvoice = 0.0;
-		double subTotalLastInvoice = 0.0;
-		String invoiceDetails = "";
-		StringBuffer sb = new StringBuffer(MessagesEnum.INVOICE_HEADER + "");
-		for (int i = 0; i < listProducts.size(); i++) {
-			subTotalLastInvoice += listProducts.get(i).getPrice();
-			sb.append(MessagesEnum.DISTANCE_INVOICE_INFO + "" + listProducts.get(i) + "\n");
-		}
-		if(tax != 0.0) {
-			subTotalLastInvoice = Math.round(subTotalLastInvoice*100.0)/100.0; //round subtotal
-			double taxCollected = subTotalLastInvoice*(tax/100.0);
-			taxCollected = Math.round(taxCollected*100.0)/100.0; // round tax collected
-			sb.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "" + MessagesEnum.TAX + "\t" + tax);
-			sb.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "" + MessagesEnum.SUBTOTAL + "\t" + subTotalLastInvoice);
-			sb.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "" + MessagesEnum.TAX_COLLECTED + "\t" + taxCollected);
-			totalLastInvoice = subTotalLastInvoice + taxCollected;
+		if(listProducts.size() > 0) {
+			double totalLastInvoice = 0.0;
+			double subTotalLastInvoice = 0.0;
+			String invoiceDetails = "";
+			StringBuffer sb = new StringBuffer(MessagesEnum.INVOICE_FOOTER + "");
+			for (int i = 0; i < listProducts.size(); i++) {
+				subTotalLastInvoice += listProducts.get(i).getPrice();
+				sb.append(MessagesEnum.DISTANCE_INVOICE_INFO + "" + listProducts.get(i) + "\n");
+			}
+			if(tax != 0.0) {
+				subTotalLastInvoice = Math.round(subTotalLastInvoice*100.0)/100.0; //round subtotal
+				double taxCollected = subTotalLastInvoice*(tax/100.0);
+				taxCollected = Math.round(taxCollected*100.0)/100.0; // round tax collected
+				sb.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "" + MessagesEnum.TAX + "\t" + tax);
+				sb.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "" + MessagesEnum.SUBTOTAL + "\t" + subTotalLastInvoice);
+				sb.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "" + MessagesEnum.TAX_COLLECTED + "\t" + taxCollected);
+				totalLastInvoice = subTotalLastInvoice + taxCollected;
+			} else {
+				totalLastInvoice = subTotalLastInvoice;
+			}
+			totalLastInvoice = Math.round(totalLastInvoice*100.0)/100.0; // round total
+			sb.append("\n" + MessagesEnum.DISTANCE_INVOICE_INFO + "Total:\t" + totalLastInvoice);
+			sb.append(MessagesEnum.INVOICE_FOOTER + "");
+			invoiceDetails = sb.toString();
+			return invoiceDetails;
 		} else {
-			totalLastInvoice = subTotalLastInvoice;
+			return "";
 		}
-		totalLastInvoice = Math.round(totalLastInvoice*100.0)/100.0; // round total
-		sb.append("\n" + MessagesEnum.DISTANCE_INVOICE_INFO + "Total:\t" + totalLastInvoice);
-		sb.append(MessagesEnum.INVOICE_FOOTER + "");
-		invoiceDetails = sb.toString();
-		return invoiceDetails;			
 	}
 	
 	/**
@@ -67,7 +71,8 @@ public class InvoiceDetailsCalculator {
 			total += p.getPrice();
 		}
 		double subtotal = Math.round(total*100.0)/100.0;
-		return subtotal + calculateTaxCollected(subtotal);
+		subtotal += calculateTaxCollected(subtotal);
+		return subtotal;
 	}
 	
 	/**

@@ -45,7 +45,7 @@ public class OutputView extends JFrame implements OutputCapable{
 		} else if(category.equals(DeviceCategory.DISPLAY)){
 			xIni = 455;
 			yIni = 100;
-			width = 99;
+			width = 70;
 			height = 39;
 		} else {
 			xIni = 10;
@@ -56,7 +56,6 @@ public class OutputView extends JFrame implements OutputCapable{
 		frame.setBounds(xIni, yIni, width, height);
 		deviceDisplay = new JTextArea(height-10, width-10);
 		deviceDisplay.setEditable(false);
-		deviceDisplay.append("......");
 		//2. Optional: What happens when the frame closes?
 		frame.setDefaultCloseOperation(closeWindow());		
 		JLabel lable = new JLabel(name);

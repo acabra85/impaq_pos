@@ -45,7 +45,7 @@ public class InputView extends JFrame implements InputCapable {
 		this.code = code;
 		this.category = category;
 		this.inputField = new JTextField();
-		this.inputField.setColumns(55);
+		this.inputField.setColumns(35);
 		this.inputField.setFont(new Font("Verdana", Font.BOLD, 15));
 		this.send = new JButton(MessagesEnum.SEND_INPUT+"");
 		this.send.setActionCommand("InputButton");
@@ -68,8 +68,11 @@ public class InputView extends JFrame implements InputCapable {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		xIni = 455;
 		yIni = 620;
-		width = 100;
+		width = 91;
 		height = 11;	
+		//TODO: Implementar SCROLL para los OUTPUT VIEW!!!!
+		//TODO: Pruebas unitarias a Vista
+		//TODO: Revisar pruebas pendientes
 		this.setBounds(xIni, yIni, width, height);
 		this.pack();
 		this.setVisible(true);

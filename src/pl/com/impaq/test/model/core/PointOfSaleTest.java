@@ -164,7 +164,7 @@ public class PointOfSaleTest {
 	@Test
 	public void testReceiveBarcodeEmpty() {
 		pos = PointOfSale.getInstance();		
-		assertEquals(pos.receiveBarcode(""), MessagesEnum.BARCODE_EMPTY + "" + MessagesEnum.WAIT_BARCODE_INPUT);
+		assertEquals(pos.receiveBarcode(""), MessagesEnum.BARCODE_EMPTY + "\n");
 		PointOfSale.dispose();
 	}
 
@@ -174,7 +174,7 @@ public class PointOfSaleTest {
 		ArrayList<Product> listP = new ArrayList<Product>();
 		listP.add(new Product("00", "test", 10.0, "00099"));
 		pos.addProductsList(listP);
-		assertEquals(pos.receiveBarcode("0000000"), MessagesEnum.BARCODE_NOT_FOUND + "" + MessagesEnum.WAIT_BARCODE_INPUT);
+		assertEquals(pos.receiveBarcode("0000000"), MessagesEnum.BARCODE_NOT_FOUND  + "\n");
 		PointOfSale.dispose();
 	}
 
@@ -184,7 +184,7 @@ public class PointOfSaleTest {
 		ArrayList<Product> listP = new ArrayList<Product>();
 		listP.add(new Product("00", "test", 10.0, "00099"));
 		pos.addProductsList(listP);
-		assertEquals(pos.receiveBarcode("00099"), MessagesEnum.DISTANCE_INVOICE_INFO + "" + listP.get(0)+ "" + MessagesEnum.WAIT_BARCODE_INPUT);
+		assertEquals(pos.receiveBarcode("00099"), MessagesEnum.DISTANCE_INVOICE_INFO + "" + listP.get(0)+ "\n");
 		PointOfSale.dispose();
 	}
 	

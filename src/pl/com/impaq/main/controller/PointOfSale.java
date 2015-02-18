@@ -118,21 +118,27 @@ public class PointOfSale {
 	 * @param listProducts list of products of the order
 	 */
 	public String getResults() {
-		StringBuffer result = new StringBuffer(); 
-		if(calculator.getTax() > 0.0) {
-			result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Tax %:\t" + calculator.getTax());
-			double subtotal = calculator.calculateOrderSubTotal(listProducts);
-			result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Subtotal:\t" + subtotal);
-			result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + 
-					"Tax Collected:\t" + calculator.calculateTaxCollected(subtotal) + "\n");
-		}
-		result.append(MessagesEnum.DISTANCE_INVOICE_INFO + "Total: \t"  + calculator.calculateOrderTotal(listProducts)+ "\n");
-		if(isDeviceUnplugged(DeviceCategory.PRINTER)) {
-			System.out.println(MessagesEnum.NO_PRINTER_FOUND.toString());
+		if(listProducts.size()>0) {
+			StringBuffer result = new StringBuffer(); 
+			if(calculator.getTax() > 0.0) {
+				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Tax %:\t" + calculator.getTax());
+				double subtotal = calculator.calculateOrderSubTotal(listProducts);
+				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Subtotal:\t" + subtotal);
+				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + 
+						"Tax Collected:\t" + calculator.calculateTaxCollected(subtotal) + "\n");
+			}
+			double orderTotal = calculator.calculateOrderTotal(listProducts);
+			result.append(MessagesEnum.DISTANCE_INVOICE_INFO + "Total: \t"  + Math.round(orderTotal*100.0)/100.0+ "\n");
+			result.append(MessagesEnum.INVOICE_FOOTER + "\n\n");
+			if(isDeviceUnplugged(DeviceCategory.PRINTER)) {
+				System.out.println(MessagesEnum.NO_PRINTER_FOUND.toString());
+			} else {
+				System.out.println(MessagesEnum.PRINTING_PRINTER + "\n");//update user on printing output device
+			}
+			return result.toString();
 		} else {
-			result.append(MessagesEnum.PRINTING_PRINTER + "\n");//update user on printing output device
+			return "";
 		}
-		return result.toString();
 	}
 	
 	/**
@@ -215,24 +221,15 @@ public class PointOfSale {
 	 */
 	public String receiveBarcode(String barCode) {
 		if(barCode.trim().length() == 0) {
-			return MessagesEnum.BARCODE_EMPTY + "" + MessagesEnum.WAIT_BARCODE_INPUT;
+			return MessagesEnum.BARCODE_EMPTY + "";
 		} else {
 			if(myProductManager.isBarCodeValid(barCode)){
 				listProducts.add(myProductManager.getProduct(barCode));
-				return MessagesEnum.DISTANCE_INVOICE_INFO + "" +
-						listProducts.get(listProducts.size()-1 ) + "" + MessagesEnum.WAIT_BARCODE_INPUT;
+				return "" + listProducts.get(listProducts.size()-1 ) + "\n";
 			} else {
-				return MessagesEnum.BARCODE_NOT_FOUND + "" + MessagesEnum.WAIT_BARCODE_INPUT;
+				return MessagesEnum.BARCODE_NOT_FOUND + "\n";
 			}
 		}		
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getWaitingInputMessage() {
-		return MessagesEnum.WAITING_MESSAGE + "" + MessagesEnum.WAIT_BARCODE_INPUT;
 	}
 
 	/**
@@ -289,5 +286,26 @@ public class PointOfSale {
 			return myProductManager.addProducts(listProducts);
 		}
 		return 0;
+	}
+
+	/**
+	 * 
+	 */
+	public void finishCurrentOrder() {
+		if(listProducts.size() > 0) {
+			storeOrder(listProducts);
+			listProducts = new ArrayList<Product>();
+		}
+	}
+
+	/**
+	 * This mocks the storage on the database in this case is a file stored on the folder invoices.
+	 * 
+	 * @param listProducts the products involved in the sale
+	 */
+	private void storeOrder(ArrayList<Product> listProducts2) {
+		if(listProducts2.size()>0) {
+			System.out.println("Storing in database the order");
+		}
 	}
 }
