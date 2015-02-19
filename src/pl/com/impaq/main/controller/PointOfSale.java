@@ -3,6 +3,7 @@ package pl.com.impaq.main.controller;
 import java.util.ArrayList;
 
 import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
+import pl.com.impaq.main.controller.devices.input.InputDevice;
 import pl.com.impaq.main.controller.devices.output.DisplayLCD;
 import pl.com.impaq.main.controller.devices.output.Printer;
 import pl.com.impaq.main.controller.managers.DeviceManager;
@@ -19,13 +20,10 @@ import pl.com.impaq.main.view.View;
 public class PointOfSale {
 	
 	private static final String CONFIG_FILE_NAME = "data/config/config.properties";
-	private Printer printer;
-	private BarCodeScanner scanner;
-	private DisplayLCD display;
 	private ProductsManager myProductManager;
 	private static DeviceManager myDeviceManager;
 	InvoiceDetailsCalculator calculator;
-	private ArrayList<Product> listProducts;
+	private ArrayList<Product> currentOrderList;
 	private static View myView;
 	private static PointOfSale instance;
 	
@@ -33,10 +31,7 @@ public class PointOfSale {
 	 * 
 	 */
 	private PointOfSale() {
-		printer = null;
-		scanner = null;
-		display = null;
-		listProducts = new ArrayList<Product>();
+		currentOrderList = new ArrayList<Product>();
 		calculator = new InvoiceDetailsCalculator();
 		myProductManager = new ProductsManager(); 
 	}
@@ -55,8 +50,8 @@ public class PointOfSale {
 	 * Creates the view and the devices manager
 	 */
 	private void setUp() {
-		myView = View.getInstance(this);
-		myDeviceManager = new DeviceManager(this);
+		setView(View.getInstance(this));
+		setDeviceManager(new DeviceManager());
 		setUpDevicesStub();
 		setUpProductsStub();
 	}
@@ -94,16 +89,22 @@ public class PointOfSale {
 
 	private void mapDevicesToView() {
 		if(myDeviceManager.getSizeOutputDevices()>0){
-			if(!isDisplayUnplugged())
-				myView.addDevice(display.getCode(), display.getName(), 
-						display.getCategory()+"",DeviceType.OUTPUT+"");	
+			if(!isDisplayUnplugged()) {
+				DisplayLCD display = myDeviceManager.getDisplayLCD();
+				myView.addDevice(
+						display.getCode(), 
+						display.getName(), 
+						display.getCategory()+"",DeviceType.OUTPUT+"");
+			}
 			if(!isPrinterUnplugged()){
+				Printer printer = myDeviceManager.getPrinter();
 				myView.addDevice(printer.getCode(), printer.getName(), 
 						printer.getCategory()+"",DeviceType.OUTPUT+"");
 				
 			}
 		}
 		if(myDeviceManager.getSizeInputDevices()>0){
+			BarCodeScanner scanner = myDeviceManager.getScanner();
 			if(!isScannerUnplugged()){
 				myView.addDevice(scanner.getCode(), scanner.getName(), 
 						scanner.getCategory()+"", DeviceType.INPUT+"");
@@ -114,20 +115,18 @@ public class PointOfSale {
 	/**
 	 * Based on a list of products, prints out on the display the total of the order 
 	 * and on the printer the invoice
-	 * 
-	 * @param listProducts list of products of the order
 	 */
 	public String getResults() {
-		if(listProducts.size()>0) {
+		if(currentOrderList.size()>0) {
 			StringBuffer result = new StringBuffer(); 
 			if(calculator.getTax() > 0.0) {
 				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Tax %:\t" + calculator.getTax());
-				double subtotal = calculator.calculateOrderSubTotal(listProducts);
+				double subtotal = calculator.calculateOrderSubTotal(currentOrderList);
 				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + "Subtotal:\t" + subtotal);
 				result.append("\n"+ MessagesEnum.DISTANCE_INVOICE_INFO + 
-						"Tax Collected:\t" + calculator.calculateTaxCollected(subtotal) + "\n");
+						MessagesEnum.TAX_COLLECTED + "\t" + calculator.calculateTaxCollected(subtotal) + "\n");
 			}
-			double orderTotal = calculator.calculateOrderTotal(listProducts);
+			double orderTotal = calculator.calculateOrderTotal(currentOrderList);
 			result.append(MessagesEnum.DISTANCE_INVOICE_INFO + "Total: \t"  + Math.round(orderTotal*100.0)/100.0+ "\n");
 			result.append(MessagesEnum.INVOICE_FOOTER + "\n\n");
 			if(isDeviceUnplugged(DeviceCategory.PRINTER)) {
@@ -146,31 +145,7 @@ public class PointOfSale {
 	 * @return
 	 */
 	public String getInvoiceResults() {		
-		return calculator.getInvoiceDetails(listProducts);
-	}
-
-	/**
-	 * Plugs a printer to the POS
-	 * @param printer the printer to be plugged
-	 */
-	public void plugPrinter(Printer device) {
-		if(device != null) this.printer = device;
-	}
-	
-	/**
-	 * Plugs a scanner to the POS
-	 * @param scanner the scanner to be plugged
-	 */
-	public void plugBarcodeScanner(BarCodeScanner device) {
-		if(device != null) this.scanner = device;
-	}
-	
-	/**
-	 * Plugs a display to the POS
-	 * @param display the display to be plugged
-	 */
-	public void plugDisplayLCD(DisplayLCD device) {
-		if(device != null) this.display = device;
+		return calculator.getInvoiceDetails(currentOrderList);
 	}
 
 	/**
@@ -180,29 +155,23 @@ public class PointOfSale {
 	 */
 	public boolean isDeviceUnplugged(DeviceCategory type) {
 		boolean unplugged = true;
+		if(myDeviceManager == null)
+			return true;
 		switch (type) {
 			case SCANNER:
-				unplugged = (scanner == null);
+				unplugged = (myDeviceManager.getScanner() == null);
 				break;
 			case PRINTER:
-				unplugged = (printer == null);
+				unplugged = (myDeviceManager.getPrinter() == null);
 				break;
 			case DISPLAY:
-				unplugged = (display == null);
+				unplugged = (myDeviceManager.getDisplayLCD() == null);
 				break;
 			default:
 				unplugged = true;
 				break;
 		}
 		return unplugged;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public BarCodeScanner getInputDevice() {
-		return scanner;
 	}
 
 	/**
@@ -219,13 +188,13 @@ public class PointOfSale {
 	 * @param barCode
 	 * @return
 	 */
-	public String receiveBarcode(String barCode) {
+	public String singleProductSale(String barCode) {
 		if(barCode.trim().length() == 0) {
 			return MessagesEnum.BARCODE_EMPTY + "";
 		} else {
 			if(myProductManager.isBarCodeValid(barCode)){
-				listProducts.add(myProductManager.getProduct(barCode));
-				return "" + listProducts.get(listProducts.size()-1 ) + "\n";
+				currentOrderList.add(myProductManager.getProduct(barCode));
+				return "" + currentOrderList.get(currentOrderList.size()-1 ) + "\n";
 			} else {
 				return MessagesEnum.BARCODE_NOT_FOUND + "\n";
 			}
@@ -291,21 +260,49 @@ public class PointOfSale {
 	/**
 	 * 
 	 */
-	public void finishCurrentOrder() {
-		if(listProducts.size() > 0) {
-			storeOrder(listProducts);
-			listProducts = new ArrayList<Product>();
+	public boolean finishCurrentOrder() {
+		if(currentOrderList.size() > 0) {
+			storeOrder(currentOrderList);
+			System.out.println(MessagesEnum.STARTING_NEW_ORDER+"");
+			currentOrderList = new ArrayList<Product>();
+			return true;
+		} else {
+			System.out.println(MessagesEnum.ORDER_LIST_EMPTY+"");
+			return false;
 		}
 	}
 
 	/**
 	 * This mocks the storage on the database in this case is a file stored on the folder invoices.
 	 * 
-	 * @param listProducts the products involved in the sale
+	 * @param currentOrderList the products involved in the sale
 	 */
 	private void storeOrder(ArrayList<Product> listProducts2) {
 		if(listProducts2.size()>0) {
 			System.out.println("Storing in database the order");
 		}
+	}
+	
+	/**
+	 * Sets the device manager for the POS
+	 * @param deviceManager the device manager to be stablished
+	 */
+	public void setDeviceManager(DeviceManager deviceManager) {
+		myDeviceManager = deviceManager;
+	}
+
+	/**
+	 * 
+	 * @param view
+	 */
+	public void setView(View view) {
+		PointOfSale.myView = view;
+	}
+	
+	/**
+	 * 
+	 */
+	public InputDevice getInputDevice(){
+		return myDeviceManager.getScanner();
 	}
 }

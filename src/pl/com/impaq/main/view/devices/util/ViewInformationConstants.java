@@ -4,7 +4,8 @@
 package pl.com.impaq.main.view.devices.util;
 
 /**
- * @author Agustin
+ * @author Agustin Cabra
+ * @version 1.0
  *
  */
 public class ViewInformationConstants {

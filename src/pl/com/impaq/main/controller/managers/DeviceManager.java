@@ -2,17 +2,17 @@ package pl.com.impaq.main.controller.managers;
 
 import java.util.HashMap;
 
-import pl.com.impaq.main.controller.PointOfSale;
 import pl.com.impaq.main.controller.devices.Device;
 import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
 import pl.com.impaq.main.controller.devices.output.DisplayLCD;
 import pl.com.impaq.main.controller.devices.output.Printer;
-import pl.com.impaq.main.enums.DeviceType;
 import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.DeviceType;
 
 /**
  * 
  * @author Agustin Cabra
+ * @version 1.0
  *
  */
 public class DeviceManager {
@@ -20,7 +20,6 @@ public class DeviceManager {
 
 	private HashMap<String, Device> inputDevices = new HashMap<String, Device>();
 	private HashMap<String, Device> outputDevices = new HashMap<String, Device>();
-	private PointOfSale thePOS;
 	private Printer printer;
 	private BarCodeScanner scanner;
 	private DisplayLCD display;
@@ -30,8 +29,7 @@ public class DeviceManager {
 	 * 
 	 * @param pos
 	 */
-	public DeviceManager(PointOfSale pos) {
-		this.thePOS = pos;
+	public DeviceManager() {
 	}
 	
 	/**
@@ -130,9 +128,6 @@ public class DeviceManager {
 			case SCANNER:
 				if(!inputDevices.containsKey(device.getCode())) {
 					inputDevices.put(device.getCode(), device);
-					if (thePOS.isDeviceUnplugged(DeviceCategory.SCANNER)) {
-						thePOS.plugBarcodeScanner((BarCodeScanner) device);
-					}
 					return true;
 				}
 				return false;
@@ -151,18 +146,12 @@ public class DeviceManager {
 			case PRINTER:
 				if(!outputDevices.containsKey(device.getCode())) {
 					outputDevices.put(device.getCode(), device);
-					if(thePOS.isDeviceUnplugged(DeviceCategory.PRINTER)) {
-						thePOS.plugPrinter((Printer) device);
-					}
 					return true;
 				}
 				return false;
 			case DISPLAY:
 				if(!outputDevices.containsKey(device.getCode())) {
-					outputDevices.put(device.getCode(), device);	
-					if(thePOS.isDeviceUnplugged(DeviceCategory.DISPLAY))  {
-						thePOS.plugDisplayLCD((DisplayLCD) device);
-					}
+					outputDevices.put(device.getCode(), device);
 					return true;
 				}
 				return false;
@@ -182,7 +171,6 @@ public class DeviceManager {
 				Device dev = outputDevices.get(key);
 				if(dev.getCategory().equals(DeviceCategory.PRINTER)){
 					printer = (Printer) dev;
-					thePOS.plugPrinter(printer);
 				}
 			}
 		}
@@ -199,7 +187,6 @@ public class DeviceManager {
 				Device dev = inputDevices.get(key);
 				if(dev.getCategory().equals(DeviceCategory.SCANNER)){
 					scanner =  (BarCodeScanner) dev;
-					thePOS.plugBarcodeScanner(scanner);
 				}
 			}			
 		}
@@ -216,7 +203,6 @@ public class DeviceManager {
 				Device dev = outputDevices.get(key);
 				if(dev.getCategory().equals(DeviceCategory.DISPLAY)){
 					display = (DisplayLCD) dev;
-					thePOS.plugDisplayLCD(display);
 				}
 			}
 		}

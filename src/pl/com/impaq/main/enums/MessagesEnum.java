@@ -133,10 +133,6 @@ public enum MessagesEnum {
     	@Override public String toString() {
     		return "                                          ********** SYSTEM BOOT INFO **********";
     	}
-    }, WAIT_BARCODE_INPUT {
-    	@Override public String toString() {
-    		return "\n___:";
-    	}
     }, DISTANCE_INVOICE_INFO {
     	@Override public String toString() {
     		return "             ";
@@ -160,6 +156,14 @@ public enum MessagesEnum {
     }, NO_DEVICE_TYPE_FOUND {
     	@Override public String toString() {
     		return "No device type found";
+    	}
+    }, STARTING_NEW_ORDER {
+    	@Override public String toString() {
+    		return "Starting new order, the order of products is being restored";
+    	}
+    }, ORDER_LIST_EMPTY {
+    	@Override public String toString() {
+    		return "Order list is empty, nothing to process";
     	}
     };
     
