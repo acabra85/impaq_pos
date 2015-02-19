@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.com.impaq.test.model;
+package pl.com.impaq.test.model.stubs;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,8 +32,7 @@ public class DevicesStubTest {
 	 */
 	@Test
 	public void testDevicesStubConfigFileExisting() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		new DevicesStub(dm, CONFIG_FILE);
 		assertEquals(dm.getSizeInputDevices()+dm.getSizeOutputDevices(), 3);
 		dm = null;
@@ -45,8 +44,7 @@ public class DevicesStubTest {
 	 */
 	@Test
 	public void testDevicesStubConfigFileNotExisting() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		new DevicesStub(dm, CONFIG_FILE+"fff");
 		assertEquals(dm.getSizeInputDevices()+dm.getSizeOutputDevices(), 0);
 		dm = null;
@@ -58,8 +56,7 @@ public class DevicesStubTest {
 	 */
 	@Test
 	public void testDevicesStubConfigFileNotWorking() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		new DevicesStub(dm, CONFIG_FILE+"fff");
 		assertEquals(dm.getSizeInputDevices()+dm.getSizeOutputDevices(), 0);
 		dm = null;
@@ -71,8 +68,7 @@ public class DevicesStubTest {
 	 */
 	@Test
 	public void testLoadDevicesFromInexsistentFile(){
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		DevicesStub dStub = new DevicesStub(dm, CONFIG_FILE+"fff");
 		dStub.loadDevices("", dm);
 		assertEquals(dm.getSizeInputDevices()+dm.getSizeOutputDevices(), 0);
@@ -86,8 +82,7 @@ public class DevicesStubTest {
 	 */
 	@Test
 	public void testLoadDevicesFromExistentMalformedFileInput(){
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		DevicesStub dStub = new DevicesStub(dm, CONFIG_FILE+"fff");
 		dStub.loadDevices("data/tests/testDevicesStubInput.txt", dm);
 		assertEquals(dm.getSizeInputDevices(), 1);
@@ -102,8 +97,7 @@ public class DevicesStubTest {
 	 */
 	@Test
 	public void testLoadDevicesFromExistentMalformedFileOutput(){
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		DevicesStub dStub = new DevicesStub(dm, CONFIG_FILE+"fff");
 		dStub.loadDevices("data/tests/testDevicesStubOutput.txt", dm);
 		assertEquals(dm.getSizeInputDevices(), 0);

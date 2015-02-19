@@ -71,7 +71,7 @@ public class PointOfSaleTest {
 	public void testStartView() {
 		pos = PointOfSale.getInstance();
 		pos.setView(View.getInstance(pos));
-		DeviceManager deviceManager = new DeviceManager(pos);
+		DeviceManager deviceManager = new DeviceManager();
 		pos.setDeviceManager(deviceManager);
 		new DevicesStub(deviceManager, CONFIG_FILE);
 		pos.startView();
@@ -95,7 +95,9 @@ public class PointOfSaleTest {
 	public void testGetResultsWithPrinterPlugged() {
 		pos = PointOfSale.getInstance();
 		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.PRINTER);
-		pos.plugPrinter(printer);
+		DeviceManager deviceManager = new DeviceManager();
+		pos.setDeviceManager(deviceManager);
+		deviceManager.addOutputDevice(printer);
 		assertEquals(pos.getResults().length(), 0);
 		PointOfSale.dispose();
 	}
@@ -106,7 +108,6 @@ public class PointOfSaleTest {
 	@Test
 	public void testGetResultsWithoutPrinterPlugged() {
 		pos = PointOfSale.getInstance();	
-		pos.plugPrinter(null);
 		String invoiceResults = pos.getResults();		
 		assertEquals(invoiceResults.length(), 0);
 		PointOfSale.dispose();
@@ -118,7 +119,6 @@ public class PointOfSaleTest {
 	@Test
 	public void testGetResultsWithoutPrinterPluggedListProducts() {		
 		pos = PointOfSale.getInstance();
-		pos.plugPrinter(null);
 		ArrayList<Product> listProducts = new ArrayList<Product>();
 		listProducts.add(new Product("00", "test", 10.0, "00099"));
 		listProducts.add(new Product("001", "test1", 20.0, "00019"));
@@ -139,7 +139,9 @@ public class PointOfSaleTest {
 	public void testGetResultsWithPrinterPluggedListProducts() {		
 		pos = PointOfSale.getInstance();
 		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.PRINTER);
-		pos.plugPrinter(printer);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addOutputDevice(printer);
 		ArrayList<Product> listProducts = new ArrayList<Product>();
 		listProducts.add(new Product("00", "test", 10.0, "00099"));
 		listProducts.add(new Product("001", "test1", 20.0, "00019"));
@@ -169,7 +171,6 @@ public class PointOfSaleTest {
 		pos.receiveBarcode(listProducts.get(1).getBarCode());
 		pos.receiveBarcode(listProducts.get(0).getBarCode());
 		String result = pos.getResults();	
-		pos.plugPrinter(null);	
 		assertEquals(result.length(), 188);
 		PointOfSale.dispose();
 	}
@@ -181,7 +182,9 @@ public class PointOfSaleTest {
 	public void testGetResultsWithPrinterPluggedWithoutTax() {
 		pos = PointOfSale.getInstance();
 		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.PRINTER);
-		pos.plugPrinter(printer);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addOutputDevice(printer);
 		String result = pos.getResults();
 		assertEquals(result.length(), 0);
 		PointOfSale.dispose();
@@ -219,7 +222,9 @@ public class PointOfSaleTest {
 	public void testPlugPrinter() {
 		pos = PointOfSale.getInstance();
 		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.getCategory("PRINTER"));
-		pos.plugPrinter(printer);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addOutputDevice(printer);;
 		assertFalse(pos.isPrinterUnplugged());
 		PointOfSale.dispose();
 	}
@@ -230,7 +235,6 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugPrinterNull() {
 		pos = PointOfSale.getInstance();
-		pos.plugPrinter(null);
 		assertTrue(pos.isPrinterUnplugged());
 		PointOfSale.dispose();
 	}
@@ -242,7 +246,9 @@ public class PointOfSaleTest {
 	public void testPlugBarcodeScanner() {
 		pos = PointOfSale.getInstance();
 		BarCodeScanner scanner = new BarCodeScanner("0002", "scanner", "desc", DeviceCategory.getCategory("SCANNER"));
-		pos.plugBarcodeScanner(scanner);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addInputDevice(scanner);
 		assertFalse(pos.isScannerUnplugged());
 		PointOfSale.dispose();
 	}
@@ -253,7 +259,6 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugBarcodeScannerNull() {
 		pos = PointOfSale.getInstance();
-		pos.plugBarcodeScanner(null);
 		assertTrue(pos.isScannerUnplugged());
 		PointOfSale.dispose();
 	}
@@ -265,7 +270,9 @@ public class PointOfSaleTest {
 	public void testPlugDisplayLCD() {
 		pos = PointOfSale.getInstance();
 		DisplayLCD display = new DisplayLCD("0003", "display", "desc", DeviceCategory.getCategory("DISPLAY"));
-		pos.plugDisplayLCD(display);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addOutputDevice(display);
 		assertFalse(pos.isDisplayUnplugged());
 		PointOfSale.dispose();
 	}
@@ -276,7 +283,6 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugDisplayLCDNull() {
 		pos = PointOfSale.getInstance();
-		pos.plugDisplayLCD(null);
 		assertTrue(pos.isDisplayUnplugged());
 		PointOfSale.dispose();
 	}
@@ -287,9 +293,11 @@ public class PointOfSaleTest {
 	@Test
 	public void testPlugDisplayOtherDevice() {
 		pos = PointOfSale.getInstance();
-		DisplayLCD scanner = new DisplayLCD("0003", "display", "desc", DeviceCategory.getCategory("OTROS") );
-		pos.plugDisplayLCD(scanner);
-		assertFalse(pos.isDisplayUnplugged());
+		DisplayLCD display = new DisplayLCD("0003", "display", "desc", DeviceCategory.getCategory("OTROS") );
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addOutputDevice(display);
+		assertTrue(pos.isDisplayUnplugged());
 		PointOfSale.dispose();
 	}
 
@@ -310,7 +318,9 @@ public class PointOfSaleTest {
 	public void testGetInputDevice() {
 		pos = PointOfSale.getInstance();
 		BarCodeScanner scanner = new BarCodeScanner("0001", "scanner", "desc", DeviceCategory.getCategory("SCANNER"));
-		pos.plugBarcodeScanner(scanner);
+		DeviceManager deviceManager = new DeviceManager();
+		pos.setDeviceManager(deviceManager);
+		deviceManager.addInputDevice(scanner);
 		assertEquals(pos.getInputDevice(), scanner);
 		PointOfSale.dispose();
 	}
@@ -379,7 +389,9 @@ public class PointOfSaleTest {
 		pos = PointOfSale.getInstance();
 		Printer printer = new Printer("0001", "printer", "desc", DeviceCategory.getCategory("PRINTER"));
 		assertTrue(pos.isPrinterUnplugged());
-		pos.plugPrinter(printer);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addOutputDevice(printer);
 		assertFalse(pos.isPrinterUnplugged());
 		PointOfSale.dispose();
 	}
@@ -392,7 +404,9 @@ public class PointOfSaleTest {
 		pos = PointOfSale.getInstance();
 		DisplayLCD display = new DisplayLCD("0003", "display", "desc", DeviceCategory.getCategory("DISPLAY") );
 		assertTrue(pos.isPrinterUnplugged());
-		pos.plugDisplayLCD(display);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addOutputDevice(display);
 		assertFalse(pos.isDisplayUnplugged());
 		PointOfSale.dispose();
 	}
@@ -405,7 +419,9 @@ public class PointOfSaleTest {
 		pos = PointOfSale.getInstance();
 		BarCodeScanner scanner = new BarCodeScanner("0002", "scanner", "desc", DeviceCategory.getCategory("SCANNER"));
 		assertTrue(pos.isScannerUnplugged());
-		pos.plugBarcodeScanner(scanner);
+		DeviceManager dm = new DeviceManager();
+		pos.setDeviceManager(dm);
+		dm.addInputDevice(scanner);
 		assertFalse(pos.isScannerUnplugged());
 		PointOfSale.dispose();
 	}

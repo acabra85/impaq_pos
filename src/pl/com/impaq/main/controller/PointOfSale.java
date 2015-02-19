@@ -3,6 +3,7 @@ package pl.com.impaq.main.controller;
 import java.util.ArrayList;
 
 import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
+import pl.com.impaq.main.controller.devices.input.InputDevice;
 import pl.com.impaq.main.controller.devices.output.DisplayLCD;
 import pl.com.impaq.main.controller.devices.output.Printer;
 import pl.com.impaq.main.controller.managers.DeviceManager;
@@ -19,9 +20,6 @@ import pl.com.impaq.main.view.View;
 public class PointOfSale {
 	
 	private static final String CONFIG_FILE_NAME = "data/config/config.properties";
-	private Printer printer;
-	private BarCodeScanner scanner;
-	private DisplayLCD display;
 	private ProductsManager myProductManager;
 	private static DeviceManager myDeviceManager;
 	InvoiceDetailsCalculator calculator;
@@ -33,9 +31,6 @@ public class PointOfSale {
 	 * 
 	 */
 	private PointOfSale() {
-		printer = null;
-		scanner = null;
-		display = null;
 		listProducts = new ArrayList<Product>();
 		calculator = new InvoiceDetailsCalculator();
 		myProductManager = new ProductsManager(); 
@@ -56,7 +51,7 @@ public class PointOfSale {
 	 */
 	private void setUp() {
 		setView(View.getInstance(this));
-		setDeviceManager(new DeviceManager(this));
+		setDeviceManager(new DeviceManager());
 		setUpDevicesStub();
 		setUpProductsStub();
 	}
@@ -94,18 +89,22 @@ public class PointOfSale {
 
 	private void mapDevicesToView() {
 		if(myDeviceManager.getSizeOutputDevices()>0){
-			if(!isDisplayUnplugged())
+			if(!isDisplayUnplugged()) {
+				DisplayLCD display = myDeviceManager.getDisplayLCD();
 				myView.addDevice(
 						display.getCode(), 
 						display.getName(), 
-						display.getCategory()+"",DeviceType.OUTPUT+"");	
+						display.getCategory()+"",DeviceType.OUTPUT+"");
+			}
 			if(!isPrinterUnplugged()){
+				Printer printer = myDeviceManager.getPrinter();
 				myView.addDevice(printer.getCode(), printer.getName(), 
 						printer.getCategory()+"",DeviceType.OUTPUT+"");
 				
 			}
 		}
 		if(myDeviceManager.getSizeInputDevices()>0){
+			BarCodeScanner scanner = myDeviceManager.getScanner();
 			if(!isScannerUnplugged()){
 				myView.addDevice(scanner.getCode(), scanner.getName(), 
 						scanner.getCategory()+"", DeviceType.INPUT+"");
@@ -150,59 +149,29 @@ public class PointOfSale {
 	}
 
 	/**
-	 * Plugs a printer to the POS
-	 * @param printer the printer to be plugged
-	 */
-	public void plugPrinter(Printer device) {
-		if(device != null) this.printer = device;
-	}
-	
-	/**
-	 * Plugs a scanner to the POS
-	 * @param scanner the scanner to be plugged
-	 */
-	public void plugBarcodeScanner(BarCodeScanner device) {
-		if(device != null) this.scanner = device;
-	}
-	
-	/**
-	 * Plugs a display to the POS
-	 * @param display the display to be plugged
-	 */
-	public void plugDisplayLCD(DisplayLCD device) {
-		if(device != null) this.display = device;
-	}
-
-	/**
 	 * 
 	 * @param type the type of the device to check
 	 * @return boolean indicating whether or not the device is plugged
 	 */
 	public boolean isDeviceUnplugged(DeviceCategory type) {
 		boolean unplugged = true;
+		if(myDeviceManager == null)
+			return true;
 		switch (type) {
 			case SCANNER:
-				unplugged = (scanner == null);
+				unplugged = (myDeviceManager.getScanner() == null);
 				break;
 			case PRINTER:
-				unplugged = (printer == null);
+				unplugged = (myDeviceManager.getPrinter() == null);
 				break;
 			case DISPLAY:
-				unplugged = (display == null);
+				unplugged = (myDeviceManager.getDisplayLCD() == null);
 				break;
 			default:
 				unplugged = true;
 				break;
 		}
 		return unplugged;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public BarCodeScanner getInputDevice() {
-		return scanner;
 	}
 
 	/**
@@ -328,5 +297,12 @@ public class PointOfSale {
 	 */
 	public void setView(View view) {
 		PointOfSale.myView = view;
+	}
+	
+	/**
+	 * 
+	 */
+	public InputDevice getInputDevice(){
+		return myDeviceManager.getScanner();
 	}
 }

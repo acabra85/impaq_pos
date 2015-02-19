@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.com.impaq.test.view;
+package pl.com.impaq.test.view.devices.input;
 
 import static org.junit.Assert.*;
 

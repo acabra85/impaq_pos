@@ -1,4 +1,4 @@
-package pl.com.impaq.test.model;
+package pl.com.impaq.test.model.stubs;
 
 import static org.junit.Assert.assertEquals;
 

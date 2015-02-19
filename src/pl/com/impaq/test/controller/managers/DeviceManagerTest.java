@@ -1,4 +1,4 @@
-package pl.com.impaq.test.model;
+package pl.com.impaq.test.controller.managers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,8 +28,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testCreateDevice() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		assertTrue(dm.createDevice("002", "test", "test scanner desc", 
 				DeviceCategory.getCategory("SCANNER"), DeviceType.getType("INPUT")));
 		assertTrue(dm.createDevice("003", "test", "test scanner desc", 
@@ -63,8 +62,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testAddInputDevice() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		BarCodeScanner barScanner = new BarCodeScanner("002", "test", "test scanner desc", DeviceCategory.getCategory("SCANNER"));
 		BarCodeScanner barScanner2 = new BarCodeScanner("002", "test", "test scanner desc", DeviceCategory.getCategory("SCANNER"));
 		dm.addInputDevice(barScanner);
@@ -81,8 +79,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testAddInputDeviceNonCategory() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		BarCodeScanner barScanner = new BarCodeScanner("002", "test", "test scanner desc", DeviceCategory.getCategory("SDSD"));
 		BarCodeScanner barScanner2 = new BarCodeScanner("002", "test", "test scanner desc", DeviceCategory.getCategory("SDSD"));
 		dm.addInputDevice(barScanner);
@@ -99,10 +96,8 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testAddInputDeviceManuallyPlugScannerToPOS() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		BarCodeScanner barScanner = new BarCodeScanner("002", "test", "test scanner desc", DeviceCategory.getCategory("SCANNER"));
-		pos.plugBarcodeScanner(barScanner);
 		BarCodeScanner barScanner2 = new BarCodeScanner("002", "test", "test scanner desc", DeviceCategory.getCategory("SCANNER"));
 		dm.addInputDevice(barScanner);
 		dm.addInputDevice(barScanner2);
@@ -118,8 +113,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testAddOutputDevices() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		Printer printer = new Printer("002", "test", "test scanner desc", DeviceCategory.getCategory("PRINTER"));
 		Printer printer2 = new Printer("002", "test", "test scanner desc", DeviceCategory.getCategory("PRINTER"));
 		DisplayLCD display = new DisplayLCD("003", "test", "test scanner desc", DeviceCategory.getCategory("DISPLAY"));
@@ -140,13 +134,10 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testAddOutPutDeviceManuallyPlugPrinterToPOS() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		Printer printer = new Printer("002", "test", "test scanner desc", DeviceCategory.getCategory("PRINTER"));
 		Printer printer2 = new Printer("002", "test", "test scanner desc", DeviceCategory.getCategory("PRINTER"));
 		Printer printer3 = new Printer("004", "test", "test scanner desc", DeviceCategory.getCategory("PRINTER"));
-		pos.plugPrinter(printer2);
-		pos.plugPrinter(printer3);
 		dm.addOutputDevice(printer);
 		dm.addOutputDevice(printer);
 		dm.addOutputDevice(printer2);
@@ -163,12 +154,9 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testAddOutPutDeviceManuallyPlugDisplayToPOS() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		DisplayLCD display2 = new DisplayLCD("004", "test", "test scanner desc", DeviceCategory.getCategory("DISPLAY"));
-		pos.plugDisplayLCD(display2);
 		DisplayLCD display3 = new DisplayLCD("003", "test", "test scanner desc", DeviceCategory.getCategory("DISPLAY"));
-		pos.plugDisplayLCD(display3);
 		dm.addOutputDevice(display3);
 		dm.addOutputDevice(display2);
 		assertEquals(dm.getSizeOutputDevices(), 2);
@@ -181,8 +169,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testAddOutputDevicesNonCategory() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		Printer printer = new Printer("002", "test", "test scanner desc", DeviceCategory.getCategory("SDSD"));
 		DisplayLCD display = new DisplayLCD("002", "test", "test scanner desc", DeviceCategory.getCategory("SDSD"));
 		dm.addOutputDevice(printer);
@@ -199,8 +186,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetPrinterInexistent() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		assertEquals(dm.getPrinter(), null);
 		dm = null;
 		PointOfSale.dispose();
@@ -211,8 +197,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetPrinter() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		Printer printer = new Printer("00", "printer", "desc printer", DeviceCategory.getCategory("PRINTER"));
 		dm.addOutputDevice(printer);
 		assertEquals(dm.getPrinter(), printer);
@@ -225,8 +210,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetPrinterSecond() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		Printer printer3 = new Printer("03", "printer", "desc printer", DeviceCategory.getCategory("PRINTER"));
 		Printer printer = new Printer("00", "printer", "desc printer", DeviceCategory.getCategory("PRINTER"));
 		Printer printer2 = new Printer("01", "printer", "desc printer", DeviceCategory.getCategory("PRINTER"));
@@ -243,8 +227,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetScannerInexistent() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		assertEquals(dm.getScanner(), null);
 		dm = null;
 		PointOfSale.dispose();
@@ -255,8 +238,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetScanner() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		BarCodeScanner scanner = new BarCodeScanner("00", "scanner", "desc scanner", DeviceCategory.getCategory("SCANNER"));
 		dm.addInputDevice(scanner);
 		assertEquals(dm.getScanner(), scanner);
@@ -269,8 +251,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetScannerSecond() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		BarCodeScanner scanner = new BarCodeScanner("00", "scanner", "desc scanner", DeviceCategory.getCategory("SCANNER"));
 		BarCodeScanner scanner2 = new BarCodeScanner("01", "scanner", "desc scanner", DeviceCategory.getCategory("SCANNER"));
 		BarCodeScanner scanner3 = new BarCodeScanner("02", "scanner", "desc scanner", DeviceCategory.getCategory("SCANNER"));
@@ -287,8 +268,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetDisplayLCDInexistent() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		assertEquals(dm.getDisplayLCD(), null);
 		dm = null;
 		PointOfSale.dispose();
@@ -299,8 +279,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetDisplayLCD() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		DisplayLCD display = new DisplayLCD("000", "display", "description", DeviceCategory.getCategory("DISPLAY"));
 		dm.addOutputDevice(display);
 		assertEquals(dm.getDisplayLCD(), display);
@@ -313,8 +292,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetDisplayLCDSecond() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		DisplayLCD display = new DisplayLCD("000", "display", "description", DeviceCategory.getCategory("DISPLAY"));
 		DisplayLCD display2 = new DisplayLCD("001", "display", "description", DeviceCategory.getCategory("DISPLAY"));
 		DisplayLCD display3 = new DisplayLCD("002", "display", "description", DeviceCategory.getCategory("DISPLAY"));
@@ -331,8 +309,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetSizeInputDevices() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		BarCodeScanner scanner3 = new BarCodeScanner("02", "scanner", "desc scanner", DeviceCategory.getCategory("SCANNER"));
 		dm.addInputDevice(scanner3);
 		assertEquals(dm.getSizeInputDevices(), 1);
@@ -345,8 +322,7 @@ public class DeviceManagerTest {
 	 */
 	@Test
 	public void testGetSizeOutputDevices() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		DisplayLCD display = new DisplayLCD("000", "display", "description", DeviceCategory.getCategory("DISPLAY"));
 		DisplayLCD display2 = new DisplayLCD("001", "display", "description", DeviceCategory.getCategory("DISPLAY"));
 		DisplayLCD display3 = new DisplayLCD("002", "display", "description", DeviceCategory.getCategory("DISPLAY"));
@@ -360,8 +336,7 @@ public class DeviceManagerTest {
 
 	@Test
 	public void testCreateOutputDevice() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);		
+		DeviceManager dm = new DeviceManager();		
 		assertFalse(dm.createOutputDevice("", "test", "desc_test", DeviceCategory.getCategory("UNKNOWN")));
 		assertFalse(dm.createOutputDevice("0903", "test", "desc_test", DeviceCategory.getCategory("UNKNOWN")));
 		assertFalse(dm.createOutputDevice("", "test", "desc_test", DeviceCategory.getCategory("PRINTER")));
@@ -378,8 +353,7 @@ public class DeviceManagerTest {
 
 	@Test
 	public void testCreateInputDevice() {
-		PointOfSale pos = PointOfSale.getInstance();
-		DeviceManager dm = new DeviceManager(pos);
+		DeviceManager dm = new DeviceManager();
 		assertTrue(dm.createInputDevice("0004", "test", "desc_test", DeviceCategory.getCategory("SCANNER")));
 		assertTrue(dm.createInputDevice("00055", "test", "desc_test", DeviceCategory.getCategory("SCANNER")));
 		assertFalse(dm.createInputDevice("0004", "test", "desc_test", DeviceCategory.getCategory("SCANNER")));

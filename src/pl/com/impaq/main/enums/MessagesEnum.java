@@ -133,10 +133,6 @@ public enum MessagesEnum {
     	@Override public String toString() {
     		return "                                          ********** SYSTEM BOOT INFO **********";
     	}
-    }, WAIT_BARCODE_INPUT {
-    	@Override public String toString() {
-    		return "\n___:";
-    	}
     }, DISTANCE_INVOICE_INFO {
     	@Override public String toString() {
     		return "             ";

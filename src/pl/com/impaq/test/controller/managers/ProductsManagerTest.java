@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.com.impaq.test.model;
+package pl.com.impaq.test.controller.managers;
 
 import static org.junit.Assert.*;
 
