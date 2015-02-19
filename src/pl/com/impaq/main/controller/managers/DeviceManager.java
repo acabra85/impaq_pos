@@ -12,6 +12,7 @@ import pl.com.impaq.main.enums.DeviceType;
 /**
  * 
  * @author Agustin Cabra
+ * @version 1.0
  *
  */
 public class DeviceManager {

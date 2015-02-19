@@ -124,9 +124,9 @@ public class PointOfSaleTest {
 		listProducts.add(new Product("001", "test1", 20.0, "00019"));
 		listProducts.add(new Product("002", "test2", 30.0, "00029"));
 		assertEquals(pos.addProductsList(listProducts), 3);
-		pos.receiveBarcode(listProducts.get(2).getBarCode());
-		pos.receiveBarcode(listProducts.get(1).getBarCode());
-		pos.receiveBarcode(listProducts.get(0).getBarCode());
+		pos.singleProductSale(listProducts.get(2).getBarCode());
+		pos.singleProductSale(listProducts.get(1).getBarCode());
+		pos.singleProductSale(listProducts.get(0).getBarCode());
 		String invoiceResults = pos.getResults();
 		assertEquals(invoiceResults.length(), 102);
 		PointOfSale.dispose();
@@ -147,9 +147,9 @@ public class PointOfSaleTest {
 		listProducts.add(new Product("001", "test1", 20.0, "00019"));
 		listProducts.add(new Product("002", "test2", 30.0, "00029"));
 		assertEquals(pos.addProductsList(listProducts), 3);
-		pos.receiveBarcode(listProducts.get(2).getBarCode());
-		pos.receiveBarcode(listProducts.get(1).getBarCode());
-		pos.receiveBarcode(listProducts.get(0).getBarCode());
+		pos.singleProductSale(listProducts.get(2).getBarCode());
+		pos.singleProductSale(listProducts.get(1).getBarCode());
+		pos.singleProductSale(listProducts.get(0).getBarCode());
 		String invoiceResults = pos.getResults();
 		assertEquals(invoiceResults.length(), 102);
 		PointOfSale.dispose();
@@ -167,9 +167,9 @@ public class PointOfSaleTest {
 		listProducts.add(new Product("001", "test1", 20.0, "00019"));
 		listProducts.add(new Product("002", "test2", 30.0, "00029"));
 		assertEquals(pos.addProductsList(listProducts), 3);
-		pos.receiveBarcode(listProducts.get(2).getBarCode());
-		pos.receiveBarcode(listProducts.get(1).getBarCode());
-		pos.receiveBarcode(listProducts.get(0).getBarCode());
+		pos.singleProductSale(listProducts.get(2).getBarCode());
+		pos.singleProductSale(listProducts.get(1).getBarCode());
+		pos.singleProductSale(listProducts.get(0).getBarCode());
 		String result = pos.getResults();	
 		assertEquals(result.length(), 188);
 		PointOfSale.dispose();
@@ -346,17 +346,17 @@ public class PointOfSaleTest {
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.controller.PointOfSale#receiveBarcode(java.lang.String)}.
+	 * Test method for {@link pl.com.impaq.main.controller.PointOfSale#singleProductSale(java.lang.String)}.
 	 */
 	@Test
 	public void testReceiveBarcodeEmpty() {
 		pos = PointOfSale.getInstance();		
-		assertEquals(pos.receiveBarcode(""), MessagesEnum.BARCODE_EMPTY + "");
+		assertEquals(pos.singleProductSale(""), MessagesEnum.BARCODE_EMPTY + "");
 		PointOfSale.dispose();
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.controller.PointOfSale#receiveBarcode(java.lang.String)}.
+	 * Test method for {@link pl.com.impaq.main.controller.PointOfSale#singleProductSale(java.lang.String)}.
 	 */
 	@Test
 	public void testReceiveBarcodeInvalid() {
@@ -364,12 +364,12 @@ public class PointOfSaleTest {
 		ArrayList<Product> listP = new ArrayList<Product>();
 		listP.add(new Product("00", "test", 10.0, "00099"));
 		pos.addProductsList(listP);
-		assertEquals(pos.receiveBarcode("0000000"), MessagesEnum.BARCODE_NOT_FOUND  + "\n");
+		assertEquals(pos.singleProductSale("0000000"), MessagesEnum.BARCODE_NOT_FOUND  + "\n");
 		PointOfSale.dispose();
 	}
 
 	/**
-	 * Test method for {@link pl.com.impaq.main.controller.PointOfSale#receiveBarcode(java.lang.String)}.
+	 * Test method for {@link pl.com.impaq.main.controller.PointOfSale#singleProductSale(java.lang.String)}.
 	 */
 	@Test
 	public void testReceiveBarcodeValid() {
@@ -377,7 +377,7 @@ public class PointOfSaleTest {
 		ArrayList<Product> listP = new ArrayList<Product>();
 		listP.add(new Product("00", "test", 10.0, "00099"));
 		pos.addProductsList(listP);
-		assertEquals(pos.receiveBarcode("00099"), "" + listP.get(0)+ "\n");
+		assertEquals(pos.singleProductSale("00099"), "" + listP.get(0)+ "\n");
 		PointOfSale.dispose();
 	}
 
@@ -439,10 +439,10 @@ public class PointOfSaleTest {
 		listP.add(new Product("00", "test", 10.0, "00088"));
 		listP.add(new Product("00", "test", 10.0, "00088"));
 		assertEquals(pos.addProductsList(listP), 2); //validate the products loaded
-		pos.receiveBarcode(listP.get(0).getBarCode());
-		pos.receiveBarcode(listP.get(2).getBarCode());
-		pos.receiveBarcode(listP.get(0).getBarCode());
-		pos.receiveBarcode(listP.get(2).getBarCode());
+		pos.singleProductSale(listP.get(0).getBarCode());
+		pos.singleProductSale(listP.get(2).getBarCode());
+		pos.singleProductSale(listP.get(0).getBarCode());
+		pos.singleProductSale(listP.get(2).getBarCode());
 		assertTrue(pos.finishCurrentOrder()); //validate current order
 		PointOfSale.dispose();
 		

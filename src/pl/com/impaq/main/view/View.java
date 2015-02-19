@@ -119,7 +119,7 @@ public class View {
 				System.out.println(MessagesEnum.NO_DISPLAY_FOUND+"");
 				return ViewInformationConstants.NO_DISPLAY_FOUND_SCANNING_PRODUCT;
 			} else{
-				String receiveBarcode = myPOS.receiveBarcode(barCode);
+				String receiveBarcode = myPOS.singleProductSale(barCode);
 				myOutputComponents.get(keyDisplay).print(receiveBarcode);
 				return ViewInformationConstants.PRODUCT_INFO_DISPLAYED;
 			}

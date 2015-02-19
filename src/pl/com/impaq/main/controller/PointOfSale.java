@@ -188,7 +188,7 @@ public class PointOfSale {
 	 * @param barCode
 	 * @return
 	 */
-	public String receiveBarcode(String barCode) {
+	public String singleProductSale(String barCode) {
 		if(barCode.trim().length() == 0) {
 			return MessagesEnum.BARCODE_EMPTY + "";
 		} else {
