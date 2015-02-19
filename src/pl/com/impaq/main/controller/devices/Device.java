@@ -1,7 +1,13 @@
 package pl.com.impaq.main.controller.devices;
 
 import pl.com.impaq.main.enums.DeviceCategory;
-
+/**
+ * 
+ * @author Agustin Cabra
+ * @version 1.0
+ *
+ *Abstract class representing the basic information from a Device
+ */
 public abstract class Device {
 	protected String name;
 	protected String code;

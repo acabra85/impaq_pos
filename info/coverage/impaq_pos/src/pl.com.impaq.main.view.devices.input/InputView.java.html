@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>InputView.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.main.view.devices.input</a> &gt; <span class="el_source">InputView.java</span></div><h1>InputView.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package pl.com.impaq.main.view.devices.input;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.MessagesEnum;
+import pl.com.impaq.main.view.View;
+
+/**
+ * @author Agustin Cabra
+ * @version 1.0
+ */
+public class InputView extends JFrame implements InputCapable {
+
+	/**
+	 * Serialization id
+	 */
+	private static final long serialVersionUID = -1062394476785328056L;
+	private String name;
+	private String code;
+	private DeviceCategory category;
+	private JButton send;
+	private JTextField inputField;
+	private InputHandler handler;
+	private int xIni;
+	private int yIni;
+	private int width;
+	private int height; 
+
+	public InputView(String code, String name, DeviceCategory category, View view){
+
+<span class="fc" id="L43">		super(name);</span>
+<span class="fc" id="L44">		this.name = name;</span>
+<span class="fc" id="L45">		this.code = code;</span>
+<span class="fc" id="L46">		this.category = category;</span>
+<span class="fc" id="L47">		this.inputField = new JTextField();</span>
+<span class="fc" id="L48">		this.inputField.setColumns(35);</span>
+<span class="fc" id="L49">		this.inputField.setFont(new Font(&quot;Verdana&quot;, Font.BOLD, 15));</span>
+<span class="fc" id="L50">		this.send = new JButton(MessagesEnum.SEND_INPUT+&quot;&quot;);</span>
+<span class="fc" id="L51">		this.send.setActionCommand(&quot;InputButton&quot;);</span>
+<span class="fc" id="L52">		handler = new InputHandler(view, this);</span>
+<span class="fc" id="L53">		send.addActionListener(handler);</span>
+<span class="fc" id="L54">		inputField.setActionCommand(&quot;TextInput&quot;);</span>
+<span class="fc" id="L55">		inputField.addKeyListener(handler);</span>
+<span class="fc" id="L56">		JPanel myPanel = new JPanel();</span>
+<span class="fc" id="L57">		myPanel.setLayout(new FlowLayout());</span>
+<span class="fc" id="L58">		this.setLayout(new BorderLayout());</span>
+		
+<span class="fc" id="L60">		myPanel.add(inputField);</span>
+<span class="fc" id="L61">		myPanel.add(send);</span>
+<span class="fc" id="L62">		this.getContentPane().add(myPanel, BorderLayout.CENTER);</span>
+		
+<span class="fc" id="L64">		JLabel lable = new JLabel(MessagesEnum.WAITING_MESSAGE+&quot;&quot;);</span>
+<span class="fc" id="L65">		this.getContentPane().add(lable, BorderLayout.NORTH);</span>
+
+<span class="fc" id="L67">		this.setDefaultCloseOperation(closeWindow());</span>
+<span class="fc" id="L68">		JFrame.setDefaultLookAndFeelDecorated(true);</span>
+<span class="fc" id="L69">		xIni = 455;</span>
+<span class="fc" id="L70">		yIni = 620;</span>
+<span class="fc" id="L71">		width = 91;</span>
+<span class="fc" id="L72">		height = 11;	</span>
+		//TODO: Implementar SCROLL para los OUTPUT VIEW!!!!
+		//TODO: Pruebas unitarias a Vista
+		//TODO: Revisar pruebas pendientes
+<span class="fc" id="L76">		this.setBounds(xIni, yIni, width, height);</span>
+<span class="fc" id="L77">		this.pack();</span>
+<span class="fc" id="L78">		this.setVisible(true);</span>
+<span class="fc" id="L79">	}</span>
+
+	/* (non-Javadoc)
+	 * @see pl.com.impaq.main.view.devices.input.InputCapable#capture()
+	 */
+	@Override
+	public String capture(){
+<span class="fc" id="L86">		return inputField.getText();</span>
+	}
+	
+	/**
+	 * 
+	 */
+	public void clearTextInputField() {
+<span class="fc" id="L93">		inputField.setText(&quot;&quot;);</span>
+<span class="fc" id="L94">	}</span>
+	
+	/**
+	 * 
+	 * @param text
+	 */
+	public void setTextInputField(String text) {
+<span class="fc" id="L101">		inputField.setText(text);</span>
+<span class="fc" id="L102">	}</span>
+
+	/**
+	 * 
+	 * @return
+	 */
+	private int closeWindow() {
+<span class="fc" id="L109">		return JFrame.EXIT_ON_CLOSE;</span>
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public DeviceCategory getCategory() {
+<span class="fc" id="L117">		return category;</span>
+	}
+
+	/**
+	 * 
+	 */
+	public String getName() {
+<span class="fc" id="L124">		return name;</span>
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getCode() {
+<span class="fc" id="L132">		return code;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

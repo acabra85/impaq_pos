@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>DeviceManager.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.main.controller.managers</a> &gt; <span class="el_source">DeviceManager.java</span></div><h1>DeviceManager.java</h1><pre class="source lang-java linenums">package pl.com.impaq.main.controller.managers;
+
+import java.util.HashMap;
+
+import pl.com.impaq.main.controller.devices.Device;
+import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
+import pl.com.impaq.main.controller.devices.output.DisplayLCD;
+import pl.com.impaq.main.controller.devices.output.Printer;
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.DeviceType;
+
+/**
+ * 
+ * @author Agustin Cabra
+ * @version 1.0
+ *
+ * Handles all the operations related to devices, and manages them for the POS (PointOfSale)
+ */
+public class DeviceManager {
+
+
+<span class="fc" id="L22">	private HashMap&lt;String, Device&gt; inputDevices = new HashMap&lt;String, Device&gt;();</span>
+<span class="fc" id="L23">	private HashMap&lt;String, Device&gt; outputDevices = new HashMap&lt;String, Device&gt;();</span>
+	private Printer printer;
+	private BarCodeScanner scanner;
+	private DisplayLCD display;
+	
+	
+	/**
+	 * 
+	 * @param pos
+	 */
+<span class="fc" id="L33">	public DeviceManager() {</span>
+<span class="fc" id="L34">	}</span>
+	
+	/**
+	 * 
+	 * @param code
+	 * @param name
+	 * @param description
+	 * @param category
+	 * @param type
+	 * @return 
+	 */
+	public boolean createDevice(String code, String name, String description,
+			DeviceCategory category, DeviceType type) {
+<span class="fc bfc" id="L47" title="All 3 branches covered.">		switch (type) {</span>
+			case INPUT:
+<span class="fc bfc" id="L49" title="All 2 branches covered.">				if(code.length() == 0){</span>
+<span class="fc" id="L50">					return false;</span>
+				}
+<span class="fc" id="L52">				return createInputDevice(code, name, description, category);</span>
+			case OUTPUT:
+<span class="fc bfc" id="L54" title="All 2 branches covered.">				if(code.length() == 0){</span>
+<span class="fc" id="L55">					return false;</span>
+				}
+<span class="fc" id="L57">				return createOutputDevice(code, name, description, category);</span>
+			default:
+<span class="fc" id="L59">				return false;</span>
+		}
+	}
+
+	/**
+	 * Creates an output device based on the parameters
+	 * @param code
+	 * @param name
+	 * @param description
+	 * @param category
+	 * @return 
+	 */
+	public boolean createOutputDevice(String code, String name,
+			String description, DeviceCategory category) {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		if(code.length() == 0){</span>
+<span class="fc" id="L74">			return false;</span>
+		}
+<span class="fc" id="L76">		Device device = null;</span>
+<span class="fc bfc" id="L77" title="All 3 branches covered.">		switch (category) {</span>
+			case PRINTER:
+<span class="fc" id="L79">				device = new Printer(code, name, description, category);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">				if(printer==null) printer = (Printer)device;</span>
+<span class="fc" id="L81">				break;</span>
+			case DISPLAY:
+<span class="fc" id="L83">				device = new DisplayLCD(code, name, description, category);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">				if(display==null) display = (DisplayLCD)device;</span>
+<span class="fc" id="L85">				break;</span>
+			default:
+				break;
+		}
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		if (device != null) </span>
+<span class="fc" id="L90">			return addOutputDevice(device);</span>
+<span class="fc" id="L91">		return false;</span>
+	}
+
+	/**
+	 * 
+	 * @param code
+	 * @param name
+	 * @param description
+	 * @param category
+	 * @return boolean false if it the device was not successfully created true otherwise
+	 */
+	public boolean createInputDevice(String code, String name,
+			String description, DeviceCategory category) {
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		if(code.length() == 0){</span>
+<span class="fc" id="L105">			return false;</span>
+		}
+<span class="fc" id="L107">		Device device = null;</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">		switch (category) {</span>
+			case SCANNER:
+<span class="fc" id="L110">				device = new BarCodeScanner(code, name, description, category);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">				if(scanner==null) scanner = (BarCodeScanner)device;</span>
+<span class="fc" id="L112">				break;</span>
+			default:
+				break;
+		}
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if(device != null) { </span>
+<span class="fc" id="L117">			return addInputDevice(device);</span>
+		} else {
+<span class="fc" id="L119">			return false;</span>
+		}
+	}
+
+	/**
+	 * 
+	 * @param device
+	 */
+	public boolean addInputDevice(Device device) {
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		switch (device.getCategory()) {</span>
+			case SCANNER:
+<span class="fc bfc" id="L130" title="All 2 branches covered.">				if(!inputDevices.containsKey(device.getCode())) {</span>
+<span class="fc" id="L131">					inputDevices.put(device.getCode(), device);</span>
+<span class="fc" id="L132">					return true;</span>
+				}
+<span class="fc" id="L134">				return false;</span>
+			default:
+<span class="fc" id="L136">				return false;</span>
+		}
+	}
+
+	/**
+	 * 
+	 * @param device
+	 * @return 
+	 */
+	public boolean addOutputDevice(Device device) {
+<span class="fc bfc" id="L146" title="All 3 branches covered.">		switch (device.getCategory()) {</span>
+			case PRINTER:
+<span class="fc bfc" id="L148" title="All 2 branches covered.">				if(!outputDevices.containsKey(device.getCode())) {</span>
+<span class="fc" id="L149">					outputDevices.put(device.getCode(), device);</span>
+<span class="fc" id="L150">					return true;</span>
+				}
+<span class="fc" id="L152">				return false;</span>
+			case DISPLAY:
+<span class="fc bfc" id="L154" title="All 2 branches covered.">				if(!outputDevices.containsKey(device.getCode())) {</span>
+<span class="fc" id="L155">					outputDevices.put(device.getCode(), device);</span>
+<span class="fc" id="L156">					return true;</span>
+				}
+<span class="fc" id="L158">				return false;</span>
+			default:
+<span class="fc" id="L160">				return false;</span>
+		}
+		
+	}
+	
+	/**
+	 * Searches for a printer in the output devices and returns it
+	 * @return null if no printer was found, otherwise returns the printer
+	 */
+	public Printer getPrinter() {
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		if(printer == null) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			for(String key: outputDevices.keySet()){</span>
+<span class="fc" id="L172">				Device dev = outputDevices.get(key);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">				if(dev.getCategory().equals(DeviceCategory.PRINTER)){</span>
+<span class="fc" id="L174">					printer = (Printer) dev;</span>
+				}
+			}
+		}
+<span class="fc" id="L178">		return printer;</span>
+	}
+	
+	/**
+	 * Searches for a bar-code scanner in the output devices and returns it
+	 * @return null if no bar-code scanner was found, otherwise returns the printer
+	 */
+	public BarCodeScanner getScanner() {
+<span class="fc bfc" id="L186" title="All 2 branches covered.">		if(scanner == null) {</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">			for(String key: inputDevices.keySet()){</span>
+<span class="fc" id="L188">				Device dev = inputDevices.get(key);</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">				if(dev.getCategory().equals(DeviceCategory.SCANNER)){</span>
+<span class="fc" id="L190">					scanner =  (BarCodeScanner) dev;</span>
+				}
+			}			
+		}
+<span class="fc" id="L194">		return scanner;</span>
+	}
+	
+	/**
+	 * Searches for a bar-code scanner in the output devices and returns it
+	 * @return null if no bar-code scanner was found, otherwise returns the printer
+	 */
+	public DisplayLCD getDisplayLCD() {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		if(display == null) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">			for(String key: outputDevices.keySet()){</span>
+<span class="fc" id="L204">				Device dev = outputDevices.get(key);</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">				if(dev.getCategory().equals(DeviceCategory.DISPLAY)){</span>
+<span class="fc" id="L206">					display = (DisplayLCD) dev;</span>
+				}
+			}
+		}
+<span class="fc" id="L210">		return display;</span>
+	}
+
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getSizeInputDevices() {		
+<span class="fc" id="L219">		return inputDevices.size();</span>
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getSizeOutputDevices() {		
+<span class="fc" id="L227">		return outputDevices.size();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

@@ -7,6 +7,8 @@ import pl.com.impaq.main.enums.MessagesEnum;
 /**
  * @author Agustin Cabra
  * @version 1.0
+ * 
+ * This class has the responsibility of calculating the invoice details, for orders
  */
 public class InvoiceDetailsCalculator {
 	
@@ -111,6 +113,7 @@ public class InvoiceDetailsCalculator {
 
 
 	/**
+	 * Returns the current tax value
 	 * 
 	 * @return the tax value
 	 */

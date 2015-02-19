@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ProductTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.test.model.core</a> &gt; <span class="el_source">ProductTest.java</span></div><h1>ProductTest.java</h1><pre class="source lang-java linenums">package pl.com.impaq.test.model.core;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import pl.com.impaq.main.controller.managers.ProductsManager;
+import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
+import pl.com.impaq.main.model.core.Product;
+import pl.com.impaq.main.model.stubs.ProductStub;
+import pl.com.impaq.main.model.util.PropertyReader;
+
+<span class="fc" id="L16">public class ProductTest {</span>
+	
+	
+	private static ArrayList&lt;Product&gt; listProducts;
+	public static final String CONFIG_FILE = &quot;data/config/config.properties&quot;;
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+
+<span class="fc" id="L28">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L29">		InvoiceDetailsCalculator calculator = new InvoiceDetailsCalculator();</span>
+<span class="fc" id="L30">		new ProductStub(pm, CONFIG_FILE, calculator);</span>
+<span class="fc" id="L31">		PropertyReader pr = PropertyReader.getInstance();</span>
+<span class="fc" id="L32">		listProducts = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L33">		String[] listProductsString = pr.retrievePropertyFromConfigFile(&quot;data/tests/testOrderLists.properties&quot;, &quot;test1&quot;).split(&quot;,&quot;);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		for (int i = 0; i &lt; listProductsString.length; i++) {</span>
+<span class="fc" id="L35">			listProducts.add(pm.getProduct(listProductsString[i]));</span>
+		}
+<span class="fc" id="L37">	}</span>
+	
+	@Test
+	public void testGetId() {
+<span class="fc" id="L41">		Product testProduct = listProducts.get(0);</span>
+<span class="fc" id="L42">		assertEquals(testProduct.getId(), &quot;01&quot;);</span>
+<span class="fc" id="L43">	}</span>
+
+	@Test
+	public void testGetPrice() {
+<span class="fc" id="L47">		Product testProduct = listProducts.get(0);</span>
+<span class="fc" id="L48">		assertEquals(testProduct.getPrice(), 2.5, 0.01);</span>
+<span class="fc" id="L49">	}</span>
+
+	@Test
+	public void testGetName() {
+<span class="fc" id="L53">		Product testProduct = listProducts.get(0);</span>
+<span class="fc" id="L54">		assertEquals(testProduct.getName().toLowerCase(), &quot;Milk Bottle 1lt&quot;.toLowerCase());</span>
+<span class="fc" id="L55">	}</span>
+
+	@Test
+	public void testGetBarCode() {
+<span class="fc" id="L59">		Product testProduct = listProducts.get(0);</span>
+<span class="fc" id="L60">		assertEquals(testProduct.getBarCode(), &quot;00001&quot;);</span>
+<span class="fc" id="L61">	}</span>
+
+	@Test
+	public void testToString() {
+<span class="fc" id="L65">		Product testProduct = listProducts.get(0);</span>
+<span class="fc" id="L66">		assertEquals((testProduct+&quot;&quot;).toLowerCase(), &quot;milk bottle 1lt:\t2.5&quot;.toLowerCase());</span>
+<span class="fc" id="L67">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

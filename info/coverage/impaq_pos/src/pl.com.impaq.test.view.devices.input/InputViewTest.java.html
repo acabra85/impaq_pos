@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>InputViewTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.test.view.devices.input</a> &gt; <span class="el_source">InputViewTest.java</span></div><h1>InputViewTest.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package pl.com.impaq.test.view.devices.input;
+
+import static org.junit.Assert.*;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import pl.com.impaq.main.controller.PointOfSale;
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.view.View;
+import pl.com.impaq.main.view.devices.input.InputView;
+
+/**
+ * @author Agustin Cabra
+ * @version 1.0
+ *
+ */
+<span class="fc" id="L21">public class InputViewTest {</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L28">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.view.devices.input.InputView#getTextInputField()}.
+	 */
+	@Test
+	public void testGetTextInputField() {
+<span class="fc" id="L35">		PointOfSale pos = PointOfSale.getInstance();</span>
+<span class="fc" id="L36">		InputView iv = new InputView(&quot;001&quot;, &quot;view name&quot;, DeviceCategory.DISPLAY, View.getInstance(pos));</span>
+<span class="fc" id="L37">		assertEquals(iv.capture().length(), 0);</span>
+<span class="fc" id="L38">		PointOfSale.dispose();</span>
+<span class="fc" id="L39">		View.dispose();</span>
+<span class="fc" id="L40">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.view.devices.input.InputView#clearTextInputField()}.
+	 */
+	@Test
+	public void testClearTextInputField() {
+<span class="fc" id="L47">		PointOfSale pos = PointOfSale.getInstance();</span>
+<span class="fc" id="L48">		InputView iv = new InputView(&quot;001&quot;, &quot;view name&quot;, DeviceCategory.DISPLAY, View.getInstance(pos));</span>
+<span class="fc" id="L49">		String text = &quot;001231301&quot;;</span>
+<span class="fc" id="L50">		iv.setTextInputField(text);</span>
+<span class="fc" id="L51">		assertEquals(iv.capture().length(), text.length());</span>
+<span class="fc" id="L52">		iv.clearTextInputField();</span>
+<span class="fc" id="L53">		assertEquals(iv.capture().length(), 0);</span>
+<span class="fc" id="L54">		PointOfSale.dispose();</span>
+<span class="fc" id="L55">		View.dispose();</span>
+<span class="fc" id="L56">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.view.devices.input.InputView#setTextInputField()}.
+	 */
+	@Test
+	public void testSetTextInputField() {
+<span class="fc" id="L63">		PointOfSale pos = PointOfSale.getInstance();</span>
+<span class="fc" id="L64">		InputView iv = new InputView(&quot;001&quot;, &quot;view name&quot;, DeviceCategory.DISPLAY, View.getInstance(pos));</span>
+<span class="fc" id="L65">		String text = &quot;sdsadasdareterbcbvc3453&quot;;</span>
+<span class="fc" id="L66">		iv.setTextInputField(text );</span>
+<span class="fc" id="L67">		assertEquals(iv.capture().length(), text.length());</span>
+<span class="fc" id="L68">		PointOfSale.dispose();</span>
+<span class="fc" id="L69">		View.dispose();</span>
+<span class="fc" id="L70">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.view.devices.input.InputView#getCategory()}.
+	 */
+	@Test
+	public void testGetCategory() {
+<span class="fc" id="L77">		PointOfSale pos = PointOfSale.getInstance();</span>
+<span class="fc" id="L78">		String code = &quot;001&quot;;</span>
+<span class="fc" id="L79">		String name = &quot;view name&quot;;</span>
+<span class="fc" id="L80">		InputView iv = new InputView(code, name, DeviceCategory.DISPLAY, View.getInstance(pos));</span>
+<span class="fc" id="L81">		assertEquals(iv.getCategory(), DeviceCategory.DISPLAY);</span>
+<span class="fc" id="L82">		PointOfSale.dispose();</span>
+<span class="fc" id="L83">		View.dispose();</span>
+<span class="fc" id="L84">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.view.devices.input.InputView#getName()}.
+	 */
+	@Test
+	public void testGetName() {
+<span class="fc" id="L91">		PointOfSale pos = PointOfSale.getInstance();</span>
+<span class="fc" id="L92">		String code = &quot;001&quot;;</span>
+<span class="fc" id="L93">		String name = &quot;view name&quot;;</span>
+<span class="fc" id="L94">		InputView iv = new InputView(code, name, DeviceCategory.DISPLAY, View.getInstance(pos));</span>
+<span class="fc" id="L95">		assertEquals(iv.getName(), name);</span>
+<span class="fc" id="L96">		PointOfSale.dispose();</span>
+<span class="fc" id="L97">		View.dispose();</span>
+<span class="fc" id="L98">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.view.devices.input.InputView#getCode()}.
+	 */
+	@Test
+	public void testGetCode() {
+<span class="fc" id="L105">		PointOfSale pos = PointOfSale.getInstance();</span>
+<span class="fc" id="L106">		String code = &quot;001&quot;;</span>
+<span class="fc" id="L107">		String name = &quot;view name&quot;;</span>
+<span class="fc" id="L108">		InputView iv = new InputView(code, name, DeviceCategory.DISPLAY, View.getInstance(pos));</span>
+<span class="fc" id="L109">		assertEquals(iv.getCode(), code);</span>
+<span class="fc" id="L110">		PointOfSale.dispose();</span>
+<span class="fc" id="L111">		View.dispose();</span>
+<span class="fc" id="L112">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.view.devices.input.InputView#capture()}.
+	 */
+	@Test
+	public void testCapture() {
+<span class="fc" id="L119">		PointOfSale pos = PointOfSale.getInstance();</span>
+<span class="fc" id="L120">		InputView iv = new InputView(&quot;001&quot;, &quot;view name&quot;, DeviceCategory.DISPLAY, View.getInstance(pos));</span>
+<span class="fc" id="L121">		String text = &quot;sdsadasdareterbcbvc3453&quot;;</span>
+<span class="fc" id="L122">		iv.setTextInputField(text);</span>
+<span class="fc" id="L123">		assertEquals(iv.capture().length(), text.length());</span>
+<span class="fc" id="L124">		PointOfSale.dispose();</span>
+<span class="fc" id="L125">		View.dispose();</span>
+<span class="fc" id="L126">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

@@ -5,7 +5,8 @@ import pl.com.impaq.main.enums.DeviceCategory;
 
 /**
  * @author Agustin
- *
+ * @version 1.0 
+ * 
  */
 public class Printer extends Device implements OutputDevice {
 
@@ -15,14 +16,6 @@ public class Printer extends Device implements OutputDevice {
 	 */
 	public void print(String outMsg) {
 		System.out.print(outMsg);
-	}
-
-	@Override
-	/**
-	 * @param string containing the message to be displayed and adds a new line after printing
-	 */
-	public void println(String outMsg) {
-		System.out.println(outMsg);
 	}
 	
 	/**

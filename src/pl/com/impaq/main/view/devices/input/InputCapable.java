@@ -5,7 +5,8 @@ package pl.com.impaq.main.view.devices.input;
 
 
 /**
- * @author Agustin
+ * @author Agustin Cabra
+ * @version 1.0
  *
  */
 public interface InputCapable {

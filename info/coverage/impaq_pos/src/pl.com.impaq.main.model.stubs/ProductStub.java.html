@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ProductStub.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.main.model.stubs</a> &gt; <span class="el_source">ProductStub.java</span></div><h1>ProductStub.java</h1><pre class="source lang-java linenums">package pl.com.impaq.main.model.stubs;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+
+import pl.com.impaq.main.controller.managers.ProductsManager;
+import pl.com.impaq.main.enums.MessagesEnum;
+import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
+import pl.com.impaq.main.model.util.PropertyReader;
+
+/**
+ * @author Agustin Cabra
+ * @version 1.0
+ */
+public class ProductStub {
+	
+	private PrintStream standardOutput;
+	
+	
+	/**
+	 * 
+	 * @param calculator 
+	 * @param myPOS 
+	 * @param lcdDisplay the display to show the information when loading products
+	 */
+<span class="fc" id="L30">	public ProductStub(ProductsManager posProductManager, String configFileName, InvoiceDetailsCalculator calculator) {</span>
+<span class="fc" id="L31">		standardOutput = System.out;</span>
+<span class="fc" id="L32">		PropertyReader pr = PropertyReader.getInstance();</span>
+<span class="fc" id="L33">		String prodsFileName = pr.retrievePropertyFromConfigFile(configFileName, &quot;productsFileSource&quot;);</span>
+<span class="fc" id="L34">		String taxString = getTaxString(configFileName);</span>
+<span class="fc" id="L35">		setTaxForInvoiceCalculator(calculator, taxString);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">		if(prodsFileName.length()&gt;0) {</span>
+<span class="fc" id="L37">			loadProducts(prodsFileName, posProductManager);</span>
+		}
+<span class="fc" id="L39">	}</span>
+
+
+	/**
+	 * Modifies the tax for the invoice calculator
+	 * @param calculator
+	 * @param taxString
+	 */
+	public void setTaxForInvoiceCalculator(InvoiceDetailsCalculator calculator, String taxString) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">		if(taxString.length()&gt;0) {</span>
+			try {
+<span class="fc" id="L50">				calculator.setTax(Double.parseDouble(taxString));</span>
+<span class="fc" id="L51">			}catch(Exception e) {</span>
+<span class="fc" id="L52">				standardOutput.println(MessagesEnum.TAX_CONFIG_FILE_INVALID.toString());</span>
+			}
+		}
+<span class="fc" id="L55">	}</span>
+
+
+	/**
+	 * Retrieves the property tax from the config file
+	 * 
+	 * @param configFileName
+	 * @return
+	 */
+	public String getTaxString(String configFileName) {
+<span class="fc" id="L65">		return PropertyReader.getInstance().retrievePropertyFromConfigFile(configFileName, &quot;tax&quot;);</span>
+	}
+
+
+	/**
+	 * This method retrieves the product list in a text file and creates the products map &lt;key,value&gt; as 
+	 * using the bar-code as the key and the value as the product
+	 * 
+	 * @param prodsFileName name of the file storing the text list with products
+	 * @param posProductManager 
+	 * 
+	 */
+	public void loadProducts(String prodsFileName, ProductsManager posProductManager) {
+<span class="fc" id="L78">		BufferedReader bf = null;</span>
+<span class="fc" id="L79">		FileInputStream fis = null;</span>
+		try {
+<span class="fc" id="L81">			fis = new FileInputStream(prodsFileName);</span>
+<span class="fc" id="L82">			bf = new BufferedReader(new InputStreamReader(fis));</span>
+<span class="fc" id="L83">			bf.readLine();//read the line of the products definition</span>
+<span class="fc" id="L84">			String productString = bf.readLine();</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">			while ( productString != null ) {</span>
+<span class="fc" id="L86">				String [] arr = productString.split(&quot;,&quot;);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">				if(arr.length == 4) {</span>
+<span class="fc" id="L88">					posProductManager.createProduct(arr[0], arr[1], Double.parseDouble(arr[2]), arr[3]);</span>
+				}
+<span class="fc" id="L90">				productString = bf.readLine();</span>
+			}
+<span class="fc bfc" id="L92" title="All 2 branches covered.">			if(posProductManager.getSizeProducts() &gt; 0 ){</span>
+<span class="fc" id="L93">				standardOutput.println(MessagesEnum.PRODUCTS_LOADED.toString());</span>
+<span class="fc" id="L94">			} else {</span>
+<span class="fc" id="L95">				standardOutput.println(MessagesEnum.NO_PRODUCTS_LOADED.toString());</span>
+			}
+				
+<span class="fc" id="L98">		} catch(FileNotFoundException ex) {</span>
+<span class="fc" id="L99">			standardOutput.println(MessagesEnum.PRODUCTS_FILE_NOT_FOUND.toString());</span>
+<span class="nc" id="L100">		} catch(IOException ex) {</span>
+<span class="nc" id="L101">			standardOutput.println(MessagesEnum.ERROR_RETRIEVING_PRODUCT.toString());</span>
+<span class="nc" id="L102">		} finally {</span>
+			try {
+<span class="pc bpc" id="L104" title="6 of 8 branches missed.">				if(bf!=null) bf.close();</span>
+<span class="pc bpc" id="L105" title="6 of 8 branches missed.">				if(fis != null) fis.close();</span>
+<span class="pc" id="L106">			} catch (IOException e) {</span>
+<span class="nc" id="L107">				standardOutput.println(MessagesEnum.ERROR_CLOSING_SOURCE.toString());</span>
+			}
+<span class="pc" id="L109">			standardOutput.println(MessagesEnum.SYSTEM_BOOT_INFO_END + &quot;\n\n&quot;);</span>
+<span class="nc" id="L110">		}</span>
+		
+<span class="fc" id="L112">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

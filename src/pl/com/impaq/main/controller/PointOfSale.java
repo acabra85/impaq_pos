@@ -28,7 +28,7 @@ public class PointOfSale {
 	private static PointOfSale instance;
 	
 	/**
-	 * 
+	 * Creates a new instance only done through the getInstance method, to permit singleton pattern
 	 */
 	private PointOfSale() {
 		currentOrderList = new ArrayList<Product>();
@@ -37,7 +37,7 @@ public class PointOfSale {
 	}
 
 	/**
-	 * 
+	 * Main class of the system, instantiates the view, loads the basic configuration
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -87,6 +87,10 @@ public class PointOfSale {
 		myView.start();
 	}
 
+	/**
+	 * Creates a link between the view and the model, based on the devices available in the 
+	 * device manager
+	 */
 	private void mapDevicesToView() {
 		if(myDeviceManager.getSizeOutputDevices()>0){
 			if(!isDisplayUnplugged()) {
@@ -141,8 +145,8 @@ public class PointOfSale {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the string representing the actual invoice to be printed
+	 * @return string the invoice
 	 */
 	public String getInvoiceResults() {		
 		return calculator.getInvoiceDetails(currentOrderList);

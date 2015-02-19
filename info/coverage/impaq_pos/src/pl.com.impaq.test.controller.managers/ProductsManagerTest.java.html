@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ProductsManagerTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.test.controller.managers</a> &gt; <span class="el_source">ProductsManagerTest.java</span></div><h1>ProductsManagerTest.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package pl.com.impaq.test.controller.managers;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import pl.com.impaq.main.controller.managers.ProductsManager;
+import pl.com.impaq.main.model.core.Product;
+
+/**
+ * @author Agustin Cabra
+ * @version 1.0
+ *
+ */
+<span class="fc" id="L21">public class ProductsManagerTest {</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L28">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#getSizeProducts()}.
+	 */
+	@Test
+	public void testGetSizeProducts() {
+<span class="fc" id="L35">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L36">		ArrayList&lt;Product&gt; listP = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L37">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00099&quot;));</span>
+<span class="fc" id="L38">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00101&quot;));</span>
+<span class="fc" id="L39">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L40">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L41">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L42">		pm.addProducts(listP);</span>
+<span class="fc" id="L43">		assertEquals(pm.getSizeProducts(), listP.size()-2);</span>
+<span class="fc" id="L44">		pm = null;</span>
+		
+<span class="fc" id="L46">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#isBarCodeValid(java.lang.String)}.
+	 */
+	@Test
+	public void testIsBarCodeValid() {
+<span class="fc" id="L53">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L54">		ArrayList&lt;Product&gt; listP = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L55">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00099&quot;));</span>
+<span class="fc" id="L56">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00101&quot;));</span>
+<span class="fc" id="L57">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L58">		pm.addProducts(listP);</span>
+<span class="fc" id="L59">		assertTrue(pm.isBarCodeValid(listP.get(0).getBarCode()));</span>
+<span class="fc" id="L60">		pm = null;</span>
+<span class="fc" id="L61">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#isBarCodeValid(java.lang.String)}.
+	 */
+	@Test
+	public void testIsBarCodeNotValid() {
+<span class="fc" id="L68">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L69">		ArrayList&lt;Product&gt; listP = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L70">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00099&quot;));</span>
+<span class="fc" id="L71">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00101&quot;));</span>
+<span class="fc" id="L72">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L73">		pm.addProducts(listP);</span>
+<span class="fc" id="L74">		assertFalse(pm.isBarCodeValid(&quot;010101&quot;));</span>
+<span class="fc" id="L75">		pm = null;</span>
+<span class="fc" id="L76">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#getProduct(java.lang.String)}.
+	 */
+	@Test
+	public void testGetProductInexistent() {
+<span class="fc" id="L83">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L84">		ArrayList&lt;Product&gt; listP = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L85">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00099&quot;));</span>
+<span class="fc" id="L86">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00101&quot;));</span>
+<span class="fc" id="L87">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L88">		pm.addProducts(listP);</span>
+<span class="fc" id="L89">		assertEquals(pm.getProduct(&quot;010101&quot;), null);</span>
+<span class="fc" id="L90">		pm = null;</span>
+<span class="fc" id="L91">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#getProduct(java.lang.String)}.
+	 */
+	@Test
+	public void testGetProductExistent() {
+<span class="fc" id="L98">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L99">		ArrayList&lt;Product&gt; listP = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L100">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00099&quot;));</span>
+<span class="fc" id="L101">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00101&quot;));</span>
+<span class="fc" id="L102">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L103">		pm.addProducts(listP);</span>
+<span class="fc" id="L104">		assertEquals(pm.getProduct(listP.get(2).getBarCode()), listP.get(2));</span>
+<span class="fc" id="L105">		pm = null;</span>
+<span class="fc" id="L106">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#createProduct(java.lang.String, java.lang.String, double, java.lang.String)}.
+	 */
+	@Test
+	public void testAddProductFromData() {
+<span class="fc" id="L113">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L114">		assertTrue(pm.createProduct(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00000&quot;));</span>
+<span class="fc" id="L115">		pm = null;</span>
+<span class="fc" id="L116">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#createProduct(java.lang.String, java.lang.String, double, java.lang.String)}.
+	 */
+	@Test
+	public void testAddProductFromDataExistent() {
+<span class="fc" id="L123">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L124">		pm.createProduct(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00000&quot;);</span>
+<span class="fc" id="L125">		assertFalse(pm.createProduct(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00000&quot;));</span>
+<span class="fc" id="L126">		pm = null;</span>
+<span class="fc" id="L127">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#addProduct(pl.com.impaq.main.model.core.Product)}.
+	 */
+	@Test
+	public void testAddProductProductInexistent() {
+<span class="fc" id="L134">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L135">		assertTrue(pm.addProduct(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00000&quot;)));</span>
+<span class="fc" id="L136">		pm = null;</span>
+<span class="fc" id="L137">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#addProduct(pl.com.impaq.main.model.core.Product)}.
+	 */
+	@Test
+	public void testAddProductProductExistent() {
+<span class="fc" id="L144">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L145">		pm.addProduct(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00000&quot;));</span>
+<span class="fc" id="L146">		assertFalse(pm.addProduct(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00000&quot;)));</span>
+<span class="fc" id="L147">		pm = null;</span>
+<span class="fc" id="L148">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#addProducts(java.util.ArrayList)}.
+	 */
+	@Test
+	public void testAddProducts() {
+<span class="fc" id="L155">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L156">		ArrayList&lt;Product&gt; listP = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L157">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00099&quot;));</span>
+<span class="fc" id="L158">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00101&quot;));</span>
+<span class="fc" id="L159">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00102&quot;));</span>
+<span class="fc" id="L160">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00103&quot;));</span>
+<span class="fc" id="L161">		listP.add(new Product(&quot;00&quot;, &quot;test&quot;, 10.0, &quot;00104&quot;));</span>
+<span class="fc" id="L162">		assertEquals(pm.addProducts(listP), listP.size());</span>
+<span class="fc" id="L163">		pm = null;</span>
+<span class="fc" id="L164">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.ProductsManager#addProducts(java.util.ArrayList)}.
+	 */
+	@Test
+	public void testDontAddProducts() {
+<span class="fc" id="L171">		ProductsManager pm = new ProductsManager();</span>
+<span class="fc" id="L172">		ArrayList&lt;Product&gt; listP = new ArrayList&lt;Product&gt;();</span>
+<span class="fc" id="L173">		assertEquals(pm.addProducts(listP), listP.size());</span>
+<span class="fc" id="L174">		pm = null;</span>
+<span class="fc" id="L175">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

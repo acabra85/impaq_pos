@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>DevicesStub.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.main.model.stubs</a> &gt; <span class="el_source">DevicesStub.java</span></div><h1>DevicesStub.java</h1><pre class="source lang-java linenums">package pl.com.impaq.main.model.stubs;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+
+import pl.com.impaq.main.controller.managers.DeviceManager;
+import pl.com.impaq.main.enums.DeviceType;
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.MessagesEnum;
+import pl.com.impaq.main.model.util.PropertyReader;
+
+/**
+ * @author Agustin Cabra
+ * @version 1.0
+ */
+public class DevicesStub {
+	
+	private PrintStream standardOutput;
+	
+	/**
+	 * Dependency injection is used here, to allow the DevicesStub to send the input devices
+	 * found to the POS.
+	 * 
+	 * @param thePOS The point of sale that will receive the devices
+	 */
+<span class="fc" id="L30">	public DevicesStub(DeviceManager posDeviceManager, String configFileName) {</span>
+<span class="fc" id="L31">		standardOutput = System.out;</span>
+<span class="fc" id="L32">		PropertyReader pr = PropertyReader.getInstance();</span>
+<span class="fc" id="L33">		String devicesFileName = pr.retrievePropertyFromConfigFile(configFileName, &quot;devicesFileSource&quot;);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		if(devicesFileName.length()&gt;0) {</span>
+<span class="fc" id="L35">			loadDevices(devicesFileName, posDeviceManager);</span>
+		}
+<span class="fc" id="L37">	}</span>
+	
+	/**
+	 * Reads the device configuration from a file, adding all devices to deviceManager
+	 * 
+	 * @param posDeviceManager 
+	 * @param outputDeviceFileName
+	 */
+	public void loadDevices(String devicesFileName, DeviceManager posDeviceManager) {
+<span class="fc" id="L46">		BufferedReader bf = null;</span>
+<span class="fc" id="L47">		FileInputStream fis = null;</span>
+<span class="fc" id="L48">		standardOutput.println(MessagesEnum.SYSTEM_BOOT_INFO_START.toString());</span>
+		try {
+<span class="fc" id="L50">			fis = new FileInputStream(devicesFileName);</span>
+<span class="fc" id="L51">			bf = new BufferedReader(new InputStreamReader(fis));</span>
+<span class="fc" id="L52">			bf.readLine();//read the line containing the definition of the file</span>
+<span class="fc" id="L53">			String deviceString = bf.readLine();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">			while ( deviceString != null ) {</span>
+<span class="fc" id="L55">				String [] arrayDeviceInfo = deviceString.split(&quot;,&quot;);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">				if(arrayDeviceInfo.length == 5) {</span>
+<span class="fc" id="L57">					String devId = arrayDeviceInfo[0];</span>
+<span class="fc" id="L58">					String devName = arrayDeviceInfo[1];</span>
+<span class="fc" id="L59">					String devDesc = arrayDeviceInfo[2];</span>
+<span class="fc" id="L60">					String devCategory = arrayDeviceInfo[3];</span>
+<span class="fc" id="L61">					String devType = arrayDeviceInfo[4];					</span>
+<span class="fc" id="L62">					createDevice(devId, devName, devDesc, devCategory, devType, posDeviceManager);					</span>
+<span class="fc" id="L63">				} else {</span>
+<span class="fc" id="L64">					standardOutput.println(MessagesEnum.ERROR_RETRIEVING_DEVICE.toString());</span>
+				}
+<span class="fc" id="L66">				deviceString = bf.readLine();</span>
+			}
+<span class="fc bfc" id="L68" title="All 2 branches covered.">			if(posDeviceManager.getSizeInputDevices() &gt; 0 ){</span>
+<span class="fc" id="L69">				standardOutput.println(MessagesEnum.INPUT_DEVICES_LOADED.toString());</span>
+<span class="fc" id="L70">			} else {</span>
+<span class="fc" id="L71">				standardOutput.println(MessagesEnum.NO_INPUT_DEVICES_LOADED.toString());</span>
+			}
+<span class="fc bfc" id="L73" title="All 2 branches covered.">			if(posDeviceManager.getSizeOutputDevices() &gt; 0 ){</span>
+<span class="fc" id="L74">				standardOutput.println(MessagesEnum.OUTPUT_DEVICES_LOADED.toString());</span>
+<span class="fc" id="L75">			} else {</span>
+<span class="fc" id="L76">				standardOutput.println(MessagesEnum.NO_OUTPUT_DEVICES_LOADED.toString());</span>
+			}
+				
+<span class="fc" id="L79">		} catch(FileNotFoundException ex) {</span>
+<span class="fc" id="L80">			standardOutput.println(MessagesEnum.INPUT_DEVICES_FILE_NOT_FOUND.toString());</span>
+<span class="nc" id="L81">		} catch(IOException ex) {</span>
+<span class="nc" id="L82">			standardOutput.println(MessagesEnum.ERROR_RETRIEVING_DEVICE.toString());</span>
+<span class="nc" id="L83">		} finally {</span>
+			try {
+<span class="pc bpc" id="L85" title="6 of 8 branches missed.">				if(bf!=null) bf.close();</span>
+<span class="pc bpc" id="L86" title="6 of 8 branches missed.">				if(fis!=null) fis.close();</span>
+<span class="pc" id="L87">			} catch (Exception e) {</span>
+<span class="nc" id="L88">				standardOutput.println(MessagesEnum.ERROR_CLOSING_SOURCE.toString());</span>
+			}
+<span class="nc" id="L90">		}</span>
+		
+<span class="fc" id="L92">	}</span>
+
+
+	/**
+	 * Creates a device based on the parameters, and send this device created to be added
+	 * on the device manager
+	 * 
+	 * @param devId
+	 * @param devName
+	 * @param devDesc
+	 * @param devCategory
+	 * @param devType
+	 * @param posDeviceManager
+	 */
+	private void createDevice(String devCode, String devName, String devDesc,
+		String devCategory, String devType, DeviceManager posDeviceManager) {
+		
+<span class="fc" id="L109">		DeviceCategory category = DeviceCategory.getCategory(devCategory);</span>
+<span class="fc" id="L110">		DeviceType  type = DeviceType.getType(devType);</span>
+<span class="fc" id="L111">		posDeviceManager.createDevice(devCode, devName, devDesc, category, type);</span>
+<span class="fc" id="L112">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

@@ -40,6 +40,7 @@ public class ProductStub {
 
 
 	/**
+	 * Modifies the tax for the invoice calculator
 	 * @param calculator
 	 * @param taxString
 	 */
@@ -55,6 +56,8 @@ public class ProductStub {
 
 
 	/**
+	 * Retrieves the property tax from the config file
+	 * 
 	 * @param configFileName
 	 * @return
 	 */

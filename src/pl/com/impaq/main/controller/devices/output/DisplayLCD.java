@@ -1,14 +1,11 @@
-/**
- * 
- */
 package pl.com.impaq.main.controller.devices.output;
 
 import pl.com.impaq.main.controller.devices.Device;
 import pl.com.impaq.main.enums.DeviceCategory;
 
 /**
- * @author Agustin
- *
+ * @author Agustin Cabra
+ * @version 1.0
  */
 public class DisplayLCD extends Device implements OutputDevice {
 
@@ -19,14 +16,6 @@ public class DisplayLCD extends Device implements OutputDevice {
 	public void print(String outMsg) {
 		System.out.print(outMsg);
 
-	}
-
-	/* (non-Javadoc)
-	 * @see pl.com.impaq.devices.OutputDevice#println(java.lang.String)
-	 */
-	@Override
-	public void println(String outMsg) {
-		System.out.println(outMsg);
 	}
 	
 	/**

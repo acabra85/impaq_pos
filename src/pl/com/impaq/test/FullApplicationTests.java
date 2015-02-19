@@ -9,6 +9,7 @@ import pl.com.impaq.test.controller.managers.DeviceManagerTest;
 import pl.com.impaq.test.controller.managers.ProductsManagerTest;
 import pl.com.impaq.test.enums.DeviceCategoryTest;
 import pl.com.impaq.test.model.core.InvoiceDetailsCalculatorTest;
+import pl.com.impaq.test.model.core.InvoiceTest;
 import pl.com.impaq.test.model.core.ProductTest;
 import pl.com.impaq.test.model.stubs.DevicesStubTest;
 import pl.com.impaq.test.model.stubs.ProductStubTest;
@@ -23,6 +24,6 @@ import pl.com.impaq.test.view.devices.output.OutputViewTest;
 	DevicesStubTest.class, InvoiceDetailsCalculatorTest.class,
 	PointOfSaleTest.class, ProductsManagerTest.class,
 	ProductStubTest.class, ProductTest.class, PropertyReaderTest.class, 
-	InputViewTest.class, ViewTest.class, InputHandlerTest.class, OutputViewTest.class})
+	InputViewTest.class, ViewTest.class, InputHandlerTest.class, OutputViewTest.class, InvoiceTest.class})
 public class FullApplicationTests {
 }

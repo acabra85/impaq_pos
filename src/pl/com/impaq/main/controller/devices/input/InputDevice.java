@@ -9,6 +9,7 @@ import java.io.InputStream;
  * @author Agustin Cabra
  * @version 1.0 
  *
+ * Interface representing the behavior of an input device
  */
 public interface InputDevice {
 	

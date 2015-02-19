@@ -11,7 +11,8 @@ import org.junit.Test;
 import pl.com.impaq.main.enums.DeviceCategory;
 
 /**
- * @author acs
+ * @author Agustin Cabra
+ * @version 1.0
  *
  */
 public class DeviceCategoryTest {

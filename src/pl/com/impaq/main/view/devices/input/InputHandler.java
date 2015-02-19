@@ -43,8 +43,6 @@ public class InputHandler implements ActionListener, KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent paramKeyEvent) {
-		System.out.println("char: "+paramKeyEvent.getKeyChar() + 
-				" code : "+ paramKeyEvent.getKeyCode());
 		if(paramKeyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
 			view.sendBarCode(inputView.capture());
 			inputView.clearTextInputField();

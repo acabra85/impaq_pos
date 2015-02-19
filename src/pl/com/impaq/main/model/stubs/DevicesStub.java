@@ -37,6 +37,7 @@ public class DevicesStub {
 	}
 	
 	/**
+	 * Reads the device configuration from a file, adding all devices to deviceManager
 	 * 
 	 * @param posDeviceManager 
 	 * @param outputDeviceFileName
@@ -92,6 +93,8 @@ public class DevicesStub {
 
 
 	/**
+	 * Creates a device based on the parameters, and send this device created to be added
+	 * on the device manager
 	 * 
 	 * @param devId
 	 * @param devName

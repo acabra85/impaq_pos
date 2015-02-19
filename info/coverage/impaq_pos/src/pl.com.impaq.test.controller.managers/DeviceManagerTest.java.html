@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>DeviceManagerTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.test.controller.managers</a> &gt; <span class="el_source">DeviceManagerTest.java</span></div><h1>DeviceManagerTest.java</h1><pre class="source lang-java linenums">package pl.com.impaq.test.controller.managers;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import pl.com.impaq.main.controller.PointOfSale;
+import pl.com.impaq.main.controller.devices.input.BarCodeScanner;
+import pl.com.impaq.main.controller.devices.output.DisplayLCD;
+import pl.com.impaq.main.controller.devices.output.Printer;
+import pl.com.impaq.main.controller.managers.DeviceManager;
+import pl.com.impaq.main.enums.DeviceCategory;
+import pl.com.impaq.main.enums.DeviceType;
+
+<span class="fc" id="L18">public class DeviceManagerTest {</span>
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L24">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#createDevice(java.lang.String, java.lang.String, java.lang.String, pl.com.impaq.main.enums.DeviceCategory, pl.com.impaq.main.enums.DeviceType)}.
+	 */
+	@Test
+	public void testCreateDevice() {
+<span class="fc" id="L31">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L32">		assertTrue(dm.createDevice(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L33">				DeviceCategory.getCategory(&quot;SCANNER&quot;), DeviceType.getType(&quot;INPUT&quot;)));</span>
+<span class="fc" id="L34">		assertTrue(dm.createDevice(&quot;003&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L35">				DeviceCategory.getCategory(&quot;PRINTER&quot;), DeviceType.getType(&quot;OUTPUT&quot;)));</span>
+		
+<span class="fc" id="L37">		assertTrue(dm.createDevice(&quot;XXXXXX&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L38">				DeviceCategory.getCategory(&quot;DISPLAY&quot;), DeviceType.getType(&quot;OUTPUT&quot;)));</span>
+		
+<span class="fc" id="L40">		assertFalse(dm.createDevice(&quot;&quot;, &quot;testTemplate3&quot;, &quot;test scanner desc template&quot;, </span>
+<span class="fc" id="L41">				DeviceCategory.getCategory(&quot;DISPLAY&quot;), DeviceType.getType(&quot;OUTPUT&quot;)));</span>
+<span class="fc" id="L42">		assertFalse(dm.createDevice(&quot;&quot;, &quot;testTemplate1&quot;, &quot;test scanner desc template&quot;, </span>
+<span class="fc" id="L43">				DeviceCategory.getCategory(&quot;DISPLAY&quot;), DeviceType.getType(&quot;OUTPUT&quot;)));</span>
+<span class="fc" id="L44">		assertFalse(dm.createDevice(&quot;&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L45">				DeviceCategory.getCategory(&quot;PRINTER&quot;), DeviceType.getType(&quot;OUTPUT&quot;)));</span>
+<span class="fc" id="L46">		assertFalse(dm.createDevice(&quot;&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L47">				DeviceCategory.getCategory(&quot;TEST&quot;), DeviceType.getType(&quot;INPUT&quot;)));</span>
+<span class="fc" id="L48">		assertFalse(dm.createDevice(&quot;&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L49">				DeviceCategory.getCategory(&quot;SCANNER&quot;), DeviceType.getType(&quot;INPUT&quot;)));</span>
+<span class="fc" id="L50">		assertFalse(dm.createDevice(&quot;&quot;, &quot;testTemplate2&quot;, &quot;test scanner desc template&quot;, </span>
+<span class="fc" id="L51">				DeviceCategory.getCategory(&quot;XXX&quot;), DeviceType.getType(&quot;OUTPUT&quot;)));</span>
+<span class="fc" id="L52">		assertFalse(dm.createDevice(&quot;&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L53">				DeviceCategory.getCategory(&quot;PRINTER&quot;), DeviceType.getType(&quot;dsds&quot;)));</span>
+<span class="fc" id="L54">		assertFalse(dm.createDevice(&quot;&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, </span>
+<span class="fc" id="L55">				DeviceCategory.getCategory(&quot;DISPLAY&quot;), DeviceType.getType(&quot;OUTPUT&quot;)));</span>
+<span class="fc" id="L56">		dm = null;</span>
+<span class="fc" id="L57">		PointOfSale.dispose();</span>
+<span class="fc" id="L58">	}</span>
+	
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#addInputDevice(pl.com.impaq.main.view.devices.Device)}.
+	 */
+	@Test
+	public void testAddInputDevice() {
+<span class="fc" id="L65">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L66">		BarCodeScanner barScanner = new BarCodeScanner(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L67">		BarCodeScanner barScanner2 = new BarCodeScanner(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L68">		dm.addInputDevice(barScanner);</span>
+<span class="fc" id="L69">		dm.addInputDevice(barScanner2);</span>
+<span class="fc" id="L70">		assertEquals(dm.getSizeInputDevices(), 1);</span>
+<span class="fc" id="L71">		barScanner = null;</span>
+<span class="fc" id="L72">		barScanner2 = null;</span>
+<span class="fc" id="L73">		dm = null;</span>
+<span class="fc" id="L74">		PointOfSale.dispose();</span>
+<span class="fc" id="L75">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#addInputDevice(pl.com.impaq.main.view.devices.Device)}.
+	 */
+	@Test
+	public void testAddInputDeviceNonCategory() {
+<span class="fc" id="L82">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L83">		BarCodeScanner barScanner = new BarCodeScanner(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SDSD&quot;));</span>
+<span class="fc" id="L84">		BarCodeScanner barScanner2 = new BarCodeScanner(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SDSD&quot;));</span>
+<span class="fc" id="L85">		dm.addInputDevice(barScanner);</span>
+<span class="fc" id="L86">		dm.addInputDevice(barScanner2);</span>
+<span class="fc" id="L87">		assertEquals(dm.getSizeInputDevices(), 0);</span>
+<span class="fc" id="L88">		barScanner = null;</span>
+<span class="fc" id="L89">		barScanner2 = null;</span>
+<span class="fc" id="L90">		dm = null;</span>
+<span class="fc" id="L91">		PointOfSale.dispose();</span>
+<span class="fc" id="L92">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#addInputDevice(pl.com.impaq.main.view.devices.Device)}.
+	 */
+	@Test
+	public void testAddInputDeviceManuallyPlugScannerToPOS() {
+<span class="fc" id="L99">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L100">		BarCodeScanner barScanner = new BarCodeScanner(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L101">		BarCodeScanner barScanner2 = new BarCodeScanner(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L102">		dm.addInputDevice(barScanner);</span>
+<span class="fc" id="L103">		dm.addInputDevice(barScanner2);</span>
+<span class="fc" id="L104">		assertEquals(dm.getSizeInputDevices(), 1);</span>
+<span class="fc" id="L105">		barScanner = null;</span>
+<span class="fc" id="L106">		barScanner2 = null;</span>
+<span class="fc" id="L107">		dm = null;</span>
+<span class="fc" id="L108">		PointOfSale.dispose();</span>
+<span class="fc" id="L109">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#addOutputDevice(pl.com.impaq.main.view.devices.Device)}.
+	 */
+	@Test
+	public void testAddOutputDevices() {
+<span class="fc" id="L116">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L117">		Printer printer = new Printer(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L118">		Printer printer2 = new Printer(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L119">		DisplayLCD display = new DisplayLCD(&quot;003&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L120">		DisplayLCD display2 = new DisplayLCD(&quot;003&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L121">		dm.addOutputDevice(printer);</span>
+<span class="fc" id="L122">		dm.addOutputDevice(printer2);</span>
+<span class="fc" id="L123">		dm.addOutputDevice(display2);</span>
+<span class="fc" id="L124">		dm.addOutputDevice(display);</span>
+<span class="fc" id="L125">		assertEquals(dm.getSizeOutputDevices(), 2);</span>
+<span class="fc" id="L126">		printer = null;</span>
+<span class="fc" id="L127">		printer2 = null;</span>
+<span class="fc" id="L128">		dm = null;</span>
+<span class="fc" id="L129">		PointOfSale.dispose();</span>
+<span class="fc" id="L130">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#addOutputDevice(pl.com.impaq.main.view.devices.Device)}.
+	 */
+	@Test
+	public void testAddOutPutDeviceManuallyPlugPrinterToPOS() {
+<span class="fc" id="L137">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L138">		Printer printer = new Printer(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L139">		Printer printer2 = new Printer(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L140">		Printer printer3 = new Printer(&quot;004&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L141">		dm.addOutputDevice(printer);</span>
+<span class="fc" id="L142">		dm.addOutputDevice(printer);</span>
+<span class="fc" id="L143">		dm.addOutputDevice(printer2);</span>
+<span class="fc" id="L144">		dm.addOutputDevice(printer3);</span>
+<span class="fc" id="L145">		assertEquals(dm.getSizeOutputDevices(), 2);</span>
+<span class="fc" id="L146">		printer = null;</span>
+<span class="fc" id="L147">		printer2 = null;</span>
+<span class="fc" id="L148">		dm = null;</span>
+<span class="fc" id="L149">		PointOfSale.dispose();</span>
+<span class="fc" id="L150">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#addOutputDevice(pl.com.impaq.main.view.devices.Device)}.
+	 */
+	@Test
+	public void testAddOutPutDeviceManuallyPlugDisplayToPOS() {
+<span class="fc" id="L157">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L158">		DisplayLCD display2 = new DisplayLCD(&quot;004&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L159">		DisplayLCD display3 = new DisplayLCD(&quot;003&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L160">		dm.addOutputDevice(display3);</span>
+<span class="fc" id="L161">		dm.addOutputDevice(display2);</span>
+<span class="fc" id="L162">		assertEquals(dm.getSizeOutputDevices(), 2);</span>
+<span class="fc" id="L163">		dm = null;</span>
+<span class="fc" id="L164">		PointOfSale.dispose();</span>
+<span class="fc" id="L165">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#addOutputDevice(pl.com.impaq.main.view.devices.Device)}.
+	 */
+	@Test
+	public void testAddOutputDevicesNonCategory() {
+<span class="fc" id="L172">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L173">		Printer printer = new Printer(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SDSD&quot;));</span>
+<span class="fc" id="L174">		DisplayLCD display = new DisplayLCD(&quot;002&quot;, &quot;test&quot;, &quot;test scanner desc&quot;, DeviceCategory.getCategory(&quot;SDSD&quot;));</span>
+<span class="fc" id="L175">		dm.addOutputDevice(printer);</span>
+<span class="fc" id="L176">		dm.addOutputDevice(display);</span>
+<span class="fc" id="L177">		assertEquals(dm.getSizeInputDevices(), 0);</span>
+<span class="fc" id="L178">		printer = null;</span>
+<span class="fc" id="L179">		display = null;</span>
+<span class="fc" id="L180">		dm = null;</span>
+<span class="fc" id="L181">		PointOfSale.dispose();</span>
+<span class="fc" id="L182">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getPrinter()}.
+	 */
+	@Test
+	public void testGetPrinterInexistent() {
+<span class="fc" id="L189">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L190">		assertEquals(dm.getPrinter(), null);</span>
+<span class="fc" id="L191">		dm = null;</span>
+<span class="fc" id="L192">		PointOfSale.dispose();</span>
+<span class="fc" id="L193">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getPrinter()}.
+	 */
+	@Test
+	public void testGetPrinter() {
+<span class="fc" id="L200">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L201">		Printer printer = new Printer(&quot;00&quot;, &quot;printer&quot;, &quot;desc printer&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L202">		dm.addOutputDevice(printer);</span>
+<span class="fc" id="L203">		assertEquals(dm.getPrinter(), printer);</span>
+<span class="fc" id="L204">		dm = null;</span>
+<span class="fc" id="L205">		PointOfSale.dispose();</span>
+<span class="fc" id="L206">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getPrinter()}.
+	 */
+	@Test
+	public void testGetPrinterSecond() {
+<span class="fc" id="L213">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L214">		Printer printer3 = new Printer(&quot;03&quot;, &quot;printer&quot;, &quot;desc printer&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L215">		Printer printer = new Printer(&quot;00&quot;, &quot;printer&quot;, &quot;desc printer&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L216">		Printer printer2 = new Printer(&quot;01&quot;, &quot;printer&quot;, &quot;desc printer&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;));</span>
+<span class="fc" id="L217">		dm.addOutputDevice(printer);</span>
+<span class="fc" id="L218">		dm.addOutputDevice(printer2);</span>
+<span class="fc" id="L219">		dm.addOutputDevice(printer3);</span>
+<span class="fc" id="L220">		assertEquals(dm.getPrinter(), printer3);</span>
+<span class="fc" id="L221">		dm = null;</span>
+<span class="fc" id="L222">		PointOfSale.dispose();</span>
+<span class="fc" id="L223">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getScanner()}.
+	 */
+	@Test
+	public void testGetScannerInexistent() {
+<span class="fc" id="L230">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L231">		assertEquals(dm.getScanner(), null);</span>
+<span class="fc" id="L232">		dm = null;</span>
+<span class="fc" id="L233">		PointOfSale.dispose();</span>
+<span class="fc" id="L234">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getScanner()}.
+	 */
+	@Test
+	public void testGetScanner() {
+<span class="fc" id="L241">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L242">		BarCodeScanner scanner = new BarCodeScanner(&quot;00&quot;, &quot;scanner&quot;, &quot;desc scanner&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L243">		dm.addInputDevice(scanner);</span>
+<span class="fc" id="L244">		assertEquals(dm.getScanner(), scanner);</span>
+<span class="fc" id="L245">		dm = null;</span>
+<span class="fc" id="L246">		PointOfSale.dispose();</span>
+<span class="fc" id="L247">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getScanner()}.
+	 */
+	@Test
+	public void testGetScannerSecond() {
+<span class="fc" id="L254">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L255">		BarCodeScanner scanner = new BarCodeScanner(&quot;00&quot;, &quot;scanner&quot;, &quot;desc scanner&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L256">		BarCodeScanner scanner2 = new BarCodeScanner(&quot;01&quot;, &quot;scanner&quot;, &quot;desc scanner&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L257">		BarCodeScanner scanner3 = new BarCodeScanner(&quot;02&quot;, &quot;scanner&quot;, &quot;desc scanner&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L258">		dm.addInputDevice(scanner);</span>
+<span class="fc" id="L259">		dm.addInputDevice(scanner2);</span>
+<span class="fc" id="L260">		dm.addInputDevice(scanner3);</span>
+<span class="fc" id="L261">		assertEquals(dm.getScanner(), scanner3);</span>
+<span class="fc" id="L262">		dm = null;</span>
+<span class="fc" id="L263">		PointOfSale.dispose();</span>
+<span class="fc" id="L264">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getDisplayLCD()}.
+	 */
+	@Test
+	public void testGetDisplayLCDInexistent() {
+<span class="fc" id="L271">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L272">		assertEquals(dm.getDisplayLCD(), null);</span>
+<span class="fc" id="L273">		dm = null;</span>
+<span class="fc" id="L274">		PointOfSale.dispose();</span>
+<span class="fc" id="L275">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getDisplayLCD()}.
+	 */
+	@Test
+	public void testGetDisplayLCD() {
+<span class="fc" id="L282">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L283">		DisplayLCD display = new DisplayLCD(&quot;000&quot;, &quot;display&quot;, &quot;description&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L284">		dm.addOutputDevice(display);</span>
+<span class="fc" id="L285">		assertEquals(dm.getDisplayLCD(), display);</span>
+<span class="fc" id="L286">		dm = null;</span>
+<span class="fc" id="L287">		PointOfSale.dispose();</span>
+<span class="fc" id="L288">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getDisplayLCD()}.
+	 */
+	@Test
+	public void testGetDisplayLCDSecond() {
+<span class="fc" id="L295">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L296">		DisplayLCD display = new DisplayLCD(&quot;000&quot;, &quot;display&quot;, &quot;description&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L297">		DisplayLCD display2 = new DisplayLCD(&quot;001&quot;, &quot;display&quot;, &quot;description&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L298">		DisplayLCD display3 = new DisplayLCD(&quot;002&quot;, &quot;display&quot;, &quot;description&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L299">		dm.addOutputDevice(display);</span>
+<span class="fc" id="L300">		dm.addOutputDevice(display2);</span>
+<span class="fc" id="L301">		dm.addOutputDevice(display3);</span>
+<span class="fc" id="L302">		assertEquals(dm.getDisplayLCD(), display3);</span>
+<span class="fc" id="L303">		dm = null;</span>
+<span class="fc" id="L304">		PointOfSale.dispose();</span>
+<span class="fc" id="L305">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getSizeInputDevices()}.
+	 */
+	@Test
+	public void testGetSizeInputDevices() {
+<span class="fc" id="L312">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L313">		BarCodeScanner scanner3 = new BarCodeScanner(&quot;02&quot;, &quot;scanner&quot;, &quot;desc scanner&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;));</span>
+<span class="fc" id="L314">		dm.addInputDevice(scanner3);</span>
+<span class="fc" id="L315">		assertEquals(dm.getSizeInputDevices(), 1);</span>
+<span class="fc" id="L316">		dm = null;</span>
+<span class="fc" id="L317">		PointOfSale.dispose();</span>
+<span class="fc" id="L318">	}</span>
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.controller.managers.DeviceManager#getSizeOutputDevices()}.
+	 */
+	@Test
+	public void testGetSizeOutputDevices() {
+<span class="fc" id="L325">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L326">		DisplayLCD display = new DisplayLCD(&quot;000&quot;, &quot;display&quot;, &quot;description&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L327">		DisplayLCD display2 = new DisplayLCD(&quot;001&quot;, &quot;display&quot;, &quot;description&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L328">		DisplayLCD display3 = new DisplayLCD(&quot;002&quot;, &quot;display&quot;, &quot;description&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;));</span>
+<span class="fc" id="L329">		dm.addOutputDevice(display);</span>
+<span class="fc" id="L330">		dm.addOutputDevice(display2);</span>
+<span class="fc" id="L331">		dm.addOutputDevice(display3);</span>
+<span class="fc" id="L332">		assertEquals(dm.getSizeOutputDevices(), 3);</span>
+<span class="fc" id="L333">		dm = null;</span>
+<span class="fc" id="L334">		PointOfSale.dispose();</span>
+<span class="fc" id="L335">	}</span>
+
+	@Test
+	public void testCreateOutputDevice() {
+<span class="fc" id="L339">		DeviceManager dm = new DeviceManager();		</span>
+<span class="fc" id="L340">		assertFalse(dm.createOutputDevice(&quot;&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;UNKNOWN&quot;)));</span>
+<span class="fc" id="L341">		assertFalse(dm.createOutputDevice(&quot;0903&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;UNKNOWN&quot;)));</span>
+<span class="fc" id="L342">		assertFalse(dm.createOutputDevice(&quot;&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;)));</span>
+
+<span class="fc" id="L344">		assertTrue(dm.createOutputDevice(&quot;0002&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;)));</span>
+<span class="fc" id="L345">		assertTrue(dm.createOutputDevice(&quot;0003&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;PRINTER&quot;)));</span>
+<span class="fc" id="L346">		assertTrue(dm.createOutputDevice(&quot;0004&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;)));</span>
+		
+<span class="fc" id="L348">		assertFalse(dm.createOutputDevice(&quot;0004&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;DISPLAY&quot;)));</span>
+<span class="fc" id="L349">		dm = null;</span>
+<span class="fc" id="L350">		PointOfSale.dispose();</span>
+		
+<span class="fc" id="L352">	}</span>
+
+	@Test
+	public void testCreateInputDevice() {
+<span class="fc" id="L356">		DeviceManager dm = new DeviceManager();</span>
+<span class="fc" id="L357">		assertTrue(dm.createInputDevice(&quot;0004&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;)));</span>
+<span class="fc" id="L358">		assertTrue(dm.createInputDevice(&quot;00055&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;)));</span>
+<span class="fc" id="L359">		assertFalse(dm.createInputDevice(&quot;0004&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;)));</span>
+<span class="fc" id="L360">		assertFalse(dm.createInputDevice(&quot;005&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;UNKNOWN&quot;)));</span>
+<span class="fc" id="L361">		assertFalse(dm.createInputDevice(&quot;&quot;, &quot;test&quot;, &quot;desc_test&quot;, DeviceCategory.getCategory(&quot;SCANNER&quot;)));</span>
+<span class="fc" id="L362">		dm = null;</span>
+<span class="fc" id="L363">		PointOfSale.dispose();</span>
+<span class="fc" id="L364">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>

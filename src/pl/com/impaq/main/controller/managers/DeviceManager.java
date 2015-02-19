@@ -14,6 +14,7 @@ import pl.com.impaq.main.enums.DeviceType;
  * @author Agustin Cabra
  * @version 1.0
  *
+ * Handles all the operations related to devices, and manages them for the POS (PointOfSale)
  */
 public class DeviceManager {
 
@@ -60,7 +61,7 @@ public class DeviceManager {
 	}
 
 	/**
-	 * 
+	 * Creates an output device based on the parameters
 	 * @param code
 	 * @param name
 	 * @param description

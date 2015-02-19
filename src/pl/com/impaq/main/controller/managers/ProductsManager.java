@@ -5,6 +5,12 @@ import java.util.HashMap;
 
 import pl.com.impaq.main.model.core.Product;
 
+/**
+ * @author Agustin Cabra
+ * @version 1.0
+ *
+ * This class manages all the operations related to products for the POS (PointOfSale)
+ */
 public class ProductsManager {
 	
 	private HashMap<String, Product> products;

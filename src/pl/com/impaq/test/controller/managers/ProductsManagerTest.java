@@ -14,7 +14,8 @@ import pl.com.impaq.main.controller.managers.ProductsManager;
 import pl.com.impaq.main.model.core.Product;
 
 /**
- * @author acs
+ * @author Agustin Cabra
+ * @version 1.0
  *
  */
 public class ProductsManagerTest {

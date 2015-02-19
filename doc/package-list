@@ -13,5 +13,12 @@ pl.com.impaq.main.view.devices.output
 pl.com.impaq.main.view.devices.util
 pl.com.impaq.test
 pl.com.impaq.test.controller
+pl.com.impaq.test.controller.managers
+pl.com.impaq.test.enums
 pl.com.impaq.test.model
+pl.com.impaq.test.model.core
+pl.com.impaq.test.model.stubs
+pl.com.impaq.test.model.util
 pl.com.impaq.test.view
+pl.com.impaq.test.view.devices.input
+pl.com.impaq.test.view.devices.output

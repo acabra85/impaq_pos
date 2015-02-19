@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Printer.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">FullApplicationTests (Feb 19, 2015 1:03:04 AM)</a> &gt; <a href="../../index.html" class="el_group">impaq_pos</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pl.com.impaq.main.controller.devices.output</a> &gt; <span class="el_source">Printer.java</span></div><h1>Printer.java</h1><pre class="source lang-java linenums">package pl.com.impaq.main.controller.devices.output;
+
+import pl.com.impaq.main.controller.devices.Device;
+import pl.com.impaq.main.enums.DeviceCategory;
+
+/**
+ * @author Agustin
+ * @version 1.0 
+ * 
+ */
+public class Printer extends Device implements OutputDevice {
+
+	@Override
+	/**
+	 * @param outMsg	containing the message to be displayed at the current position of cursor
+	 */
+	public void print(String outMsg) {
+<span class="nc" id="L18">		System.out.print(outMsg);</span>
+<span class="nc" id="L19">	}</span>
+	
+	/**
+	 * 
+	 * @param code
+	 * @param name
+	 * @param description
+	 */
+	public Printer(String code, String name, String description, DeviceCategory category) {
+<span class="fc" id="L28">		super();</span>
+<span class="fc" id="L29">		this.name = name;</span>
+<span class="fc" id="L30">		this.description = description;</span>
+<span class="fc" id="L31">		this.code = code;</span>
+<span class="fc" id="L32">		this.category = category;</span>
+<span class="fc" id="L33">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>FullApplicationTests (Feb 19, 2015 1:03:04 AM)</div></body></html>
