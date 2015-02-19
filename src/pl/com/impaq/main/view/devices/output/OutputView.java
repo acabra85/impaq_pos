@@ -31,6 +31,12 @@ public class OutputView extends JFrame implements OutputCapable{
 	private int width;
 	private int height;
 	
+	/**
+	 * 
+	 * @param code
+	 * @param name
+	 * @param category
+	 */
 	public OutputView(String code, String name, DeviceCategory category){
 		super(name);
 		this.name = name;
@@ -66,24 +72,48 @@ public class OutputView extends JFrame implements OutputCapable{
 		frame.setVisible(true);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private int closeWindow() {
 		return JFrame.EXIT_ON_CLOSE;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public DeviceCategory getCategory() {
 		return category;
 	}
-
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getCode() {
 		return code;
 	}	
-
+	
 	@Override
 	public void print(String msg){
 		deviceDisplay.append(msg);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDisplayText() {
+		return deviceDisplay.getText();
 	}
 }

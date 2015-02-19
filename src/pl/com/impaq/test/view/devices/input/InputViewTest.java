@@ -34,7 +34,7 @@ public class InputViewTest {
 	public void testGetTextInputField() {
 		PointOfSale pos = PointOfSale.getInstance();
 		InputView iv = new InputView("001", "view name", DeviceCategory.DISPLAY, View.getInstance(pos));
-		assertTrue(iv.capture().length() == 0);
+		assertEquals(iv.capture().length(), 0);
 		PointOfSale.dispose();
 		View.dispose();
 	}

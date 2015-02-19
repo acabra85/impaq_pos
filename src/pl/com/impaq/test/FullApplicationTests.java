@@ -14,12 +14,15 @@ import pl.com.impaq.test.model.stubs.DevicesStubTest;
 import pl.com.impaq.test.model.stubs.ProductStubTest;
 import pl.com.impaq.test.model.util.PropertyReaderTest;
 import pl.com.impaq.test.view.ViewTest;
+import pl.com.impaq.test.view.devices.input.InputHandlerTest;
 import pl.com.impaq.test.view.devices.input.InputViewTest;
+import pl.com.impaq.test.view.devices.output.OutputViewTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ DeviceCategoryTest.class, DeviceManagerTest.class,
 	DevicesStubTest.class, InvoiceDetailsCalculatorTest.class,
 	PointOfSaleTest.class, ProductsManagerTest.class,
-	ProductStubTest.class, ProductTest.class, PropertyReaderTest.class, InputViewTest.class, ViewTest.class})
+	ProductStubTest.class, ProductTest.class, PropertyReaderTest.class, 
+	InputViewTest.class, ViewTest.class, InputHandlerTest.class, OutputViewTest.class})
 public class FullApplicationTests {
 }
