@@ -32,8 +32,16 @@ public class PropertyReaderTest {
 	@Test
 	public void testRetrievePropertyFromConfigFileExistent() {
 		PropertyReader pr = PropertyReader.getInstance();
-		assertEquals(pr.retrievePropertyFromConfigFile(CONFIG_FILE_NAME, "tax").length(), 0);
-		
+		assertNotNull(pr.retrievePropertyFromConfigFile(CONFIG_FILE_NAME, "tax"));
+	}
+
+	/**
+	 * Test method for {@link pl.com.impaq.main.model.util.PropertyReader#retrievePropertyFromConfigFile(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	public void testRetrievePropertyFromConfigInexistentProperty() {
+		PropertyReader pr = PropertyReader.getInstance();
+		assertNull(pr.retrievePropertyFromConfigFile(CONFIG_FILE_NAME, "taxxx"));
 	}
 
 	/**

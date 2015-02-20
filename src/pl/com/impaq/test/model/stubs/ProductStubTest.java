@@ -1,6 +1,7 @@
 package pl.com.impaq.test.model.stubs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -9,7 +10,6 @@ import org.junit.Test;
 import pl.com.impaq.main.controller.managers.ProductsManager;
 import pl.com.impaq.main.model.core.InvoiceDetailsCalculator;
 import pl.com.impaq.main.model.stubs.ProductStub;
-import pl.com.impaq.main.model.util.PropertyReader;
 
 /**
  * @author Agustin
@@ -97,7 +97,7 @@ public class ProductStubTest {
 		ProductsManager posProductManager = new ProductsManager(); 
 		InvoiceDetailsCalculator calculator = new InvoiceDetailsCalculator();
 		ProductStub ps = new ProductStub(posProductManager, CONFIG_FILE+"dd", calculator);
-		assertEquals(ps.getTaxString(CONFIG_FILE), PropertyReader.getInstance().retrievePropertyFromConfigFile(CONFIG_FILE, "tax"));
+		assertNotNull(ps.getTaxString(CONFIG_FILE));
 		ps = null;
 		posProductManager = null;
 		calculator = null;
